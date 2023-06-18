@@ -8,6 +8,8 @@ import 'package:trial1/Screens/Constants/string_manager.dart';
 import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 import 'package:trial1/Screens/OnBoardingScreen.dart';
 
+import '../cache_manager.dart';
+
 class SignupPage extends StatefulWidget {
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -53,7 +55,8 @@ class _SignupPageState extends State<SignupPage> {
             size: 20,
             color: Colors.black,
           ),
-        ), systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: SafeArea(
         child: ListView(
@@ -337,6 +340,8 @@ Future signUp(String email, String password, String username,
       //print(value);
       StringManager.uId = value.user!.uid;
       await createUser(email, password, username);
+      await CacheManager.saveData('email', email);
+      await CacheManager.saveData('password', password);
       Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
           context,
