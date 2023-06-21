@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:trial1/Screens/NavigationScreens/DetectionScreen.dart';
 import 'package:trial1/Screens/NavigationScreens/History.dart';
@@ -16,17 +15,13 @@ class AppLayout extends StatefulWidget {
 }
 
 class AppLayoutState extends State<AppLayout> {
-  List Screens = [const HomeScreen(),const History(), DetectionScreen(),const showProfile()];
+  List Screens = [HomeScreen(), History(), DetectionScreen(), showProfile()];
 
   @override
   Widget build(BuildContext context) {
     final selectedPageProvider = Provider.of<SelectedPageProvider>(context);
-    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    return Scaffold(
 
-      appBar: AppBar(
-        elevation: 0,
-      ),
+    return Scaffold(
       body: Center(
         child: Screens[selectedPageProvider.selectedIndex],
       ),
@@ -50,7 +45,7 @@ class AppLayoutState extends State<AppLayout> {
           ),
         ],
         currentIndex: selectedPageProvider.selectedIndex,
-        selectedItemColor: const Color(0xff1a74d7),
+        selectedItemColor: Color(0xff1a74d7),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           selectedPageProvider.selectedIndex = index;
