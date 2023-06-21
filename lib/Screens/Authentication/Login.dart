@@ -1,13 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Authentication/forgot_pw.dart';
 import 'package:trial1/Screens/Authentication/signup.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 
+import '../Constants/string_manager.dart';
 import '../NavigationScreens/AppLayout.dart';
 
 class Login extends StatefulWidget {
@@ -16,7 +19,8 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  FirebaseAuth instance = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool isPasswordVisible = true;
 
   final _emailController = TextEditingController(text: 'atom1@gmail.com');
@@ -27,6 +31,51 @@ class LoginState extends State<Login> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  // sign in with google
+  Future createUser(String email, String password, String username) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(StringManager.uId)
+          .set(
+        {
+          'uid': StringManager.uId,
+          'email': email,
+          'password': password,
+          'username': username,
+          'profilePic': ''
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<UserCredential> _signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final UserCredential userCredential =
+        await _auth.signInWithCredential(credential);
+    return userCredential;
+  }
+
+  Future SendDetailsToFirestore() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance.collection("users").doc(user!.uid).set({
+      "uid": user.uid,
+      "email": user.email,
+      "username": user.displayName,
+      "profilePic": user.photoURL,
+    });
   }
 
   // sign in function
@@ -70,7 +119,8 @@ class LoginState extends State<Login> {
       backgroundColor: Colors.white,
       appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.white, systemOverlayStyle: SystemUiOverlayStyle.dark),
+          backgroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle.dark),
 
       body: SafeArea(
         child: ListView(
@@ -261,7 +311,32 @@ class LoginState extends State<Login> {
                       height: height * 0.09,
                       child: InkWell(
                           splashColor: Colors.black26,
-                          onTap: () {},
+                          onTap: () {
+                            _signInWithGoogle()
+                                .then((UserCredential? userCredential) {
+                              if (userCredential
+                                      ?.additionalUserInfo?.isNewUser ==
+                                  true) {
+                                SendDetailsToFirestore();
+                              }
+
+                              // Handle successful sign-in
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AppLayout()),
+                                  (route) => false);
+                            }).catchError((e) {
+                              print(e);
+                              // Handle sign-in error
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.message.toString()),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            });
+                          },
                           child: SquareTile(
                               imagePath:
                                   'lib/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png'))),
