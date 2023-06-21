@@ -184,27 +184,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: InkWell(
                         onTap: () {},
                         child: Ink.image(
-                          image: AssetImage('lib/images/checking.jpeg'),
+                          image: AssetImage('lib/images/icon_check.png'),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    Container(
-                      width: 220,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(40),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black26.withOpacity(0.1),
-                              offset: Offset(0, 25),
-                              blurRadius: 3,
-                              spreadRadius: -17),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+
+                    // Container(
+                    //   width: 220,
+                    //   height: 130,
+                    //   decoration: BoxDecoration(
+                    //     color: Theme.of(context).primaryColor,
+                    //     borderRadius: BorderRadius.circular(40),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //           color: Colors.black26.withOpacity(0.1),
+                    //           offset: Offset(0, 25),
+                    //           blurRadius: 3,
+                    //           spreadRadius: -17),
+                    //     ],
+                    //   ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                       Column(
+                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             height: 20,
@@ -219,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 8,
+                            height: 5,
                           ),
                           Container(
                             width: 186,
@@ -234,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 4,
+                            height: 1,
                           ),
                           TextButton(
                             onPressed: () {
@@ -253,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           //_image==null? Container() :Image.file(_image,height: 300,width: 300,),
                         ],
                       ),
-                    )
+
                   ],
                 ),
               ),
@@ -273,27 +278,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: InkWell(
                           onTap: () {},
                           child: Ink.image(
-                            image: AssetImage('lib/images/histo.jpeg'),
+                            image: AssetImage('lib/images/icon_history.png'),
                           ),
                         ),
                       ),
-                      Container(
-                        width: 220,
-                        height: 130,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(40),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black26.withOpacity(0.1),
-                                offset: Offset(0, 25),
-                                blurRadius: 3,
-                                spreadRadius: -17),
-                          ],
-                        ),
-                        child: Column(
+                      // Container(
+                      //   width: 220,
+                      //   height: 130,
+                      //   decoration: BoxDecoration(
+                      //     color: Theme.of(context).primaryColor,
+                      //     borderRadius: BorderRadius.circular(40),
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //           color: Colors.black26.withOpacity(0.1),
+                      //           offset: Offset(0, 25),
+                      //           blurRadius: 3,
+                      //           spreadRadius: -17),
+                      //     ],
+                      //   ),
+                      //   child:
+                  SizedBox(width: 20,),
+                      Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               height: 20,
@@ -323,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             SizedBox(
-                              height: 4,
+                              height: 2,
                             ),
                             TextButton(
                               onPressed: () {
@@ -341,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ],
                         ),
-                      )
+
                     ],
                   ),
                 ),

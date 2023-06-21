@@ -6,6 +6,7 @@ import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Constants/string_manager.dart';
 import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
+import 'package:trial1/Screens/NavigationScreens/welcome.dart';
 import 'package:trial1/Screens/OnBoardingScreen.dart';
 
 import '../cache_manager.dart';
@@ -48,7 +49,7 @@ class _SignupPageState extends State<SignupPage> {
         leading: IconButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: ((context) => OnBoardingScreen())));
+                MaterialPageRoute(builder: ((context) => WelcomeScreen())));
           },
           icon: Icon(
             Icons.arrow_back_ios,
