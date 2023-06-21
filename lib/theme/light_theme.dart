@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -6,7 +7,12 @@ ThemeData lightTheme = ThemeData(
   hintColor: Colors.blueAccent,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
+
     backgroundColor: Colors.white,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarBrightness: Brightness.light
+    ),
     elevation: 0,
     iconTheme: IconThemeData(
       color: Colors.black,
