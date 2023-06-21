@@ -22,6 +22,7 @@ class AppLayoutState extends State<AppLayout> {
     final selectedPageProvider = Provider.of<SelectedPageProvider>(context);
 
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: Screens[selectedPageProvider.selectedIndex],
       ),
