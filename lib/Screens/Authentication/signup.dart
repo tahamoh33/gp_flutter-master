@@ -57,6 +57,7 @@ class _SignupPageState extends State<SignupPage> {
       "email": user.email,
       "username": user.displayName,
       "profilePic": user.photoURL,
+      "password": ""
     });
   }
 

@@ -74,6 +74,7 @@ class LoginState extends State<Login> {
       "email": user.email,
       "username": user.displayName,
       "profilePic": user.photoURL,
+      "password": ""
     });
   }
 

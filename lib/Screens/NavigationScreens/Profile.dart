@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../CustomWidgets/customFile.dart';
@@ -34,19 +34,20 @@ class _profilescreenState extends State<profilescreen> {
   bool isObsecurepass = true;
   bool ispasswordField = true;
 
-  // Future<String> compressImage(File imageFile) async {
-  //   final tempDir = await getTemporaryDirectory();
-  //   final path = tempDir.path;
-  //   final fileName = Path.basename(imageFile.path);
-  //
-  //   final compressedImage = await FlutterImageCompress.compressAndGetFile(
-  //     imageFile.path,
-  //     '$path/$fileName.jpg',
-  //     quality: 70, // Set the desired image quality here (0 - 100)
-  //   );
-  //
-  //   return compressedImage.path;
-  // }
+  Future<File?> resizeImage(File imageFile, int width, int height) async {
+    // Generate a unique file path for the compressed image
+    String newPath = '${imageFile.path}_compressed.' +
+        imageFile.path.split('.').last.toLowerCase();
+    var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
+      imageFile.path,
+      newPath,
+      quality: 80, // Set the desired image quality (0 - 100)
+      minWidth: width,
+      minHeight: height,
+    );
+
+    return compressedImageFile;
+  }
 
   Future<String> uploadImageToFirebase(File image) async {
     //Upload image to firebase
@@ -75,7 +76,9 @@ class _profilescreenState extends State<profilescreen> {
             child: CircularProgressIndicator(),
           );
         });
-    await uploadImageToFirebase(_image!);
+    // compress image
+    File? compressedImage = await resizeImage(_image!, 500, 500);
+    await uploadImageToFirebase(compressedImage!);
     Navigator.pop(context);
   }
 
@@ -83,14 +86,18 @@ class _profilescreenState extends State<profilescreen> {
     try {
       final userDoc = await FirebaseFirestore.instance
           .collection('users')
-          .doc(instance.currentUser!.uid) // Replace with the actual user UID
+          .doc(instance.currentUser!.uid)
           .get();
 
       if (userDoc.exists) {
         final userData = userDoc.data() as Map<String, dynamic>;
         setState(() {
           _email.text = userData['email'];
-          _password.text = userData['password'];
+          try {
+            _password.text = userData['password'];
+          } catch (e) {
+            _password.text = "";
+          }
           _username.text = userData['username'];
           try {
             url = userData['profilePic'];
@@ -100,6 +107,7 @@ class _profilescreenState extends State<profilescreen> {
         });
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error Getting User Data due to ${e}!'),
@@ -150,7 +158,6 @@ class _profilescreenState extends State<profilescreen> {
     url = "";
     super.initState();
     getUserData();
-
   }
 
   @override
@@ -168,14 +175,10 @@ class _profilescreenState extends State<profilescreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       //resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        elevation: 0,
-
-        title:Custom_Title(word:"Edit profile"),
-        centerTitle: true,
+        title: Center(child: Custom_Title(word: "Edit profile")),
         automaticallyImplyLeading: false,
-
       ),
       body: Form(
         key: formkey,
@@ -204,7 +207,7 @@ class _profilescreenState extends State<profilescreen> {
                                   BoxShadow(
                                     spreadRadius: 2,
                                     blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: Theme.of(context).shadowColor,
                                   ),
                                 ],
                                 shape: BoxShape.circle,
@@ -243,7 +246,7 @@ class _profilescreenState extends State<profilescreen> {
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey.shade300,
+                  fillColor: Theme.of(context).dialogBackgroundColor,
                   hintText: 'Name',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -259,7 +262,7 @@ class _profilescreenState extends State<profilescreen> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey.shade300,
+                  fillColor: Theme.of(context).dialogBackgroundColor,
                   hintText: 'Email Address',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -288,7 +291,7 @@ class _profilescreenState extends State<profilescreen> {
                           ))
                       : null,
                   filled: true,
-                  fillColor: Colors.grey.shade300,
+                  fillColor: Theme.of(context).dialogBackgroundColor,
                   hintText: 'password',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -331,7 +334,7 @@ class _profilescreenState extends State<profilescreen> {
                       style: TextStyle(
                         fontSize: 15,
                         letterSpacing: 2,
-                        color: Colors.black,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     ),
                     style: OutlinedButton.styleFrom(
@@ -356,7 +359,7 @@ class _profilescreenState extends State<profilescreen> {
                       style: TextStyle(
                         fontSize: 15,
                         letterSpacing: 2,
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
