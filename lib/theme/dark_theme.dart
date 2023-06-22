@@ -5,7 +5,7 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.black,
   primaryColorDark: Colors.white,
-  accentColor: Color(0xff1876d0),
+  hoverColor: Color(0xff1876d0),
   hintColor: Color(0xff1876d0),
   scaffoldBackgroundColor: Colors.black,
   secondaryHeaderColor: Colors.white70,

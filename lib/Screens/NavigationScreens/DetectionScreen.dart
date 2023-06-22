@@ -109,74 +109,87 @@ class _DetectionScreenState extends State<DetectionScreen> {
         title: Center(child: Custom_Title(word: "Check your eyes")),
       ),
 
-      body: Center(
-          child: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Upload your photo",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20),
+      body:
+      SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Upload Image",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                SizedBox(
+                  height: 30,
+                ),
+                Text("Upload Your Traditional Funds Photography to check your eye disease \n \n Image Example :",
+                  style: TextStyle(
+                    fontSize: 16,
+                        fontWeight: FontWeight.w500,
+
                   ),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Container(
-                            child: Center(
-                              child: _loading == true
-                                  ? Container(
-                                      child: Text(
-                                        "PRESS + BUTTON TO ADD IMAGE",
-                                        style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ) //show nothing if no picture selected
-                                  : Column(
-                                      children: [
-                                        ClipRRect(
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      //color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4),
+                            child: Container(
+                              child: Center(
+                                child: _loading == true
+                                    ? Container(
+                                        child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image.file(
-                                            _image!,
+                                          BorderRadius.circular(10),
+                                          child: Image.asset(
+                                            "lib/images/1_right.png",
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                        _output != null
-                                            ? Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 5),
-                                                child: Text(
-                                                  'The object is: ${_output![0]['label']}!',
-                                                  style: TextStyle(
-                                                      color: Colors.green[100],
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              )
-                                            : Container(),
-                                      ],
-                                    ),
+                                )//show nothing if no picture selected
+                                    : Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: Image.file(
+                                              _image!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          _output != null
+                                              ? Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5),
+                                                  child: Text(
+                                                    'The object is: ${_output![0]['label']}!',
+                                                    style: TextStyle(
+                                                        color: Theme.of(context).hintColor,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ],
+                                      ),
+                              ),
                             ),
                           ),
-                        ),
-                      ])),
-            ]),
-      )),
+                        ])),
+              ]),
+        ),
+      ),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         activeIcon: Icons.close,
