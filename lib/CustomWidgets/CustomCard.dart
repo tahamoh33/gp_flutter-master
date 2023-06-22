@@ -27,9 +27,7 @@ Widget buildCard({
 }
 
 Widget buildImage(double radius, String urlImage) => ClipRRect(
-      borderRadius: BorderRadius.circular(
-        radius
-      ),
+      borderRadius: BorderRadius.circular(radius),
       child: Image.network(
         urlImage,
         fit: BoxFit.cover,
@@ -61,6 +59,11 @@ Widget buildText(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Results(glaucomaResult)));
+              } else if (title == "Diabetic") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Results(diabeticResult)));
               } else if (title == "Cataract") {
                 Navigator.push(
                     context,

@@ -33,11 +33,11 @@ class _HistoryState extends State<History> {
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No predictions found for this user.' ,
-            style:TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800
-            ) ,));
+          return Center(
+              child: Text(
+            'No predictions found for this user.',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+          ));
         }
 
         return ListView(
@@ -50,7 +50,6 @@ class _HistoryState extends State<History> {
               buildCard(
                 urlImage: data['imageUrl'],
                 title: data['predictionLabel'],
-
                 date:
                     '${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}',
                 description: '...',
@@ -60,8 +59,7 @@ class _HistoryState extends State<History> {
               SizedBox(
                 height: 20,
               ),
-            ]
-            );
+            ]);
           }).toList(),
         );
       },
@@ -73,20 +71,13 @@ class _HistoryState extends State<History> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Custom_Title(
-            word:"History"
-          ),
-        )
-
-
-
+          child: Custom_Title(word: "History"),
+        ),
       ),
-      body:  Padding(
-
+      body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: buildPredictionList(FirebaseAuth.instance.currentUser!.uid),
       ),
-
     );
   }
 }

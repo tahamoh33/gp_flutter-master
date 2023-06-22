@@ -43,29 +43,29 @@ class OnBoardingScreen extends StatelessWidget {
 
       background: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: width *0.3,vertical: height*0.1,),
-          // child: SizedBox(
-          //  height: height * 0.2,
-          //  width: width * 0.4,
-          child: Image.asset(
-            'lib/images/logo.png',
-            fit: BoxFit.fill,
-            height: height * 0.2,
-          ),
-        ),
-
-        Container(
-           padding: EdgeInsets.symmetric(horizontal: width *0.3,vertical: height*0.1,),
-           // child: SizedBox(
-           //  height: height * 0.2,
-           //  width: width * 0.4,
+          padding: EdgeInsets.only(left: width * 0.1),
+          child: SizedBox(
+            height: height * 0.4,
+            width: width * 0.8,
             child: Image.asset(
-              'lib/images/logo.png',
+              'lib/images/EyeLogo.png',
               fit: BoxFit.fill,
-              height: height * 0.2,
+              height: height * 0.4,
             ),
           ),
-
+        ),
+        Container(
+          padding: EdgeInsets.only(left: width * 0.1),
+          child: SizedBox(
+            height: height * 0.4,
+            width: width * 0.8,
+            child: Image.asset(
+              'lib/images/EyeLogo.png',
+              fit: BoxFit.fill,
+              height: height * 0.4,
+            ),
+          ),
+        ),
       ],
       speed: 3,
       pageBodies: [
@@ -104,47 +104,42 @@ class OnBoardingScreen extends StatelessWidget {
             ],
           ),
         ),
-        Column(
-          children: [
-
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(horizontal: height * 0.05),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: height * 0.5,
-                  ),
-                  AutoSizeText(
-                    'Offers an additional insight.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
-                  ),
-                  SizedBox(
-                    height: height * 0.05,
-                  ),
-                  AutoSizeText(
-                    'This application was mainly designed to provide a new point of view as a way of coping with the rapid development of the Artificial intelligence field.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 6,
-                    stepGranularity: 2,
-                  ),
-                ],
+        Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: height * 0.05),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: height * 0.5,
               ),
-            ),
-          ],
+              AutoSizeText(
+                'Offers an additional insight.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              AutoSizeText(
+                'This application was mainly designed to provide a new point of view as a way of coping with the rapid development of the Artificial intelligence field.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 6,
+                stepGranularity: 2,
+              ),
+            ],
+          ),
         ),
       ],
     );

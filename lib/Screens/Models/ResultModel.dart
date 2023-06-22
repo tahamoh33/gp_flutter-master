@@ -21,3 +21,5 @@ ResultModel glaucomaResult =
     new ResultModel("Glaucoma", Gdescription, Gsymptom, GmedicalAdvice);
 ResultModel cataractResult =
     new ResultModel("Cataract", Cdescription, Gsymptom, GmedicalAdvice);
+ResultModel diabeticResult = new ResultModel(
+    "Diabetic Retinopathy", Gdescription, Gsymptom, GmedicalAdvice);

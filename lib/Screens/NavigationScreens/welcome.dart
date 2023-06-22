@@ -3,16 +3,15 @@ import 'package:trial1/Screens/Authentication/Login.dart';
 import 'package:trial1/Screens/Authentication/signup.dart';
 
 import '../../CustomWidgets/custom_button.dart';
-import '../Constants/color_manager.dart';
-
-
-
 
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(18),
         child: Column(
@@ -20,91 +19,93 @@ class WelcomeScreen extends StatelessWidget {
           children: [
             Image.asset(
               'lib/images/logo.png',
-              width: 200,
+              width: width * 0.5,
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: height * 0.03,
             ),
             const Text(
               'Welcome',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: height * 0.03,
             ),
-            const Text(
+            Text(
               'Easy And Convenient Online Check-up On Your Eyes Right From Your Home',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).primaryColorDark),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: height * 0.03,
             ),
-            Text("Sign Up As:",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize:18
-            ),),
-            SizedBox(height: 20,),
+            Text(
+              "Sign Up As:",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColorDark),
+            ),
+            SizedBox(
+              height: height * 0.03,
+            ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                 children: [
                   CustomButton(
-                    height:50,
-                    width:145,
+                    height: height * 0.06,
+                    width: width * 0.35,
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder:
-                              ((context) => SignupPage())));
+                              builder: ((context) => SignupPage())));
                     },
-                    label:  'User',
+                    label: 'User',
                   ),
                   // SizedBox(
                   //   width: 20,
                   // ),
                   CustomButton(
-                    height:50,
-                    width:145,
+                    height: height * 0.06,
+                    width: width * 0.35,
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder:
-                              ((context) => SignupPage())));
+                              builder: ((context) => SignupPage())));
                     },
-                    label:  'Doctor',
+                    label: 'Doctor',
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: height * 0.03,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'Already have an account?',
-                  style: TextStyle(fontSize: 14),
+                  style: TextStyle(
+                      fontSize: 14, color: Theme.of(context).primaryColorDark),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder:
-                            ((context) =>Login())));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => Login())));
                   },
-                  child: const Text(
+                  child: Text(
                     'Login',
                     style: TextStyle(
                       fontSize: 14,
-                      //color: ColorManager.primary,
+                      color: Theme.of(context).hintColor,
                       decoration: TextDecoration.underline,
                     ),
                   ),

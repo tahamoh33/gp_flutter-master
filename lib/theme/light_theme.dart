@@ -4,8 +4,13 @@ import 'package:flutter/services.dart';
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.white,
-  hintColor: Colors.blueAccent,
+  primaryColorDark: Colors.black,
+  accentColor: Color(0xff1876d0),
+  hintColor: Color(0xff1876d0),
   scaffoldBackgroundColor: Colors.white,
+  secondaryHeaderColor: Colors.black54,
+  dialogBackgroundColor: Colors.grey[300],
+  shadowColor: Colors.black.withOpacity(0.2),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle(
@@ -17,7 +22,7 @@ ThemeData lightTheme = ThemeData(
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
-    selectedItemColor: Colors.blueAccent,
+    selectedItemColor: Color(0xff1876d0),
     unselectedItemColor: Colors.black.withOpacity(0.5),
     selectedIconTheme: IconThemeData(
       size: 30,

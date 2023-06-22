@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
@@ -116,12 +115,8 @@ class LoginState extends State<Login> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       //resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          systemOverlayStyle: SystemUiOverlayStyle.dark),
-
+      backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
@@ -134,13 +129,14 @@ class LoginState extends State<Login> {
               child: AutoSizeText(
                 'Login',
                 style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
                   fontFamily: 'Montserrat',
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   shadows: [
                     Shadow(
                       blurRadius: 10.0,
-                      color: Colors.black.withOpacity(0.2),
+                      color: Theme.of(context).shadowColor,
                       offset: Offset(5.0, 5.0),
                     ),
                   ],
@@ -159,6 +155,7 @@ class LoginState extends State<Login> {
               child: Text(
                 "Glad To See You Again! ",
                 style: TextStyle(
+                    color: Theme.of(context).primaryColorDark,
                     fontSize: 14.0,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400),
@@ -172,7 +169,7 @@ class LoginState extends State<Login> {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey.shade300,
+                fillColor: Theme.of(context).dialogBackgroundColor,
                 hintText: 'Email Address',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -191,7 +188,7 @@ class LoginState extends State<Login> {
               obscureText: isPasswordVisible,
               decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey.shade300,
+                  fillColor: Theme.of(context).dialogBackgroundColor,
                   hintText: 'Password',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -226,7 +223,7 @@ class LoginState extends State<Login> {
                     "Forgot password ?",
                     maxLines: 1,
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontFamily: "Montserrat",
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
@@ -279,7 +276,7 @@ class LoginState extends State<Login> {
                         fontFamily: 'Montserrat',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: Colors.grey[800],
+                        color: Theme.of(context).secondaryHeaderColor,
                       ),
                     ),
                   ),
@@ -307,8 +304,8 @@ class LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                      width: width * 0.25,
-                      height: height * 0.09,
+                      width: width * 0.4,
+                      height: height * 0.1,
                       child: InkWell(
                           splashColor: Colors.black26,
                           onTap: () {
@@ -340,18 +337,6 @@ class LoginState extends State<Login> {
                           child: SquareTile(
                               imagePath:
                                   'lib/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png'))),
-                  SizedBox(
-                    width: width * 0.15,
-                  ),
-                  Container(
-                      width: width * 0.25,
-                      height: height * 0.09,
-                      child: InkWell(
-                          splashColor: Colors.black26,
-                          onTap: () {},
-                          child: SquareTile(
-                              imagePath:
-                                  'lib/images/Facebook_Logo_(2019).png')))
                 ],
               ),
             ),
@@ -371,7 +356,7 @@ class LoginState extends State<Login> {
                       AutoSizeText(
                         'Don\'t Have an Account ?',
                         style: TextStyle(
-                          color: Colors.grey[700],
+                          color: Theme.of(context).secondaryHeaderColor,
                           fontFamily: 'Montserrat',
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

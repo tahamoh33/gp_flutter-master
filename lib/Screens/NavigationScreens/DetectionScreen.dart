@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -97,7 +96,8 @@ class _DetectionScreenState extends State<DetectionScreen> {
       'predictionLabel': predictionLabel,
     });
   }
-bool isBottomFormshown=false;
+
+  bool isBottomFormshown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +106,7 @@ bool isBottomFormshown=false;
       resizeToAvoidBottomInset: false,
       //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-         title: Center(child: Custom_Title(word:"Check your eyes")),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 0, systemOverlayStyle: SystemUiOverlayStyle.dark,
+        title: Center(child: Custom_Title(word: "Check your eyes")),
       ),
 
       body: Center(
@@ -125,9 +123,7 @@ bool isBottomFormshown=false;
               Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
-
                   decoration: BoxDecoration(
-
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -139,19 +135,16 @@ bool isBottomFormshown=false;
                           child: Container(
                             child: Center(
                               child: _loading == true
-                                  ?
-
-                              Container(
-
-                                child: Text("PRESS + BUTTON TO ADD IMAGE",
-                                  style:TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 16,
-                                    fontWeight:FontWeight.w700,
-
-                                  ) ,
-                                ),
-                              ) //show nothing if no picture selected
+                                  ? Container(
+                                      child: Text(
+                                        "PRESS + BUTTON TO ADD IMAGE",
+                                        style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ) //show nothing if no picture selected
                                   : Column(
                                       children: [
                                         ClipRRect(
@@ -200,7 +193,6 @@ bool isBottomFormshown=false;
         //shadow elevation of button
 
         children: [
-
           SpeedDialChild(
             child: Icon(Icons.image, color: Colors.white),
             backgroundColor: Colors.lightBlue,
