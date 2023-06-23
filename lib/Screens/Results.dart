@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trial1/Screens/NavigationScreens/History.dart';
 
 import 'Models/ResultModel.dart';
 
@@ -10,9 +11,21 @@ class Results extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        leading:IconButton(
+          onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>History()));},
+          icon: Icon(Icons.arrow_back_sharp),
+        ),
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         elevation: 0.0,
+        title: Text("Results",
+          style: TextStyle(
+              fontSize: 25,
+              color: Colors.blue,
+              fontFamily: "Montserrat",
+          ), )
+
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -20,48 +33,7 @@ class Results extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              //margin: EdgeInsets.fromLTRB(0, , 0, 15),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(25, 10, 10, 10),
-                    child: InkWell(
-                      splashColor: Color.fromARGB(66, 82, 81, 81),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Ink.image(
-                        image: AssetImage('lib/images/arrowleft.png'),
-                        width: 25,
-                        height: 20,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 85,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      width: 77,
-                      height: 24,
-                      child: Text(
-                        "Results",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Montserrat',
-                          color: Color(0xff1a74d7),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
             //SizedBox(height: 72.0,),
             Container(
               width: 97,
