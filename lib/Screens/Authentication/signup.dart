@@ -128,7 +128,7 @@ class _SignupPageState extends State<SignupPage> {
       appBar: AppBar(),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(30),
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,6 +284,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 Center(
                   child: CustomButton(
+
                     onPressed: () async {
                       final String email = _email.text.trim();
                       final String password = _password.text.trim();
@@ -297,6 +298,17 @@ class _SignupPageState extends State<SignupPage> {
                             backgroundColor: Colors.red,
                           ),
                         );
+
+                        return;
+                      }
+                      else if(isChecked==false){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please check to terms and conditions'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+
                         return;
                       }
                       await signUp(email, password, username, context);
@@ -306,19 +318,7 @@ class _SignupPageState extends State<SignupPage> {
                     height: height * 0.06,
                   ),
                 ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // Center(
-                //   child: CustomButton(
-                //     onPressed: () async {
-                //       await getUser(StringManager.uId);
-                //     },
-                //     label: 'get data',
-                //     width: 150,
-                //     height: 50,
-                //   ),
-                // ),
+
                 SizedBox(
                   height: height * 0.025,
                 ),

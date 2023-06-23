@@ -177,7 +177,12 @@ class _profilescreenState extends State<profilescreen> {
       //resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(child: Custom_Title(word: "Edit profile")),
+        title: Center(child: Text("Edit profile",
+          style: TextStyle(
+              fontSize: 25,
+              color: Colors.blue
+          ), )
+        ),
         automaticallyImplyLeading: false,
       ),
       body: Form(

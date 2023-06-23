@@ -70,8 +70,11 @@ class _HistoryState extends State<History> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Custom_Title(word: "History"),
+        title: Center(child: Text("History",
+          style: TextStyle(
+              fontSize: 25,
+              color: Colors.blue
+          ), )
         ),
       ),
       body: Padding(

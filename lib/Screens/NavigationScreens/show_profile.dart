@@ -82,7 +82,12 @@ class _showProfileState extends State<showProfile> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(child: Custom_Title(word: "Profile")),
+        title: Center(child: Text("Profile",
+          style: TextStyle(
+              fontSize: 25,
+              color: Colors.blue
+          ), )
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(10),

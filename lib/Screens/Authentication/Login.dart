@@ -120,13 +120,13 @@ class LoginState extends State<Login> {
       appBar: AppBar(),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
+          padding: EdgeInsets.all(30),
           children: [
             SizedBox(height: height * 0.03),
             Container(
               width: width * 0.5,
               height: height * 0.05,
-              margin: EdgeInsets.only(left: width * 0.1),
+              //margin: EdgeInsets.only(left: width * 0.1),
               child: AutoSizeText(
                 'Login',
                 style: TextStyle(
@@ -150,7 +150,7 @@ class LoginState extends State<Login> {
             //   height: height * 0.02,
             // ),
             Container(
-              margin: EdgeInsets.only(left: width * 0.1, top: height * 0.02),
+              //margin: EdgeInsets.only(left: width * 0.1, top: height * 0.02),
               width: width * 0.3,
               height: height * 0.05,
               child: Text(

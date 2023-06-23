@@ -106,7 +106,12 @@ class _DetectionScreenState extends State<DetectionScreen> {
       resizeToAvoidBottomInset: false,
       //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Center(child: Custom_Title(word: "Check your eyes")),
+        title: Center(child: Text("Check your eyes",
+          style: TextStyle(
+            fontSize: 25,
+                color: Colors.blue
+          ), )
+        ),
       ),
 
       body:
@@ -118,7 +123,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Upload Image",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 SizedBox(
                   height: 30,
                 ),
