@@ -8,6 +8,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:tflite/tflite.dart';
+import 'package:trial1/Screens/NavigationScreens/Home.dart';
 
 import '../../CustomWidgets/customFile.dart';
 //import 'package:sizer/sizer.dart';
@@ -106,12 +107,17 @@ class _DetectionScreenState extends State<DetectionScreen> {
       resizeToAvoidBottomInset: false,
       //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Center(child: Text("Check your eyes",
+          leading:IconButton(
+            onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));},
+            icon: Icon(Icons.arrow_back_sharp),
+          ),
+        centerTitle: true,
+        title:  Text("Check your eyes",
           style: TextStyle(
             fontSize: 25,
                 color: Colors.blue
           ), )
-        ),
+
       ),
 
       body:
