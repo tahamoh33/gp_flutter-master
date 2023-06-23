@@ -107,10 +107,10 @@ class _DetectionScreenState extends State<DetectionScreen> {
       resizeToAvoidBottomInset: false,
       //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-          leading:IconButton(
-            onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));},
-            icon: Icon(Icons.arrow_back_sharp),
-          ),
+          // leading:IconButton(
+          //   onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));},
+          //   icon: Icon(Icons.arrow_back_sharp),
+          // ),
         centerTitle: true,
         title:  Text("Check your eyes",
           style: TextStyle(
