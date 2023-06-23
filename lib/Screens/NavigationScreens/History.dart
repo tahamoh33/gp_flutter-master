@@ -72,10 +72,10 @@ class _HistoryState extends State<History> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading:IconButton(
-          onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>DetectionScreen()));},
-          icon: Icon(Icons.arrow_back_sharp),
-        ),
+        // leading:IconButton(
+        //   onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>DetectionScreen()));},
+        //   icon: Icon(Icons.arrow_back_sharp),
+        // ),
         title: Text("History",
           style: TextStyle(
               fontSize: 25,
