@@ -268,26 +268,51 @@ class _SignupPageState extends State<SignupPage> {
                       onPressed: () {
                         showDialog(
                             context: context,
-                            builder: (context) => AlertDialog(
-                                  title: const Text(
-                                      "Terms & Conditions"),
-                                  content: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Text(
-"By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."
-                                      ),
+                            builder: (context) => Dialog(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height:176,width: 176,
+                                            child: Image.asset("lib/images/Frame 2.png")),
+                                        SizedBox(height: 10,),
+                                        Text(
+                                            "Terms & Conditions" ,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold
+
+                                        ),
+                                        ),
+                                        SizedBox(height: 15,),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Text(
+                                              "By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."
+                                          ),
 
 
-                                  ),//shh
-                              actions: [
-                                Center(
-                                  child: CustomButton(label: "I Accept", onPressed: (){
-                                    setState(() {
-                                      isChecked=true;
-                                    });
-                                  }),
-                                )
-                              ],
+
+                                        ),
+                                        SizedBox(height: 15,),
+                                        Center(
+                                          child: CustomButton(label: "I Accept", onPressed: (){
+                                            setState(() {
+                                              isChecked=true;
+                                            });
+                                          }),
+                                        )
+
+
+
+                                      ],
+                                    ),
+                                  ),
+                                   //shh
+
                         )
                         );
                       },
