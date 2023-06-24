@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:trial1/Screens/Doctor/DoctorScreen.dart';
 import 'package:trial1/Screens/SplashScreen.dart';
 import 'package:trial1/Screens/State%20Management/selected_page_provider.dart';
 import 'package:trial1/Screens/cache_manager.dart';
@@ -44,9 +45,9 @@ class myApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
-          home: SplashScreen(email: email, password: password),
+          home:SplashScreen(email: email, password: password) ,
         );
-      },
+      },//SplashScreen(email: email, password: password)
     );
   }
 }

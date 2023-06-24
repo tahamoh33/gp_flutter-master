@@ -10,6 +10,7 @@ import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 import '../cache_manager.dart';
 
 class SignupPage extends StatefulWidget {
+
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
@@ -17,10 +18,10 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   User? user = FirebaseAuth.instance.currentUser;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final _email = new TextEditingController();
-  final _password = new TextEditingController();
-  final _confirmPassword = new TextEditingController();
-  final _username = new TextEditingController();
+  final _email =  TextEditingController();
+  final _password =  TextEditingController();
+  final _confirmPassword =  TextEditingController();
+  final _username =  TextEditingController();
 
   //FirebaseAuth instance = FirebaseAuth.instance;
   bool isPasswordVisible = true;
@@ -66,7 +67,7 @@ class _SignupPageState extends State<SignupPage> {
     try {
       showDialog(
           context: context,
-          builder: (context) => Center(
+          builder: (context) => const Center(
                 child: CircularProgressIndicator(),
               ));
       await FirebaseAuth.instance
@@ -120,7 +121,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    //final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       //resizeToAvoidBottomPadding: false,
@@ -143,7 +144,7 @@ class _SignupPageState extends State<SignupPage> {
                       Shadow(
                         blurRadius: 10.0,
                         color: Theme.of(context).shadowColor,
-                        offset: Offset(5.0, 5.0),
+                        offset: const Offset(5.0, 5.0),
                       )
                     ],
                   ),
@@ -174,7 +175,7 @@ class _SignupPageState extends State<SignupPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
-                        prefixIcon: Icon(Icons.email_rounded),
+                        prefixIcon: const Icon(Icons.email_rounded),
                       ),
                     ),
                     SizedBox(height: height * 0.015),
@@ -189,7 +190,7 @@ class _SignupPageState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: Icon(Icons.person_2_outlined),
+                        prefixIcon: const Icon(Icons.person_2_outlined),
                       ),
                     ),
                     SizedBox(height: height * 0.015),
@@ -205,11 +206,11 @@ class _SignupPageState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: Icon(Icons.lock_outlined),
+                        prefixIcon: const Icon(Icons.lock_outlined),
                         suffixIcon: IconButton(
                           icon: isPasswordVisible
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off),
                           onPressed: () {
                             setState(() {
                               isPasswordVisible = !isPasswordVisible;
@@ -269,12 +270,26 @@ class _SignupPageState extends State<SignupPage> {
                             context: context,
                             builder: (context) => AlertDialog(
                                   title: const Text(
-                                      "Agree to terms and conditions"),
+                                      "Terms & Conditions"),
                                   content: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Text(
-                                          "Please read these terms and conditions (terms and conditions, terms) carefully before using Eye diseases classification app .Conditions of useBy using this website, you certify that you have read and reviewed this Agreement and that you agree to comply with its terms. If you do not want to be bound by the terms of this Agreement, you are advised to stop using the website accordingly. We only grants use and access of this website, its products, and its services to those who have accepted its terms.Privacy policyBefore you continue using our website, we advise you to read our privacy policy regarding our user data collection. It will help you better understand our practices.Age restrictionYou must be at least 18 (eighteen) years of age before you can use this website. By using this website, you warrant that you are at least 18 years of age and you may legally adhere to this Agreement. We assume no responsibility for liabilities related to age misrepresentation.Intellectual propertyYou agree that all materials, products, and services provided on this website are the property, its affiliates, directors, officers, employees, agents, suppliers, or licensors including all copyrights, trade secrets, trademarks, patents, and other intellectual property. You also agree that you will not reproduce or redistribute , intellectual property in any way, including electronic, digital, or new trademark registrations.You grant a royalty-free and non-exclusive license to display, use, copy, transmit, and broadcast the content you upload and publish. For issues regarding intellectual property claims, you should contact the company in order to come to an agreement.User accountsAs a user of this website, you may be asked to register with us and provide private information. You are responsible for ensuring the accuracy of this information, and you are responsible for maintaining the safety and security of your identifying information. You are also responsible for all activities that occur under your account or password.If you think there are any possible issues regarding the security of your account on the website, inform us immediately so we may address them accordingly.We reserve all rights to terminate accounts, edit or remove content and cancel orders at our sole discretion.Applicable lawBy using this website, you agree that the laws of the [your location], without regard to principles of conflict laws, will govern these terms and conditions, or any dispute of any sort that might come between and you, or its business partners and associates.DisputesAny dispute related in any way to your use of this website or to products you purchase from us shall be arbitrated by state or federal court [your location] and you consent to exclusive jurisdiction and venue of such courts.IndemnificationYou agree to indemnify and its affiliates and hold  harmless against legal claims and demands that may arise from your use or misuse of our services. We reserve the right to select our own legal counsel.Limitation on liabilityWe are not liable for any damages that may occur to you as a result of your misuse of our website.We reserve the right to edit, modify, and change this Agreement at any time. We shall let our users know of these changes through electronic mail. This Agreement is an understanding between [company name] and the user, and this supersedes and replaces all prior agreements regarding the use of this website.")),
-                                ));
+"By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."
+                                      ),
+
+
+                                  ),
+                              actions: [
+                                Center(
+                                  child: CustomButton(label: "I Accept", onPressed: (){
+                                    setState(() {
+                                      isChecked=true;
+                                    });
+                                  }),
+                                )
+                              ],
+                        )
+                        );
                       },
                       child: Text("Agree to terms and conditions"))
                 ]),
