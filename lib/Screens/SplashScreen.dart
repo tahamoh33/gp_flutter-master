@@ -2,14 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:trial1/Screens/Doctor/doctor_app_layout.dart';
 import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 import 'package:trial1/Screens/NavigationScreens/welcome.dart';
-import 'package:trial1/Screens/OnBoardingScreen.dart';
 
 class SplashScreen extends StatefulWidget {
-  String? email, password;
+  String? email, password, role;
 
-  SplashScreen({super.key, required this.email, required this.password});
+  SplashScreen(
+      {super.key,
+      required this.email,
+      required this.password,
+      required this.role});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -19,9 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Widget secondScreen =  WelcomeScreen();
+    Widget secondScreen = WelcomeScreen();
     if (widget.email != null && widget.password != null) {
-      secondScreen = const AppLayout();
+      if (widget.role == 'Patient')
+        secondScreen = AppLayout();
+      else if (widget.role == 'Doctor') secondScreen = DoctorLayout();
     }
     Timer(
         const Duration(seconds: 5),

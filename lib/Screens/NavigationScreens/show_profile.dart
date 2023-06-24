@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:trial1/Screens/NavigationScreens/Profile.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 
-import '../../CustomWidgets/customFile.dart';
 import '../Authentication/Login.dart';
 
 class showProfile extends StatefulWidget {
@@ -82,12 +81,11 @@ class _showProfileState extends State<showProfile> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(child: Text("Profile",
-          style: TextStyle(
-              fontSize: 25,
-              color: Colors.blue
-          ), )
-        ),
+        title: Center(
+            child: Text(
+          "Profile",
+          style: TextStyle(fontSize: 25, color: Colors.blue),
+        )),
       ),
       body: Container(
         padding: EdgeInsets.all(10),

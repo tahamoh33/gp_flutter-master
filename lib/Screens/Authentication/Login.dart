@@ -10,6 +10,7 @@ import 'package:trial1/Screens/NavigationScreens/welcome.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 
 import '../Constants/string_manager.dart';
+import '../Doctor/doctor_app_layout.dart';
 import '../NavigationScreens/AppLayout.dart';
 
 class Login extends StatefulWidget {
@@ -83,21 +84,37 @@ class LoginState extends State<Login> {
     try {
       showDialog(
           context: context,
-          builder: (context) => Center(
+          builder: (context) => const Center(
                 child: CircularProgressIndicator(),
               ));
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
       final role = await checkUserRole();
       await CacheManager.saveData('email', _emailController.text);
       await CacheManager.saveData('password', _passwordController.text);
-
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => AppLayout()),
-          (route) => false);
+      await CacheManager.saveData('role', role);
+      if (role == 'Patient') {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => AppLayout()),
+            (route) => false);
+      } else if (role == 'Doctor') {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => DoctorLayout()),
+            (route) => false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unknown User'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        Navigator.pop(context);
+      }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

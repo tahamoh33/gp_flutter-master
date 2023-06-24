@@ -18,6 +18,16 @@ class AppLayoutState extends State<AppLayout> {
   List Screens = [HomeScreen(), History(), DetectionScreen(), showProfile()];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final selectedPageProvider =
+          Provider.of<SelectedPageProvider>(context, listen: false);
+      selectedPageProvider.selectedIndex = 0;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final selectedPageProvider = Provider.of<SelectedPageProvider>(context);
 
