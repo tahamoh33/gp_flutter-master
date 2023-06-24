@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trial1/Screens/Doctor/DoctorShowProfile.dart';
 import 'package:trial1/Screens/NavigationScreens/show_profile.dart';
 
 import '../State Management/selected_page_provider.dart';
@@ -13,7 +14,7 @@ class DoctorLayout extends StatefulWidget {
 }
 
 class DoctorLayoutState extends State<DoctorLayout> {
-  List Screens = [doctor(), doctor(), showProfile()];
+  List Screens = [doctor(), doctor(), DoctorshowProfile()];
 
   @override
   void initState() {
