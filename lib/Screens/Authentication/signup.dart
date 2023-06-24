@@ -10,7 +10,8 @@ import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 import '../cache_manager.dart';
 
 class SignupPage extends StatefulWidget {
-
+  const SignupPage({super.key, required this.isUser});
+  final bool isUser;
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
@@ -18,10 +19,10 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   User? user = FirebaseAuth.instance.currentUser;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final _email =  TextEditingController();
-  final _password =  TextEditingController();
-  final _confirmPassword =  TextEditingController();
-  final _username =  TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _confirmPassword = TextEditingController();
+  final _username = TextEditingController();
 
   //FirebaseAuth instance = FirebaseAuth.instance;
   bool isPasswordVisible = true;
@@ -62,7 +63,7 @@ class _SignupPageState extends State<SignupPage> {
     });
   }
 
-  Future signUp(String email, String password, String username,
+  Future signUp(String email, String password, String username, bool isUser,
       BuildContext context) async {
     try {
       showDialog(
@@ -78,7 +79,7 @@ class _SignupPageState extends State<SignupPage> {
           .then((value) async {
         //print(value);
         StringManager.uId = value.user!.uid;
-        await createUser(email, password, username);
+        await createUser(email, password, username, isUser);
         await CacheManager.saveData('email', email);
         await CacheManager.saveData('password', password);
         Navigator.pop(context);
@@ -98,20 +99,36 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  Future createUser(String email, String password, String username) async {
+  Future createUser(
+      String email, String password, String username, bool isUser) async {
     try {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(StringManager.uId)
-          .set(
-        {
-          'uid': StringManager.uId,
-          'email': email,
-          'password': password,
-          'username': username,
-          'profilePic': ''
-        },
-      );
+      if (isUser) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(StringManager.uId)
+            .set(
+          {
+            'uid': StringManager.uId,
+            'email': email,
+            'password': password,
+            'username': username,
+            'profilePic': ''
+          },
+        );
+      } else {
+        await FirebaseFirestore.instance
+            .collection("doctors")
+            .doc(StringManager.uId)
+            .set(
+          {
+            'uid': StringManager.uId,
+            'email': email,
+            'password': password,
+            'username': username,
+            'profilePic': ''
+          },
+        );
+      }
     } catch (e) {
       print(e);
     }
@@ -269,27 +286,25 @@ class _SignupPageState extends State<SignupPage> {
                         showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                                  title: const Text(
-                                      "Terms & Conditions"),
+                                  title: const Text("Terms & Conditions"),
                                   content: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Text(
-"By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."
-                                      ),
-
-
+                                    scrollDirection: Axis.vertical,
+                                    child: Text(
+                                        "By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."),
                                   ),
-                              actions: [
-                                Center(
-                                  child: CustomButton(label: "I Accept", onPressed: (){
-                                    setState(() {
-                                      isChecked=true;
-                                    });
-                                  }),
-                                )
-                              ],
-                        )
-                        );
+                                  actions: [
+                                    Center(
+                                      child: CustomButton(
+                                          label: "I Accept",
+                                          onPressed: () {
+                                            setState(() {
+                                              isChecked = true;
+                                              Navigator.pop(context);
+                                            });
+                                          }),
+                                    )
+                                  ],
+                                ));
                       },
                       child: Text("Agree to terms and conditions"))
                 ]),
@@ -299,7 +314,6 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 Center(
                   child: CustomButton(
-
                     onPressed: () async {
                       final String email = _email.text.trim();
                       final String password = _password.text.trim();
@@ -315,18 +329,19 @@ class _SignupPageState extends State<SignupPage> {
                         );
 
                         return;
-                      }
-                      else if(isChecked==false){
+                      } else if (isChecked == false) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please check to terms and conditions'),
+                            content:
+                                Text('Please check to terms and conditions'),
                             backgroundColor: Colors.red,
                           ),
                         );
 
                         return;
                       }
-                      await signUp(email, password, username, context);
+                      await signUp(
+                          email, password, username, widget.isUser, context);
                     },
                     label: 'SignUp',
                     width: width * 0.5,

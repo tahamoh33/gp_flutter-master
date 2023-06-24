@@ -9,8 +9,6 @@ import 'package:trial1/Screens/cache_manager.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
 
-import 'Screens/State Management/dark_theme.dart';
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,12 +20,9 @@ Future main() async {
     password = await CacheManager.getData('password');
   }
   runApp(
-    ChangeNotifierProvider<DarkThemeProvider>(
-      create: (_) => DarkThemeProvider(),
-      child: ChangeNotifierProvider<SelectedPageProvider>(
-        create: (_) => SelectedPageProvider(),
-        child: myApp(email: email, password: password),
-      ),
+    ChangeNotifierProvider<SelectedPageProvider>(
+      create: (_) => SelectedPageProvider(),
+      child: myApp(email: email, password: password),
     ),
   );
 }
@@ -45,9 +40,9 @@ class myApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
-          home:SplashScreen(email: email, password: password) ,
+          home: SplashScreen(email: email, password: password),
         );
-      },//SplashScreen(email: email, password: password)
+      }, //SplashScreen(email: email, password: password)
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Authentication/forgot_pw.dart';
-import 'package:trial1/Screens/Authentication/signup.dart';
+import 'package:trial1/Screens/NavigationScreens/welcome.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 
 import '../Constants/string_manager.dart';
@@ -322,10 +322,9 @@ class LoginState extends State<Login> {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AppLayout()),
+                                      builder: (context) => const AppLayout()),
                                   (route) => false);
                             }).catchError((e) {
-                              print(e);
                               // Handle sign-in error
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -369,10 +368,11 @@ class LoginState extends State<Login> {
                       GestureDetector(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => SignupPage())));
+                                    builder: (context) => WelcomeScreen()),
+                                (route) => false);
                           },
                           child: const Text(
                             'Sign Up',
