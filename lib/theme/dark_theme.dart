@@ -13,6 +13,7 @@ ThemeData darkTheme = ThemeData(
   dialogBackgroundColor: Colors.grey[900],
   appBarTheme: AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.light,
       statusBarColor: Colors.black,
       statusBarBrightness: Brightness.dark,
     ),

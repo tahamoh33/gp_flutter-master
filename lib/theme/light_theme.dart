@@ -14,7 +14,9 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.white, statusBarBrightness: Brightness.light),
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.light),
     elevation: 0,
     iconTheme: IconThemeData(
       color: Colors.black,
