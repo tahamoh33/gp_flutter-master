@@ -64,7 +64,9 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => SignupPage())));
+                              builder: ((context) => SignupPage(
+                                    isUSer: true,
+                                  ))));
                     },
                     label: 'User',
                   ),
@@ -78,7 +80,9 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => SignupPage())));
+                              builder: ((context) => SignupPage(
+                                    isUSer: false,
+                                  ))));
                     },
                     label: 'Doctor',
                   ),

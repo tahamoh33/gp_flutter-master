@@ -11,6 +11,10 @@ import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 import '../cache_manager.dart';
 
 class SignupPage extends StatefulWidget {
+  final bool isUSer;
+
+  const SignupPage({super.key, required this.isUSer});
+
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
@@ -76,7 +80,7 @@ class _SignupPageState extends State<SignupPage> {
     });
   }
 
-  Future signUp(String email, String password, String username,
+  Future signUp(String email, String password, String username, bool isUser,
       BuildContext context) async {
     try {
       showDialog(
@@ -92,7 +96,7 @@ class _SignupPageState extends State<SignupPage> {
           .then((value) async {
         //print(value);
         StringManager.uId = value.user!.uid;
-        await createUser(email, password, username);
+        await createUser(email, password, username, isUser);
         await CacheManager.saveData('email', email);
         await CacheManager.saveData('password', password);
         Navigator.pop(context);
@@ -112,20 +116,36 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  Future createUser(String email, String password, String username) async {
+  Future createUser(
+      String email, String password, String username, bool isUser) async {
     try {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(StringManager.uId)
-          .set(
-        {
-          'uid': StringManager.uId,
-          'email': email,
-          'password': password,
-          'username': username,
-          'profilePic': ''
-        },
-      );
+      if (!isUser)
+        await FirebaseFirestore.instance
+            .collection("doctors")
+            .doc(StringManager.uId)
+            .set(
+          {
+            'uid': StringManager.uId,
+            'email': email,
+            'password': password,
+            'username': username,
+            'profilePic': ''
+          },
+        );
+      else {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(StringManager.uId)
+            .set(
+          {
+            'uid': StringManager.uId,
+            'email': email,
+            'password': password,
+            'username': username,
+            'profilePic': ''
+          },
+        );
+      }
     } catch (e) {
       print(e);
     }
@@ -439,7 +459,8 @@ class _SignupPageState extends State<SignupPage> {
 
                         return;
                       }
-                      await signUp(email, password, username, context);
+                      await signUp(
+                          email, password, username, widget.isUSer, context);
                     },
                     label: 'SignUp',
                     width: width * 0.5,
