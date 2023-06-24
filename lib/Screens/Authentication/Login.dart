@@ -22,7 +22,7 @@ class LoginState extends State<Login> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool isPasswordVisible = true;
 
-  final _emailController = TextEditingController(text: 'atom1@gmail.com');
+  final _emailController = TextEditingController(text: 'doctortest2@gmail.com');
   final _passwordController = TextEditingController(text: '123456');
 
   @override
@@ -90,7 +90,7 @@ class LoginState extends State<Login> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
+      final role = await checkUserRole();
       await CacheManager.saveData('email', _emailController.text);
       await CacheManager.saveData('password', _passwordController.text);
 
@@ -106,6 +106,35 @@ class LoginState extends State<Login> {
         ),
       );
       Navigator.pop(context);
+    }
+  }
+
+  // a function that checks if the logged in user is a doctor or a patient from firestore collections
+  Future checkUserRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final uid = user.uid;
+
+      final patientQuery = FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: uid);
+
+      final doctorQuery = FirebaseFirestore.instance
+          .collection('doctors')
+          .where('uid', isEqualTo: uid);
+
+      final patientSnapshot = await patientQuery.get();
+      final doctorSnapshot = await doctorQuery.get();
+
+      if (patientSnapshot.docs.isNotEmpty) {
+        return 'Patient';
+      } else if (doctorSnapshot.docs.isNotEmpty) {
+        return 'Doctor';
+      } else {
+        return 'Unknown';
+      }
+    } else {
+      return 'User Not Logged In';
     }
   }
 

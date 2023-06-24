@@ -46,7 +46,7 @@ class AppLayoutState extends State<AppLayout> {
           ),
         ],
         currentIndex: selectedPageProvider.selectedIndex,
-        selectedItemColor: Color(0xff1a74d7),
+        selectedItemColor: const Color(0xff1a74d7),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           selectedPageProvider.selectedIndex = index;
