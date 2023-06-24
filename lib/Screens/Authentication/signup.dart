@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
@@ -10,7 +11,6 @@ import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 import '../cache_manager.dart';
 
 class SignupPage extends StatefulWidget {
-
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
@@ -18,11 +18,11 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   User? user = FirebaseAuth.instance.currentUser;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final _email =  TextEditingController();
-  final _password =  TextEditingController();
-  final _confirmPassword =  TextEditingController();
-  final _username =  TextEditingController();
-
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _confirmPassword = TextEditingController();
+  final _username = TextEditingController();
+  String data = '';
   //FirebaseAuth instance = FirebaseAuth.instance;
   bool isPasswordVisible = true;
   bool isConfirmPasswordVisible = true;
@@ -34,6 +34,20 @@ class _SignupPageState extends State<SignupPage> {
     _confirmPassword.dispose();
     _username.dispose();
     super.dispose();
+  }
+
+  fetchFileData() async {
+    String responseText;
+    responseText = await rootBundle.loadString("assets/TermsAndConditions.txt");
+    setState(() {
+      data = responseText;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchFileData();
+    super.initState();
   }
 
   Future<UserCredential> _signInWithGoogle() async {
@@ -266,55 +280,130 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   TextButton(
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => Dialog(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height:176,width: 176,
-                                            child: Image.asset("lib/images/Frame 2.png")),
-                                        SizedBox(height: 10,),
-                                        Text(
-                                            "Terms & Conditions" ,
+                        showModalBottomSheet<dynamic>(
+                          isScrollControlled: true,
+                          constraints: BoxConstraints(
+                            maxHeight: height * 0.8,
+                            minHeight: height * 0.2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(43),
+                              topRight: Radius.circular(43),
+                            ),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          height: 176,
+                                          width: 176,
+                                          child: Image.asset(
+                                              "lib/images/Frame 2.png")),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Terms & Conditions",
                                         style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold
-
-                                        ),
-                                        ),
-                                        SizedBox(height: 15,),
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(18.0),
                                           child: Text(
-                                              "By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."
+                                            data,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
                                           ),
-
-
-
                                         ),
-                                        SizedBox(height: 15,),
-                                        Center(
-                                          child: CustomButton(label: "I Accept", onPressed: (){
-                                            setState(() {
-                                              isChecked=true;
-                                            });
-                                          }),
-                                        )
-
-
-
-                                      ],
-                                    ),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Center(
+                                        child: CustomButton(
+                                            label: "I Accept",
+                                            onPressed: () {
+                                              setState(() {
+                                                isChecked = true;
+                                                Navigator.pop(context);
+                                              });
+                                            }),
+                                      ),
+                                    ],
                                   ),
-                                   //shh
-
-                        )
+                                ),
+                              ],
+                            );
+                          },
                         );
+
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (context) => Dialog(
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.all(15.0),
+                        //             child: Column(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.start,
+                        //               crossAxisAlignment:
+                        //                   CrossAxisAlignment.start,
+                        //               children: [
+                        //                 Container(
+                        //                     height: 176,
+                        //                     width: 176,
+                        //                     child: Image.asset(
+                        //                         "lib/images/Frame 2.png")),
+                        //                 SizedBox(
+                        //                   height: 10,
+                        //                 ),
+                        //                 Text(
+                        //                   "Terms & Conditions",
+                        //                   style: TextStyle(
+                        //                       fontSize: 18,
+                        //                       fontWeight: FontWeight.bold),
+                        //                 ),
+                        //                 SizedBox(
+                        //                   height: 15,
+                        //                 ),
+                        //                 SingleChildScrollView(
+                        //                   scrollDirection: Axis.vertical,
+                        //                   child: Text(
+                        //                       "By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."),
+                        //                 ),
+                        //                 SizedBox(
+                        //                   height: 15,
+                        //                 ),
+                        //                 Center(
+                        //                   child: CustomButton(
+                        //                       label: "I Accept",
+                        //                       onPressed: () {
+                        //                         setState(() {
+                        //                           isChecked = true;
+                        //                           Navigator.pop(context);
+                        //                         });
+                        //                       }),
+                        //                 )
+                        //               ],
+                        //             ),
+                        //           ),
+                        //           //shh
+                        //         ));
                       },
                       child: Text("Agree to terms and conditions"))
                 ]),
@@ -324,7 +413,6 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 Center(
                   child: CustomButton(
-
                     onPressed: () async {
                       final String email = _email.text.trim();
                       final String password = _password.text.trim();
@@ -340,11 +428,11 @@ class _SignupPageState extends State<SignupPage> {
                         );
 
                         return;
-                      }
-                      else if(isChecked==false){
+                      } else if (isChecked == false) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please check to terms and conditions'),
+                            content:
+                                Text('Please check to terms and conditions'),
                             backgroundColor: Colors.red,
                           ),
                         );
