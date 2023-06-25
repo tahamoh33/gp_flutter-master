@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:trial1/Screens/Doctor/DoctorEditProfile.dart';
 import 'package:trial1/Screens/NavigationScreens/Profile.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 
@@ -206,7 +207,7 @@ class _DoctorshowProfile extends State<DoctorshowProfile> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => profilescreen())))
+                          builder: ((context) => editDoctorProfile())))
                       .then((value) {
                     if (value == true) {
                       fetchUserName();
