@@ -73,7 +73,7 @@ class _profilescreenState extends State<profilescreen> {
           );
         });
     // compress image
-    XFile? compressedImage = await resizeImage(_image!, 500, 500);
+    XFile? compressedImage = (await resizeImage(_image!, 500, 500)) as XFile?;
     await uploadImageToFirebase(compressedImage! as File);
     Navigator.pop(context);
   }

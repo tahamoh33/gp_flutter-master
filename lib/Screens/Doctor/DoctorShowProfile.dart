@@ -13,7 +13,6 @@ import '../Authentication/Login.dart';
 import '../Constants/image_constant.dart';
 import '../cache_manager.dart';
 
-
 // ignore_for_file: must_be_immutable
 class DoctorshowProfile extends StatefulWidget {
   DoctorshowProfile({Key? key}) : super(key: key);
@@ -57,8 +56,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
         .child('profiles/ $filename')
         .putFile(image)
         .then((value) => (value.ref.getDownloadURL()).then((value) {
-      url = value;
-    }));
+              url = value;
+            }));
     return url;
   }
 
@@ -138,13 +137,13 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
       await userRef.update(updatedUserData);
 
       ScaffoldMessenger.of(context).showSnackBar(
-         const SnackBar(
-           content: Text('Profile updated!'),
-           backgroundColor: Colors.green,
-         ),
-       );
-     } catch (e) {
-    //  print('Error Updating due to ${e}!');
+        const SnackBar(
+          content: Text('Profile updated!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      //  print('Error Updating due to ${e}!');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error Updating due to ${e}!'),
@@ -200,31 +199,33 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
       //           borderRadius: BorderRadius.circular(10))),
       // ),
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 5.0),
-          child: TextButton(
-            onPressed:() async {
-            final String email = _email.text.trim();
-            final String password = _password.text.trim();
-            final String username = _username.text.trim();
-            await updateUser(instance.currentUser!.uid, email,
-                password, username, url).then((value) => setState(() {}));
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: TextButton(
+              onPressed: () async {
+                final String email = _email.text.trim();
+                final String password = _password.text.trim();
+                final String username = _username.text.trim();
+                await updateUser(instance.currentUser!.uid, email, password,
+                        username, url)
+                    .then((value) => setState(() {}));
 
-            //Navigator.pop(context, true);
-          },
-            child: Text("SAVE" ,style: TextStyle(
-          fontSize: 14,
-          color: Colors.blue,
-        ),
-      ),
+                //Navigator.pop(context, true);
+              },
+              child: Text(
+                "SAVE",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
           ),
-          ),
-
           centerTitle: true,
           title: Text(
             "Profile",
-            style:
-            TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(
+                fontSize: 25, color: Theme.of(context).colorScheme.secondary),
           )),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
@@ -253,7 +254,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         spreadRadius: 4)
                                   ],
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(73))),
+                                      BorderRadius.all(Radius.circular(73))),
                               child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -269,9 +270,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         )),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       children: [
                                         Padding(
                                             padding: EdgeInsets.only(
@@ -281,7 +282,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme.secondary,
+                                                      .colorScheme
+                                                      .secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -305,7 +307,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme.secondary,
+                                                      .colorScheme
+                                                      .secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -329,7 +332,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme.secondary,
+                                                      .colorScheme
+                                                      .secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -342,16 +346,15 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             suffix: Container(
                                               child: CustomImageView(
                                                   onTap: () {
-                                                    print("alo");
                                                     setState(() {
                                                       isObscureText =
-                                                      !isObscureText;
+                                                          !isObscureText;
                                                     });
                                                   },
                                                   svgPath: isObscureText
                                                       ? ImageConstant.eyeOpened
                                                       : ImageConstant
-                                                      .imgCheckmark,
+                                                          .imgCheckmark,
                                                   height: 20,
                                                   width: 20),
                                             ),
@@ -365,30 +368,28 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             fontStyle: TextFormFieldFontStyle
                                                 .MontserratRomanRegular14,
                                             textInputAction:
-                                            TextInputAction.done),
+                                                TextInputAction.done),
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: 2, top: 28, bottom: 86),
                                             child: Row(children: [
-
                                               Padding(
                                                   padding:
-                                                  EdgeInsets.only(top: 2),
+                                                      EdgeInsets.only(top: 2),
                                                   child: Text("Logout",
                                                       overflow:
-                                                      TextOverflow.ellipsis,
+                                                          TextOverflow.ellipsis,
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                         color: Theme.of(context)
-                                                            .colorScheme.secondary,
+                                                            .colorScheme
+                                                            .secondary,
                                                         fontFamily:
-                                                        'Montserrat',
+                                                            'Montserrat',
                                                         fontSize: 16,
                                                         fontWeight:
-                                                        FontWeight.w400,
-                                                      )
-                                                  )
-                                              ),
+                                                            FontWeight.w400,
+                                                      ))),
                                               CustomImageView(
                                                   onTap: () async {
                                                     print("Log out");
@@ -402,32 +403,26 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder:
-                                                            ((context) =>
-                                                                Login())));
+                                                                ((context) =>
+                                                                    Login())));
                                                     await instance.signOut();
                                                   },
                                                   svgPath: ImageConstant.imgCut,
                                                   height: (22),
                                                   width: (17),
                                                   margin:
-                                                  EdgeInsets.only(left: 10)
-                                              )
-
-                                            ]
-                                            )
-                                        )
+                                                      EdgeInsets.only(left: 10))
+                                            ]))
                                       ],
                                     ),
-                                  ])
-                          )
-                      ),
+                                  ]))),
                       Positioned(
                           top: 40,
                           child: SizedBox(
                               height: 87,
                               width: 83,
                               child:
-                              Stack(alignment: Alignment.center, children: [
+                                  Stack(alignment: Alignment.center, children: [
                                 Container(
                                     height: 87,
                                     width: 83,
@@ -450,7 +445,6 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         children: [
                                           CustomImageView(
                                               onTap: () {
-                                                print(url);
                                                 print("onTap called.");
                                               },
                                               url: url,
@@ -464,7 +458,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                   right: 2, bottom: 3),
                                               child: Stack(
                                                   alignment:
-                                                  Alignment.topCenter,
+                                                      Alignment.topCenter,
                                                   children: [
                                                     CustomImageView(
                                                         svgPath: ImageConstant
@@ -472,20 +466,19 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                         height: 17,
                                                         width: 17,
                                                         alignment:
-                                                        Alignment.center),
+                                                            Alignment.center),
                                                     CustomImageView(
                                                         svgPath: ImageConstant
                                                             .imgPen,
                                                         height: 8,
                                                         width: 8,
                                                         alignment:
-                                                        Alignment.topCenter,
+                                                            Alignment.topCenter,
                                                         margin: EdgeInsets.only(
                                                             top: 4))
                                                   ]))
                                         ]))
                               ]))),
-
                     ]))
               ])),
     );

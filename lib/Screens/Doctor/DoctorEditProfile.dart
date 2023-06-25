@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,10 +11,10 @@ import 'package:image_picker/image_picker.dart';
 class editDoctorProfile extends StatefulWidget {
   const editDoctorProfile({super.key});
 
-
   @override
   State<editDoctorProfile> createState() => _editDoctorProfileState();
 }
+
 var image;
 
 String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -58,8 +57,8 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
         .child('profiles/ $filename')
         .putFile(image)
         .then((value) => (value.ref.getDownloadURL()).then((value) {
-      url = value;
-    }));
+              url = value;
+            }));
     return url;
   }
 
@@ -170,18 +169,18 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
     // _dateController.dispose();
     super.dispose();
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       //resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(child: Text("Edit profile",
-          style: TextStyle(
-              fontSize: 25,
-              color: Colors.blue
-          ), )
-        ),
+        title: Center(
+            child: Text(
+          "Edit profile",
+          style: TextStyle(fontSize: 25, color: Colors.blue),
+        )),
         automaticallyImplyLeading: false,
       ),
       body: Form(
@@ -196,31 +195,31 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                   children: [
                     _image != null
                         ? Image.file(
-                      _image!,
-                      height: 130,
-                      width: 130,
-                      fit: BoxFit.cover,
-                    )
+                            _image!,
+                            height: 130,
+                            width: 130,
+                            fit: BoxFit.cover,
+                          )
                         : Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          border:
-                          Border.all(width: 4, color: Colors.white),
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Theme.of(context).shadowColor,
-                            ),
-                          ],
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage((url != "")
-                                  ? url
-                                  : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"))),
-                    ),
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 4, color: Colors.white),
+                                boxShadow: [
+                                  BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Theme.of(context).shadowColor,
+                                  ),
+                                ],
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage((url != "")
+                                        ? url
+                                        : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"))),
+                          ),
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -284,15 +283,15 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                 decoration: InputDecoration(
                   suffixIcon: ispasswordField
                       ? IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isObsecurepass = !isObsecurepass;
-                        });
-                      },
-                      icon: Icon(
-                        Icons.remove_red_eye,
-                        color: Colors.grey,
-                      ))
+                          onPressed: () {
+                            setState(() {
+                              isObsecurepass = !isObsecurepass;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.grey,
+                          ))
                       : null,
                   filled: true,
                   fillColor: Theme.of(context).dialogBackgroundColor,

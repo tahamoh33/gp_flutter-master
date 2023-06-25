@@ -177,27 +177,30 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
           leading: Padding(
             padding: const EdgeInsets.only(left: 5.0),
             child: TextButton(
-              onPressed:() async {
+              onPressed: () async {
                 final String email = _email.text.trim();
                 final String password = _password.text.trim();
                 final String username = _username.text.trim();
-                await updateUser(instance.currentUser!.uid, email,
-                    password, username, url).then((value) => setState(() {}));
+                await updateUser(instance.currentUser!.uid, email, password,
+                        username, url)
+                    .then((value) => setState(() {}));
 
                 //Navigator.pop(context, true);
               },
-              child: Text("SAVE" ,style: TextStyle(
-                fontSize: 14,
-                color: Colors.blue,
-              ),
+              child: Text(
+                "SAVE",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
               ),
             ),
           ),
           centerTitle: true,
           title: Text(
             "Profile",
-            style:
-                TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(
+                fontSize: 25, color: Theme.of(context).colorScheme.secondary),
           )),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
@@ -254,7 +257,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme.secondary,
+                                                      .colorScheme
+                                                      .secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -278,7 +282,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme.secondary,
+                                                      .colorScheme
+                                                      .secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -302,7 +307,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme.secondary,
+                                                      .colorScheme
+                                                      .secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -352,7 +358,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                         color: Theme.of(context)
-                                                            .colorScheme.secondary,
+                                                            .colorScheme
+                                                            .secondary,
                                                         fontFamily:
                                                             'Montserrat',
                                                         fontSize: 16,
@@ -379,10 +386,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                   svgPath: ImageConstant.imgCut,
                                                   height: (22),
                                                   width: (17),
-                                                  margin:
-                                                      EdgeInsets.only(left: 10)
-                                              ),
-
+                                                  margin: EdgeInsets.only(
+                                                      left: 10)),
                                             ]))
                                       ],
                                     ),
@@ -448,15 +453,9 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                             Alignment.topCenter,
                                                         margin: EdgeInsets.only(
                                                             top: 4))
-                                                  ])
-                                          )
-                                        ]
-                                    )
-                                )
-                              ]
-                                  )
-                          )
-                      ),
+                                                  ]))
+                                        ]))
+                              ]))),
                     ]))
               ])),
     );

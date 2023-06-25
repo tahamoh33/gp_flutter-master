@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
+import 'package:trial1/CustomWidgets/custom_image_view.dart';
 
 class doctor extends StatefulWidget {
   const doctor({super.key});
@@ -9,6 +10,7 @@ class doctor extends StatefulWidget {
   @override
   State<doctor> createState() => _doctorState();
 }
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _doctorState extends State<doctor> {
@@ -56,7 +58,6 @@ class _doctorState extends State<doctor> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,25 +65,23 @@ class _doctorState extends State<doctor> {
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, bottom: 30, right: 30),
         child: SingleChildScrollView(
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipOval(
-                child: Image.network(
-                  (imageUrl != "")
-                      ? imageUrl
-                      : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
-                  height: 82,
-                  width: 82,
-                ),
+              CustomImageView(
+                url: (imageUrl != "")
+                    ? imageUrl
+                    : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
+                height: 82,
+                width: 82,
               ),
+
               SizedBox(
                 height: 20,
               ),
               Text(
-                  "Hello, $username",
+                "Hello, $username",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -192,5 +191,3 @@ class _doctorState extends State<doctor> {
     );
   }
 }
-
-
