@@ -33,7 +33,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
   final _username = TextEditingController();
   FirebaseAuth instance = FirebaseAuth.instance;
 
-  Future<File?> resizeImage(File imageFile, int width, int height) async {
+  Future<XFile?> resizeImage(File imageFile, int width, int height) async {
     // Generate a unique file path for the compressed image
     String newPath =
         '${imageFile.path}_compressed.${imageFile.path.split('.').last.toLowerCase()}';
@@ -76,7 +76,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
           );
         });
     // compress image
-    File? compressedImage = await resizeImage(_image!, 500, 500);
+    File? compressedImage = (await resizeImage(_image!, 500, 500)) as File?;
     await uploadImageToFirebase(compressedImage!);
     Navigator.pop(context);
   }
@@ -174,11 +174,30 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: TextButton(
+              onPressed:() async {
+                final String email = _email.text.trim();
+                final String password = _password.text.trim();
+                final String username = _username.text.trim();
+                await updateUser(instance.currentUser!.uid, email,
+                    password, username, url).then((value) => setState(() {}));
+
+                //Navigator.pop(context, true);
+              },
+              child: Text("SAVE" ,style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+              ),
+              ),
+            ),
+          ),
           centerTitle: true,
           title: Text(
             "Profile",
             style:
-                TextStyle(fontSize: 25, color: Theme.of(context).accentColor),
+                TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.secondary),
           )),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
@@ -235,7 +254,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .accentColor,
+                                                      .colorScheme.secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -259,7 +278,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .accentColor,
+                                                      .colorScheme.secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -283,7 +302,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .accentColor,
+                                                      .colorScheme.secondary,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -333,7 +352,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                         color: Theme.of(context)
-                                                            .accentColor,
+                                                            .colorScheme.secondary,
                                                         fontFamily:
                                                             'Montserrat',
                                                         fontSize: 16,
@@ -361,7 +380,9 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                   height: (22),
                                                   width: (17),
                                                   margin:
-                                                      EdgeInsets.only(left: 10))
+                                                      EdgeInsets.only(left: 10)
+                                              ),
+
                                             ]))
                                       ],
                                     ),
@@ -427,9 +448,15 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                             Alignment.topCenter,
                                                         margin: EdgeInsets.only(
                                                             top: 4))
-                                                  ]))
-                                        ]))
-                              ]))),
+                                                  ])
+                                          )
+                                        ]
+                                    )
+                                )
+                              ]
+                                  )
+                          )
+                      ),
                     ]))
               ])),
     );

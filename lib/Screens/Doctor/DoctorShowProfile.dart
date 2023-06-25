@@ -1,269 +1,493 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:trial1/Screens/Doctor/DoctorEditProfile.dart';
-import 'package:trial1/Screens/NavigationScreens/Profile.dart';
-import 'package:trial1/Screens/cache_manager.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../CustomWidgets/custom_image_view.dart';
+import '../../CustomWidgets/custom_text_form_field.dart';
 import '../Authentication/Login.dart';
+import '../Constants/image_constant.dart';
+import '../cache_manager.dart';
 
+
+// ignore_for_file: must_be_immutable
 class DoctorshowProfile extends StatefulWidget {
-  const DoctorshowProfile({super.key});
+  DoctorshowProfile({Key? key}) : super(key: key);
 
   @override
-  State<DoctorshowProfile> createState() => _DoctorshowProfile();
+  State<DoctorshowProfile> createState() => _DoctorshowProfileState();
 }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+class _DoctorshowProfileState extends State<DoctorshowProfile> {
+  String url = "";
+  var image;
+  bool isObscureText = true;
+  String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+  File? _image;
+  final picker = ImagePicker();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _username = TextEditingController();
+  FirebaseAuth instance = FirebaseAuth.instance;
 
-class _DoctorshowProfile extends State<DoctorshowProfile> {
-  String userId = "";
-  String email = "";
-  String userName = "";
-  String imageUrl = "";
+  Future<XFile?> resizeImage(File imageFile, int width, int height) async {
+    // Generate a unique file path for the compressed image
+    String newPath =
+        '${imageFile.path}_compressed.${imageFile.path.split('.').last.toLowerCase()}';
+    var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
+      imageFile.path,
+      newPath,
+      quality: 80, // Set the desired image quality (0 - 100)
+      minWidth: width,
+      minHeight: height,
+    );
 
-  Future<String> getUserPic() async {
-    final String userId = _auth.currentUser!.uid;
-    try {
-      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
-          .collection("doctors")
-          .doc(userId)
-          .get();
-      imageUrl = snapshot['profilePic'];
-      return imageUrl;
-    } catch (e) {
-      return '';
-    }
+    return compressedImageFile;
   }
 
-  Future<String> fetchUserName() async {
-    final String? userId = _auth.currentUser?.uid;
+  Future<String> uploadImageToFirebase(File image) async {
+    //Upload image to firebase
+    String filename = "${instance.currentUser!.email}.jpg";
+    await FirebaseStorage.instance
+        .ref()
+        .child('profiles/ $filename')
+        .putFile(image)
+        .then((value) => (value.ref.getDownloadURL()).then((value) {
+      url = value;
+    }));
+    return url;
+  }
+
+  pickImageFromGallery() async {
+    image = await picker.getImage(source: ImageSource.gallery);
+    if (image == null) return null;
+    setState(() {
+      _image = File(image.path);
+    });
+    // loading circle
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+    // compress image
+    File? compressedImage = (await resizeImage(_image!, 500, 500)) as File?;
+    await uploadImageToFirebase(compressedImage!);
+    Navigator.pop(context);
+  }
+
+  Future getUserData() async {
     try {
-      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+      final userDoc = await FirebaseFirestore.instance
           .collection('doctors')
-          .doc(userId)
+          .doc(instance.currentUser!.uid)
           .get();
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-      userName = snapshot.get('username');
 
-      return userName;
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          _email.text = userData['email'];
+          try {
+            _password.text = userData['password'];
+          } catch (e) {
+            _password.text = "";
+          }
+          _username.text = userData['username'];
+          try {
+            url = userData['profilePic'];
+          } catch (e) {
+            url = "";
+          }
+        });
+      }
     } catch (e) {
-      print('Error fetching user name: $e');
-      return '';
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error Getting User Data due to ${e}!'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
-  Future<String> fetchemail() async {
-    final String? userId = _auth.currentUser?.uid;
+  Future updateUser(String uid, String email, String password, String username,
+      String url) async {
     try {
-      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
-          .collection('doctors')
-          .doc(userId)
-          .get();
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-      email = snapshot.get('email');
+      final userRef = FirebaseFirestore.instance.collection('doctors').doc(uid);
+      User? user = FirebaseAuth.instance.currentUser;
+      // Create a map with the updated user data
+      //print('url2: $url ');
+      final updatedUserData = {
+        'email': email,
+        'password': password,
+        'username': username,
+        'profilePic': url,
+      };
 
-      return email;
-    } catch (e) {
-      print('Error fetching user email: $e');
-      return '';
+      if (user != null) {
+        await user.updateEmail(email);
+      }
+      // Update the document with the new user data
+      await userRef.update(updatedUserData);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(
+           content: Text('Profile updated!'),
+           backgroundColor: Colors.green,
+         ),
+       );
+     } catch (e) {
+    //  print('Error Updating due to ${e}!');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error Updating due to ${e}!'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
+  @override
   void initState() {
-    getUserPic().then((value) => setState(() {}));
     super.initState();
-    fetchUserName();
-    fetchemail();
+    getUserData();
+  }
+
+  @override
+  void dispose() {
+    _username.dispose();
+    _email.dispose();
+    _password.dispose();
+    url = "";
+    // _dateController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // SizedBox(height: 20),
+      // ElevatedButton(
+      //   onPressed: () async {
+      //     final String email = _email.text.trim();
+      //     final String password = _password.text.trim();
+      //     final String username = _username.text.trim();
+      //     await updateUser(instance.currentUser!.uid, email,
+      //         password, username, url);
+      //     Navigator.pop(context, true);
+      //   },
+      //
+      //   child: Text(
+      //     'SAVE',
+      //     style: TextStyle(
+      //       fontSize: 15,
+      //       letterSpacing: 2,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      //   style: ElevatedButton.styleFrom(
+      //       padding: EdgeInsets.symmetric(horizontal: 50),
+      //       shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(10))),
+      // ),
       appBar: AppBar(
-        title: Center(
-            child: Text(
-              "Profile",
-              style: TextStyle(fontSize: 25, color: Colors.blue),
-            )),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 30,
-              width: 40,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Image.network(
-                (imageUrl != "")
-                    ? imageUrl
-                    : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
-                height: 250,
-                width: 250,
-              ),
-            ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // Container(
-            //     decoration: BoxDecoration(shape: BoxShape.circle),
-            //     height: 30,
-            //     width: 250,
-            //     child: FittedBox(
-            //       fit: BoxFit.contain,
-            //       child: FutureBuilder<String>(
-            //         future: fetchUserName(),
-            //         builder: (BuildContext context,
-            //             AsyncSnapshot<String> snapshot) {
-            //           // if (snapshot.connectionState == ConnectionState.waiting) {
-            //           //   return CircularProgressIndicator();
-            //           // } else
-            //           if (snapshot.hasError) {
-            //             return Text('Error: ${snapshot.error}');
-            //           } else {
-            //             return Text(
-            //               email,
-            //               maxLines: 1,
-            //               style: TextStyle(
-            //                 fontFamily: "montserrat",
-            //                 fontSize: 20,
-            //                 fontWeight: FontWeight.w500,
-            //               ),
-            //             );
-            //           }
-            //         },
-            //       ),
-            //     )),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-                height: 30,
-                width: 250,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: FutureBuilder<String>(
-                    future: fetchUserName(),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      // if (snapshot.connectionState == ConnectionState.waiting) {
-                      //   return CircularProgressIndicator();
-                      // } else
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return Text(
-                          userName,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontFamily: "montserrat",
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                )),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-                height: 30,
-                width: 250,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: FutureBuilder<String>(
-                    future: fetchemail(),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return Text(
-                          email,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontFamily: "montserrat",
-                            fontSize: 20,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                )),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => editDoctorProfile())))
-                      .then((value) {
-                    if (value == true) {
-                      fetchUserName();
-                      getUserPic();
-                    }
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).hintColor,
-                  side: BorderSide.none,
-                  shape: const StadiumBorder(),
-                ),
-                child: const Text(
-                  " Edit profile",
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            const Divider(),
-            const SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              onTap: () async {
-                await CacheManager.removeData('email');
-                await CacheManager.removeData('password');
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: ((context) => Login())));
-                await _auth.signOut();
-              },
-              leading: Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Theme.of(context).hintColor),
-                child: Icon(
-                  Icons.logout_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              title: Text(
-                "Log out",
-                style: TextStyle(
-                    fontFamily: "montserrat",
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColorDark),
-              ),
-            )
-          ],
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 5.0),
+          child: TextButton(
+            onPressed:() async {
+            final String email = _email.text.trim();
+            final String password = _password.text.trim();
+            final String username = _username.text.trim();
+            await updateUser(instance.currentUser!.uid, email,
+                password, username, url).then((value) => setState(() {}));
+
+            //Navigator.pop(context, true);
+          },
+            child: Text("SAVE" ,style: TextStyle(
+          fontSize: 14,
+          color: Colors.blue,
         ),
       ),
+          ),
+          ),
+
+          centerTitle: true,
+          title: Text(
+            "Profile",
+            style:
+            TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.secondary),
+          )),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+          padding: EdgeInsets.only(top: height * 0.05),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                    height: height,
+                    //margin: EdgeInsets.only(top: 41),
+                    child: Stack(alignment: Alignment.topCenter, children: [
+                      Positioned(
+                          top: height * 0.1,
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 52, vertical: 77),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: const Color(0x1f939393),
+                                        blurRadius: 0,
+                                        offset: Offset(0, 0),
+                                        spreadRadius: 4)
+                                  ],
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(73))),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(_username.text,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 1, top: 78),
+                                            child: Text("Email",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme.secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _email,
+                                            hintText: "Taha Mohamed",
+                                            margin: EdgeInsets.only(
+                                                left: 1, top: 11),
+                                            width: width * 0.8,
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 1, top: 23),
+                                            child: Text("UserName",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme.secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _username,
+                                            hintText: "Taha Mohamed",
+                                            width: width * 0.8,
+                                            margin: EdgeInsets.only(
+                                                left: 1, top: 11),
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 2, top: 23),
+                                            child: Text("Password",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme.secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _password,
+                                            width: width * 0.8,
+                                            hintText: "************",
+                                            suffix: Container(
+                                              child: CustomImageView(
+                                                  onTap: () {
+                                                    print("alo");
+                                                    setState(() {
+                                                      isObscureText =
+                                                      !isObscureText;
+                                                    });
+                                                  },
+                                                  svgPath: isObscureText
+                                                      ? ImageConstant.eyeOpened
+                                                      : ImageConstant
+                                                      .imgCheckmark,
+                                                  height: 20,
+                                                  width: 20),
+                                            ),
+                                            suffixConstraints: BoxConstraints(
+                                                maxHeight: 20, maxWidth: 20),
+                                            isObscureText: isObscureText,
+                                            margin: EdgeInsets.only(
+                                                left: 1, top: 9),
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14,
+                                            textInputAction:
+                                            TextInputAction.done),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 2, top: 28, bottom: 86),
+                                            child: Row(children: [
+
+                                              Padding(
+                                                  padding:
+                                                  EdgeInsets.only(top: 2),
+                                                  child: Text("Logout",
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme.secondary,
+                                                        fontFamily:
+                                                        'Montserrat',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight.w400,
+                                                      )
+                                                  )
+                                              ),
+                                              CustomImageView(
+                                                  onTap: () async {
+                                                    print("Log out");
+                                                    await CacheManager
+                                                        .removeData('email');
+                                                    await CacheManager
+                                                        .removeData('password');
+                                                    await CacheManager
+                                                        .removeData('role');
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                            ((context) =>
+                                                                Login())));
+                                                    await instance.signOut();
+                                                  },
+                                                  svgPath: ImageConstant.imgCut,
+                                                  height: (22),
+                                                  width: (17),
+                                                  margin:
+                                                  EdgeInsets.only(left: 10)
+                                              )
+
+                                            ]
+                                            )
+                                        )
+                                      ],
+                                    ),
+                                  ])
+                          )
+                      ),
+                      Positioned(
+                          top: 40,
+                          child: SizedBox(
+                              height: 87,
+                              width: 83,
+                              child:
+                              Stack(alignment: Alignment.center, children: [
+                                Container(
+                                    height: 87,
+                                    width: 83,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(43),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.25),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0, 4))
+                                        ])),
+                                SizedBox(
+                                    height: 80,
+                                    width: 77,
+                                    child: Stack(
+                                        alignment: Alignment.bottomRight,
+                                        children: [
+                                          CustomImageView(
+                                              onTap: () {
+                                                print(url);
+                                                print("onTap called.");
+                                              },
+                                              url: url,
+                                              height: 80,
+                                              width: 77,
+                                              alignment: Alignment.center),
+                                          Container(
+                                              height: 17,
+                                              width: 17,
+                                              margin: EdgeInsets.only(
+                                                  right: 2, bottom: 3),
+                                              child: Stack(
+                                                  alignment:
+                                                  Alignment.topCenter,
+                                                  children: [
+                                                    CustomImageView(
+                                                        svgPath: ImageConstant
+                                                            .imgIconcheckcircled,
+                                                        height: 17,
+                                                        width: 17,
+                                                        alignment:
+                                                        Alignment.center),
+                                                    CustomImageView(
+                                                        svgPath: ImageConstant
+                                                            .imgPen,
+                                                        height: 8,
+                                                        width: 8,
+                                                        alignment:
+                                                        Alignment.topCenter,
+                                                        margin: EdgeInsets.only(
+                                                            top: 4))
+                                                  ]))
+                                        ]))
+                              ]))),
+
+                    ]))
+              ])),
     );
   }
 }

@@ -30,7 +30,7 @@ class _profilescreenState extends State<profilescreen> {
   bool isObsecurepass = true;
   bool ispasswordField = true;
 
-  Future<File?> resizeImage(File imageFile, int width, int height) async {
+  Future<XFile?> resizeImage(File imageFile, int width, int height) async {
     // Generate a unique file path for the compressed image
     String newPath = '${imageFile.path}_compressed.' +
         imageFile.path.split('.').last.toLowerCase();
@@ -73,8 +73,8 @@ class _profilescreenState extends State<profilescreen> {
           );
         });
     // compress image
-    File? compressedImage = await resizeImage(_image!, 500, 500);
-    await uploadImageToFirebase(compressedImage!);
+    XFile? compressedImage = await resizeImage(_image!, 500, 500);
+    await uploadImageToFirebase(compressedImage! as File);
     Navigator.pop(context);
   }
 

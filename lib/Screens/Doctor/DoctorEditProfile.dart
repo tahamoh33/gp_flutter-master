@@ -35,7 +35,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
   bool isObsecurepass = true;
   bool ispasswordField = true;
 
-  Future<File?> resizeImage(File imageFile, int width, int height) async {
+  Future<XFile?> resizeImage(File imageFile, int width, int height) async {
     // Generate a unique file path for the compressed image
     String newPath = '${imageFile.path}_compressed.' +
         imageFile.path.split('.').last.toLowerCase();
@@ -78,7 +78,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
           );
         });
     // compress image
-    File? compressedImage = await resizeImage(_image!, 500, 500);
+    File? compressedImage = (await resizeImage(_image!, 500, 500)) as File?;
     await uploadImageToFirebase(compressedImage!);
     Navigator.pop(context);
   }
