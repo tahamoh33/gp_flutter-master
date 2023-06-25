@@ -347,6 +347,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                         .removeData('email');
                                                     await CacheManager
                                                         .removeData('password');
+                                                    await CacheManager
+                                                        .removeData('role');
                                                     Navigator.pushReplacement(
                                                         context,
                                                         MaterialPageRoute(
