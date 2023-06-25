@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:trial1/Screens/NavigationScreens/DetectionScreen.dart';
 import 'package:trial1/Screens/NavigationScreens/History.dart';
 import 'package:trial1/Screens/NavigationScreens/Home.dart';
-import 'package:trial1/Screens/NavigationScreens/show_profile.dart';
+import 'package:trial1/newProfile.dart';
 
 import '../State Management/selected_page_provider.dart';
 
@@ -15,7 +15,7 @@ class AppLayout extends StatefulWidget {
 }
 
 class AppLayoutState extends State<AppLayout> {
-  List Screens = [HomeScreen(), History(), DetectionScreen(), showProfile()];
+  List Screens = [HomeScreen(), History(), DetectionScreen(), ProfileScreen2()];
 
   @override
   void initState() {

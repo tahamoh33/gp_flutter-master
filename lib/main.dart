@@ -2,11 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:trial1/Screens/SplashScreen.dart';
 import 'package:trial1/Screens/State%20Management/selected_page_provider.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
+
+import 'Screens/SplashScreen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,7 @@ class myApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           home: SplashScreen(email: email, password: password, role: role),
+          //home: ProfileScreen2(),
         );
       }, //SplashScreen(email: email, password: password)
     );

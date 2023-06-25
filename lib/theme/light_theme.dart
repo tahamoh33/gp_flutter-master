@@ -7,15 +7,15 @@ ThemeData lightTheme = ThemeData(
   primaryColorDark: Colors.black,
   hoverColor: Color(0xff1876d0),
   hintColor: Color(0xff1876d0),
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: Color(0xfff5fcfd),
   secondaryHeaderColor: Colors.black54,
   dialogBackgroundColor: Colors.grey[300],
   shadowColor: Colors.black.withOpacity(0.2),
   appBarTheme: AppBarTheme(
-    backgroundColor: Colors.white,
+    color: Colors.transparent,
     systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white,
+        statusBarColor: Color(0xfff5fcfd),
         statusBarBrightness: Brightness.light),
     elevation: 0,
     iconTheme: IconThemeData(

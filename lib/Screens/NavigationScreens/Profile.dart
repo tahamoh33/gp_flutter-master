@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../CustomWidgets/customFile.dart';
-
 class profilescreen extends StatefulWidget {
   const profilescreen({super.key});
 
@@ -16,15 +14,13 @@ class profilescreen extends StatefulWidget {
   State<profilescreen> createState() => _profilescreenState();
 }
 
-var image;
-
-String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-File? _image;
-final picker = ImagePicker();
-
 class _profilescreenState extends State<profilescreen> {
   String url = "";
+  var image;
 
+  String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+  File? _image;
+  final picker = ImagePicker();
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _username = TextEditingController();
@@ -177,12 +173,11 @@ class _profilescreenState extends State<profilescreen> {
       //resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(child: Text("Edit profile",
-          style: TextStyle(
-              fontSize: 25,
-              color: Colors.blue
-          ), )
-        ),
+        title: Center(
+            child: Text(
+          "Edit profile",
+          style: TextStyle(fontSize: 25, color: Colors.blue),
+        )),
         automaticallyImplyLeading: false,
       ),
       body: Form(
