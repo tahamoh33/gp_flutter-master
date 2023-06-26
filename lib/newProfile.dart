@@ -321,7 +321,6 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                             suffix: Container(
                                               child: CustomImageView(
                                                   onTap: () {
-                                                    print("alo");
                                                     setState(() {
                                                       isObscureText =
                                                           !isObscureText;

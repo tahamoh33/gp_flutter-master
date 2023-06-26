@@ -4,11 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
+import 'package:trial1/CustomWidgets/custom_image_view.dart';
+import 'package:trial1/CustomWidgets/custom_text_form_field.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Authentication/forgot_pw.dart';
 import 'package:trial1/Screens/NavigationScreens/welcome.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 
+import '../Constants/image_constant.dart';
 import '../Constants/string_manager.dart';
 import '../Doctor/doctor_app_layout.dart';
 import '../NavigationScreens/AppLayout.dart';
@@ -162,14 +165,14 @@ class LoginState extends State<Login> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       //resizeToAvoidBottomPadding: false,
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(30),
           children: [
             SizedBox(height: height * 0.03),
-            Container(
+            SizedBox(
               width: width * 0.5,
               height: height * 0.05,
               //margin: EdgeInsets.only(left: width * 0.1),
@@ -195,7 +198,7 @@ class LoginState extends State<Login> {
             // SizedBox(
             //   height: height * 0.02,
             // ),
-            Container(
+            SizedBox(
               //margin: EdgeInsets.only(left: width * 0.1, top: height * 0.02),
               width: width * 0.3,
               height: height * 0.05,
@@ -211,51 +214,61 @@ class LoginState extends State<Login> {
             SizedBox(
               height: height * 0.03,
             ),
-            TextField(
+            CustomTextFormField(
+              padding: TextFormFieldPadding.PaddingT12,
               controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Theme.of(context).dialogBackgroundColor,
-                hintText: 'Email Address',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
+              hintText: 'Email Address',
+              alignment: Alignment.center,
+              prefix: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                child: CustomImageView(
+                  svgPath: ImageConstant.imgUser,
+                  width: 20,
+                  height: 20,
                 ),
-                prefixIcon: Icon(Icons.person_outline_sharp),
               ),
+              prefixConstraints: BoxConstraints(maxHeight: 20),
+              fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16,
             ),
 
             SizedBox(
               height: height * 0.02,
             ),
-            TextField(
+            CustomTextFormField(
               controller: _passwordController,
-              keyboardType: TextInputType.visiblePassword,
-              obscureText: isPasswordVisible,
-              decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Theme.of(context).dialogBackgroundColor,
-                  hintText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  prefixIcon: Icon(Icons.lock_outlined),
-                  suffixIcon: IconButton(
-                    icon: isPasswordVisible
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
-                    onPressed: () {
+              hintText: "Password",
+              textInputAction: TextInputAction.done,
+              textInputType: TextInputType.visiblePassword,
+              alignment: Alignment.center,
+              prefix: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                child: CustomImageView(
+                  svgPath: ImageConstant.imgIconTwotoneLock,
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+              prefixConstraints: BoxConstraints(maxHeight: 22),
+              suffix: Container(
+                margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
+                child: CustomImageView(
+                    onTap: () {
                       setState(() {
                         isPasswordVisible = !isPasswordVisible;
                       });
                     },
-                  )),
+                    svgPath: isPasswordVisible
+                        ? ImageConstant.imgCheckmark
+                        : ImageConstant.eyeOpened,
+                    height: 20,
+                    width: 20),
+              ),
+              suffixConstraints: BoxConstraints(maxHeight: 44),
+              isObscureText: isPasswordVisible,
+              fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16,
             ),
-
             SizedBox(
-              height: height * 0.01,
+              height: height * 0.001,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -306,7 +319,7 @@ class LoginState extends State<Login> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: width * 0.5,
                       height: height * 0.01,
                       child: Divider(
@@ -328,7 +341,7 @@ class LoginState extends State<Login> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: width * 0.5,
                       height: height * 0.01,
                       child: Divider(
@@ -380,7 +393,7 @@ class LoginState extends State<Login> {
                               );
                             });
                           },
-                          child: SquareTile(
+                          child: const SquareTile(
                               imagePath:
                                   'lib/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png'))),
                 ],
