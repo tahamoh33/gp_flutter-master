@@ -8,6 +8,9 @@ import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Constants/string_manager.dart';
 import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 
+import '../../CustomWidgets/custom_image_view.dart';
+import '../../CustomWidgets/custom_text_form_field.dart';
+import '../Constants/image_constant.dart';
 import '../cache_manager.dart';
 
 class SignupPage extends StatefulWidget {
@@ -199,111 +202,154 @@ class _SignupPageState extends State<SignupPage> {
 
                 Column(
                   children: [
-                    TextField(
+                    CustomTextFormField(
+                      padding: TextFormFieldPadding.PaddingT12,
                       controller: _email,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Theme.of(context).dialogBackgroundColor,
-                        hintText: 'Email Address',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none),
-                        prefixIcon: const Icon(Icons.email_rounded),
+                      hintText: 'Email Address',
+                      alignment: Alignment.center,
+                      prefix: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgClock,
+                          width: 20,
+                          height: 20,
+                        ),
                       ),
+                      prefixConstraints: BoxConstraints(maxHeight: 20),
+                      fontStyle:
+                          TextFormFieldFontStyle.MontserratRomanRegular16Dark,
                     ),
                     SizedBox(height: height * 0.015),
-                    TextField(
+                    CustomTextFormField(
+                      padding: TextFormFieldPadding.PaddingT12,
                       controller: _username,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Theme.of(context).dialogBackgroundColor,
-                        hintText: 'Username',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
+                      hintText: 'UserName',
+                      alignment: Alignment.center,
+                      prefix: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgClock,
+                          width: 20,
+                          height: 20,
                         ),
-                        prefixIcon: const Icon(Icons.person_2_outlined),
                       ),
+                      prefixConstraints: BoxConstraints(maxHeight: 20),
+                      fontStyle:
+                          TextFormFieldFontStyle.MontserratRomanRegular16Dark,
                     ),
                     SizedBox(height: height * 0.015),
-                    TextField(
+                    CustomTextFormField(
                       controller: _password,
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: isPasswordVisible,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Theme.of(context).dialogBackgroundColor,
-                        hintText: 'Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: const Icon(Icons.lock_outlined),
-                        suffixIcon: IconButton(
-                          icon: isPasswordVisible
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
+                      hintText: "Password",
+                      //textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.visiblePassword,
+                      alignment: Alignment.center,
+                      prefix: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgIconTwotoneLock,
+                          width: 20,
+                          height: 20,
                         ),
                       ),
+                      prefixConstraints: BoxConstraints(maxHeight: 20),
+                      suffix: Container(
+                        margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
+                        child: CustomImageView(
+                            onTap: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                            svgPath: isPasswordVisible
+                                ? ImageConstant.imgCheckmark
+                                : ImageConstant.eyeOpened,
+                            height: 20,
+                            width: 20),
+                      ),
+                      suffixConstraints: BoxConstraints(maxHeight: 44),
+                      isObscureText: isPasswordVisible,
+                      fontStyle:
+                          TextFormFieldFontStyle.MontserratRomanRegular16Dark,
                     ),
                     SizedBox(
                       height: height * 0.015,
                     ),
-                    TextField(
+                    CustomTextFormField(
                       controller: _confirmPassword,
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: isConfirmPasswordVisible,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Theme.of(context).dialogBackgroundColor,
-                        hintText: 'Confirm password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: Icon(Icons.lock_outlined),
-                        suffixIcon: IconButton(
-                          icon: isConfirmPasswordVisible
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              isConfirmPasswordVisible =
-                                  !isConfirmPasswordVisible;
-                            });
-                          },
+                      hintText: "Confirm Password",
+                      textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.visiblePassword,
+                      alignment: Alignment.center,
+                      prefix: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        child: CustomImageView(
+                          svgPath: ImageConstant.imgLock,
+                          width: 20,
+                          height: 20,
                         ),
                       ),
+                      prefixConstraints: BoxConstraints(maxHeight: 20),
+                      suffix: Container(
+                        margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
+                        child: CustomImageView(
+                            onTap: () {
+                              setState(() {
+                                isConfirmPasswordVisible =
+                                    !isConfirmPasswordVisible;
+                              });
+                            },
+                            svgPath: isConfirmPasswordVisible
+                                ? ImageConstant.imgCheckmark
+                                : ImageConstant.eyeOpened,
+                            height: 20,
+                            width: 20),
+                      ),
+                      suffixConstraints: BoxConstraints(maxHeight: 44),
+                      isObscureText: isConfirmPasswordVisible,
+                      fontStyle:
+                          TextFormFieldFontStyle.MontserratRomanRegular16Dark,
                     ),
                     SizedBox(height: height * 0.015),
                   ],
                 ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
+
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Checkbox(
-                    value: isChecked,
-                    activeColor: Colors.blue,
-                    onChanged: (newBool) {
+                  CustomImageView(
+                    svgPath: (isChecked == false)
+                        ? ImageConstant.imgIcontwotonemaximize2
+                        : ImageConstant.imgCheckmarkBlack900,
+                    width: 20,
+                    height: 20,
+                    onTap: () {
                       setState(() {
-                        isChecked = newBool!;
+                        isChecked = !isChecked;
                       });
                     },
                   ),
+                  // SizedBox(
+                  //   width: width * 0.02,
+                  // ),
+                  // Checkbox(
+                  //   value: isChecked,
+                  //   activeColor: Colors.blue,
+                  //   onChanged: (newBool) {
+                  //     setState(() {
+                  //       isChecked = newBool!;
+                  //     });
+                  //   },
+                  // ),
                   TextButton(
                       onPressed: () {
                         showModalBottomSheet<dynamic>(
                           isScrollControlled: true,
+                          enableDrag: true,
                           constraints: BoxConstraints(
-                            maxHeight: height * 0.8,
+                            maxHeight: height * 0.9,
                             minHeight: height * 0.2,
                           ),
                           shape: RoundedRectangleBorder(
@@ -314,118 +360,81 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           context: context,
                           builder: (BuildContext context) {
-                            return Wrap(
+                            return ListView(
+                              scrollDirection: Axis.vertical,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                          height: 176,
-                                          width: 176,
-                                          child: Image.asset(
-                                              "lib/images/Frame 2.png")),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        "Terms & Conditions",
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      SingleChildScrollView(
-                                        scrollDirection: Axis.vertical,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(18.0),
-                                          child: Text(
-                                            data,
+                                Wrap(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                              height: 176,
+                                              width: 176,
+                                              child: Image.asset(
+                                                  "lib/images/Frame 2.png")),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "Terms & Conditions",
                                             style: TextStyle(
-                                              fontSize: 16,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(18.0),
+                                              child: Text(
+                                                data,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  // overflow: TextOverflow.clip,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Center(
+                                            child: CustomButton(
+                                                label: "I Accept",
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isChecked = true;
+                                                    Navigator.pop(context);
+                                                  });
+                                                }),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Center(
-                                        child: CustomButton(
-                                            label: "I Accept",
-                                            onPressed: () {
-                                              setState(() {
-                                                isChecked = true;
-                                                Navigator.pop(context);
-                                              });
-                                            }),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             );
                           },
                         );
-
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (context) => Dialog(
-                        //           child: Padding(
-                        //             padding: const EdgeInsets.all(15.0),
-                        //             child: Column(
-                        //               mainAxisAlignment:
-                        //                   MainAxisAlignment.start,
-                        //               crossAxisAlignment:
-                        //                   CrossAxisAlignment.start,
-                        //               children: [
-                        //                 Container(
-                        //                     height: 176,
-                        //                     width: 176,
-                        //                     child: Image.asset(
-                        //                         "lib/images/Frame 2.png")),
-                        //                 SizedBox(
-                        //                   height: 10,
-                        //                 ),
-                        //                 Text(
-                        //                   "Terms & Conditions",
-                        //                   style: TextStyle(
-                        //                       fontSize: 18,
-                        //                       fontWeight: FontWeight.bold),
-                        //                 ),
-                        //                 SizedBox(
-                        //                   height: 15,
-                        //                 ),
-                        //                 SingleChildScrollView(
-                        //                   scrollDirection: Axis.vertical,
-                        //                   child: Text(
-                        //                       "By accessing or using the Application, you agree that you have read, understand and agree to be bound by these Terms & Conditions of Use, as amended from time to time.Please note the information contained on the Application is for general guidance only, And The Application made by CS students for academic purpose.The Application is not intended to offer medical advice, Always seek the advice of your physician or other qualified health care provider prior to starting any new treatment, or if you have any questions regarding symptoms or a medical condition."),
-                        //                 ),
-                        //                 SizedBox(
-                        //                   height: 15,
-                        //                 ),
-                        //                 Center(
-                        //                   child: CustomButton(
-                        //                       label: "I Accept",
-                        //                       onPressed: () {
-                        //                         setState(() {
-                        //                           isChecked = true;
-                        //                           Navigator.pop(context);
-                        //                         });
-                        //                       }),
-                        //                 )
-                        //               ],
-                        //             ),
-                        //           ),
-                        //           //shh
-                        //         ));
                       },
-                      child: Text("Agree to terms and conditions"))
+                      child: Text(
+                        "Agree to the terms and conditions",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black),
+                      ))
                 ]),
 
                 SizedBox(
@@ -452,7 +461,7 @@ class _SignupPageState extends State<SignupPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content:
-                                Text('Please check to terms and conditions'),
+                                Text('Please accept the terms and conditions'),
                             backgroundColor: Colors.red,
                           ),
                         );

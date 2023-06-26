@@ -94,7 +94,8 @@ class CustomTextFormField extends StatelessWidget {
   _buildDecoration() {
     return InputDecoration(
       hintText: hintText ?? "",
-      hintStyle: _setFontStyle(),
+      hintStyle: _setHintFontStyle(),
+      labelStyle: _setFontStyle(),
       border: _setBorderStyle(),
       enabledBorder: _setBorderStyle(),
       focusedBorder: _setBorderStyle(),
@@ -110,6 +111,32 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 
+  _setHintFontStyle() {
+    switch (fontStyle) {
+      case TextFormFieldFontStyle.MontserratRomanRegular16Dark:
+        return TextStyle(
+          color: Colors.grey[400],
+          fontSize: 16,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w300,
+        );
+      case TextFormFieldFontStyle.MontserratRomanRegular14:
+        return TextStyle(
+          color: Colors.grey[400],
+          fontSize: 14,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w300,
+        );
+      default:
+        return TextStyle(
+          color: Colors.grey[400],
+          fontSize: 16,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w400,
+        );
+    }
+  }
+
   _setFontStyle() {
     switch (fontStyle) {
       case TextFormFieldFontStyle.MontserratRomanRegular14:
@@ -118,6 +145,13 @@ class CustomTextFormField extends StatelessWidget {
           fontSize: 14,
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w400,
+        );
+      case TextFormFieldFontStyle.MontserratRomanRegular16Dark:
+        return TextStyle(
+          color: Colors.grey[800],
+          fontSize: 16,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w500,
         );
       default:
         return TextStyle(
@@ -209,6 +243,7 @@ enum TextFormFieldVariant {
 }
 
 enum TextFormFieldFontStyle {
+  MontserratRomanRegular16Dark,
   MontserratRomanRegular16,
   MontserratRomanRegular14,
 }

@@ -222,13 +222,13 @@ class LoginState extends State<Login> {
               prefix: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                 child: CustomImageView(
-                  svgPath: ImageConstant.imgUser,
+                  svgPath: ImageConstant.imgClock,
                   width: 20,
                   height: 20,
                 ),
               ),
               prefixConstraints: BoxConstraints(maxHeight: 20),
-              fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16,
+              fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16Dark,
             ),
 
             SizedBox(
@@ -248,7 +248,7 @@ class LoginState extends State<Login> {
                   height: 20,
                 ),
               ),
-              prefixConstraints: BoxConstraints(maxHeight: 22),
+              prefixConstraints: BoxConstraints(maxHeight: 20),
               suffix: Container(
                 margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
                 child: CustomImageView(
@@ -265,7 +265,7 @@ class LoginState extends State<Login> {
               ),
               suffixConstraints: BoxConstraints(maxHeight: 44),
               isObscureText: isPasswordVisible,
-              fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16,
+              fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16Dark,
             ),
             SizedBox(
               height: height * 0.001,
