@@ -266,7 +266,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                         CustomTextFormField(
                                             autofocus: false,
                                             controller: _email,
-                                            hintText: "Taha Mohamed",
+                                            hintText: "...",
                                             margin: EdgeInsets.only(
                                                 left: 1, top: 11),
                                             width: width * 0.8,
@@ -291,7 +291,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                         CustomTextFormField(
                                             autofocus: false,
                                             controller: _username,
-                                            hintText: "Taha Mohamed",
+                                            hintText: "...",
                                             width: width * 0.8,
                                             margin: EdgeInsets.only(
                                                 left: 1, top: 11),
@@ -424,7 +424,9 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 print(url);
                                                 print("onTap called.");
                                               },
-                                              url: url,
+                                              url: (url != "")
+                                                  ? url
+                                                  : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
                                               height: 80,
                                               width: 77,
                                               alignment: Alignment.center),

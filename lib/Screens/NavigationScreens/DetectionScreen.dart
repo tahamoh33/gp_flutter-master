@@ -8,9 +8,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:tflite/tflite.dart';
-import 'package:trial1/Screens/NavigationScreens/Home.dart';
-
-import '../../CustomWidgets/customFile.dart';
 //import 'package:sizer/sizer.dart';
 
 class DetectionScreen extends StatefulWidget {
@@ -111,17 +108,13 @@ class _DetectionScreenState extends State<DetectionScreen> {
           //   onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));},
           //   icon: Icon(Icons.arrow_back_sharp),
           // ),
-        centerTitle: true,
-        title:  Text("Check your eyes",
-          style: TextStyle(
-            fontSize: 25,
-                color: Colors.blue
-          ), )
+          centerTitle: true,
+          title: Text(
+            "Check your eyes",
+            style: TextStyle(fontSize: 25, color: Colors.blue),
+          )),
 
-      ),
-
-      body:
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -129,15 +122,16 @@ class _DetectionScreenState extends State<DetectionScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Upload Image",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 SizedBox(
                   height: 30,
                 ),
-                Text("Upload Your Traditional Funds Photography to check your eye disease \n \n Image Example :",
+                Text(
+                  "Upload Your Traditional Funds Photography to check your eye disease \n \n Image Example :",
                   style: TextStyle(
                     fontSize: 16,
-                        fontWeight: FontWeight.w500,
-
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(
@@ -161,13 +155,13 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                     ? Container(
                                         child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                           child: Image.asset(
                                             "lib/images/1_right.png",
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                )//show nothing if no picture selected
+                                      ) //show nothing if no picture selected
                                     : Column(
                                         children: [
                                           ClipRRect(
@@ -185,7 +179,8 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                                   child: Text(
                                                     'The object is: ${_output![0]['label']}!',
                                                     style: TextStyle(
-                                                        color: Theme.of(context).hintColor,
+                                                        color: Theme.of(context)
+                                                            .hintColor,
                                                         fontSize: 22,
                                                         fontWeight:
                                                             FontWeight.bold),
