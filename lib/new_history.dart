@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+
+import 'CustomWidgets/CustomCard.dart';
 
 class Doctorhistory extends StatefulWidget {
   @override
@@ -12,13 +17,68 @@ class DoctorhistoryState extends State<Doctorhistory> {
     Doctorhistory(),
   ];
 
-  void NavigateBottom(int index) {
-    setState(() {
-      selectedIndex = index;
-      Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => pages[selectedIndex])));
-    });
+  FutureBuilder<QuerySnapshot<Map<String, dynamic>>> buildPredictionList(
+
+      ) {
+    // print(userId);
+    return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      future: FirebaseFirestore.instance
+          .collection('predictions')
+          .orderBy('timestamp', descending: true)
+           .get(),
+          // .where('uid', isEqualTo: userId)
+          // .orderBy('timestamp', descending: true)
+
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return Center(
+              child: Text(
+                'No predictions found for this user.',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              ));
+        }
+
+        return ListView(
+          children: snapshot.data!.docs
+              .map((DocumentSnapshot<Map<String, dynamic>> document) {
+            Map<String, dynamic> data = document.data()!;
+            DateTime myDate =
+            data['timestamp'].toDate().add(Duration(hours: 1));
+            return Column(children: [
+              buildCardd(
+                urlImage: data['imageUrl'],
+                title: data['predictionLabel'],
+                date:
+                '${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}',
+                description: '...',
+                text: 'See more',
+                context: context,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ]);
+          }).toList(),
+        );
+      },
+    );
   }
+
+  // void NavigateBottom(int index) {
+  //   setState(() {
+  //     selectedIndex = index;
+  //     Navigator.push(context,
+  //         MaterialPageRoute(builder: ((context) => pages[selectedIndex])));
+  //   });
+  // }
 
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -36,79 +96,85 @@ class DoctorhistoryState extends State<Doctorhistory> {
           ),
           systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: selectedIndex,
-          onTap: NavigateBottom,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(label: ("Home"), icon: Icon(Icons.home)),
-            BottomNavigationBarItem(
-                label: ("Predictions"), icon: Icon(Icons.batch_prediction)),
-            BottomNavigationBarItem(
-                label: ("Profile"), icon: Icon(Icons.person)),
-          ],
-        ),
-        body: ListView(
-          padding: EdgeInsets.all(8),
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  " Prediction History",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                buildCard(
-                    title: 'Glaucoma',
-                    description:
-                        'a common eye condition where the optic nerve, which connects the eye to the brain',
-                    text: 'See more',
-                    date: 'Jan09,2020',
-                    urlImage:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqa19zXSsi9Pid3Ig6Bun-49bMOB3dCiBwEUfiQ0BGuHGzIHSDB5CceYR1M61Og9wF8q8&usqp=CAU'),
-                buildCard(
-                    title: 'Cataract',
-                    description:
-                        'a common eye condition where the optic nerve, which connects the eye',
-                    text: 'See more',
-                    date: 'Jan09,2020',
-                    urlImage:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqa19zXSsi9Pid3Ig6Bun-49bMOB3dCiBwEUfiQ0BGuHGzIHSDB5CceYR1M61Og9wF8q8&usqp=CAU'),
-                buildCard(
-                    title: 'Amblyopia',
-                    description:
-                        'a common eye condition where the optic nerve, which connects the eye',
-                    text: 'See more',
-                    date: 'Jan09,2020',
-                    urlImage:
-                        'https://www.pinpointeyes.com/wp-content/uploads/2019/04/strabismus_esotropia_large-600x445.png'),
-                buildCard(
-                    title: 'Retinopathy',
-                    description:
-                        'a common eye condition where the optic nerve, which connects the eye',
-                    text: 'See more',
-                    date: 'Jan09,2020',
-                    urlImage:
-                        'https://www.diabetes.co.uk/wp-content/uploads/2022/11/eyes-open.jpg'),
-              ],
-            ),
-          ],
-        ),
-      );
+        // bottomNavigationBar: BottomNavigationBar(
+        //   currentIndex: selectedIndex,
+        //   //onTap: NavigateBottom,
+        //   type: BottomNavigationBarType.fixed,
+        //   items: [
+        //     BottomNavigationBarItem(label: ("Home"), icon: Icon(Icons.home)),
+        //     BottomNavigationBarItem(
+        //         label: ("Predictions"), icon: Icon(Icons.batch_prediction)),
+        //     BottomNavigationBarItem(
+        //         label: ("Profile"), icon: Icon(Icons.person)),
+        //   ],
+        // ),
+         body:Padding(
+           padding: const EdgeInsets.all(20.0),
+           child: buildPredictionList(),
+         //ListView(
+        //   padding: EdgeInsets.all(8),
+        //   children: [
+        //     Column(
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           " Prediction History",
+        //           style: TextStyle(
+        //             fontSize: 20,
+        //             color: Colors.blue,
+        //             fontWeight: FontWeight.bold,
+        //           ),
+        //         ),
+        //         SizedBox(
+        //           height: 30.0,
+        //         ),
+        //
+        //         ),
+            //     buildCard(
+            //         title: 'Glaucoma',
+            //         description:
+            //             'a common eye condition where the optic nerve, which connects the eye to the brain',
+            //         text: 'See more',
+            //         date: 'Jan09,2020',
+            //         urlImage:
+            //             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqa19zXSsi9Pid3Ig6Bun-49bMOB3dCiBwEUfiQ0BGuHGzIHSDB5CceYR1M61Og9wF8q8&usqp=CAU'),
+            //     buildCard(
+            //         title: 'Cataract',
+            //         description:
+            //             'a common eye condition where the optic nerve, which connects the eye',
+            //         text: 'See more',
+            //         date: 'Jan09,2020',
+            //         urlImage:
+            //             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqa19zXSsi9Pid3Ig6Bun-49bMOB3dCiBwEUfiQ0BGuHGzIHSDB5CceYR1M61Og9wF8q8&usqp=CAU'),
+            //     buildCard(
+            //         title: 'Amblyopia',
+            //         description:
+            //             'a common eye condition where the optic nerve, which connects the eye',
+            //         text: 'See more',
+            //         date: 'Jan09,2020',
+            //         urlImage:
+            //             'https://www.pinpointeyes.com/wp-content/uploads/2019/04/strabismus_esotropia_large-600x445.png'),
+            //      buildCard(
+            //         title: 'Retinopathy',
+            //         description:
+            //             'a common eye condition where the optic nerve, which connects the eye',
+            //         text: 'See more',
+            //         date: 'Jan09,2020',
+            //         urlImage:
+            //             'https://www.diabetes.co.uk/wp-content/uploads/2022/11/eyes-open.jpg'),
+               //],
+             //),
+          //],
+        // ),
+         ));
 
-  Widget buildCard({
+  Widget buildCardd({
     required String title,
     required String description,
     required String text,
     required String date,
     required String urlImage,
+    required BuildContext context,
   }) {
     final double radius = 22;
 
