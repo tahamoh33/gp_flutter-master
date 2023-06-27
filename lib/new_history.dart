@@ -214,18 +214,19 @@ class DoctorhistoryState extends State<Doctorhistory> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: InkWell(borderRadius: BorderRadius.circular(5.0),
-                    onTap: () {
-                  const snackBar =
-                      SnackBar(content: Text('wrong classification'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-                    child: Icon(
-                      Icons.dangerous_outlined,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    r),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(5.0),
+                  onTap: () {
+                    const snackBar =
+                        SnackBar(content: Text('wrong classification'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  child: Icon(
+                    Icons.dangerous_outlined,
+                    size: 20,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ),
           ],

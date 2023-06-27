@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:tflite/tflite.dart';
 //import 'package:sizer/sizer.dart';
 
 class DetectionScreen extends StatefulWidget {
@@ -18,43 +19,45 @@ class DetectionScreen extends StatefulWidget {
 bool _loading = true;
 File? _image;
 List? _output;
-String url = "";
+
 final picker = ImagePicker();
 
 class _DetectionScreenState extends State<DetectionScreen> {
+  String imgUrl = "";
+  String prediction = "";
   @override
   void initState() {
     super.initState();
-    loadModel().then((value) {
-      setState(() {});
-    });
+    // loadModel().then((value) {
+    //   setState(() {});
+    // });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    Tflite.close();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   Tflite.close();
+  // }
 
-  classifyImage(File image) async {
-    // show loading indicator while waiting for image classification
-    var output = await Tflite.runModelOnImage(
-      path: image.path,
-      numResults: 4,
-      imageStd: 255,
-      imageMean: 0,
-    );
-    setState(() {
-      _output = output;
-      _loading = false;
-      storeImageInfoInFirestore(url, image.path, _output![0]['label']);
-    });
-  }
+  // classifyImage(File image) async {
+  //   // show loading indicator while waiting for image classification
+  //   var output = await Tflite.runModelOnImage(
+  //     path: image.path,
+  //     numResults: 4,
+  //     imageMean: 127.5,
+  //     imageStd: 127.5,
+  //   );
+  //   setState(() {
+  //     _output = output;
+  //     _loading = false;
+  //     //storeImageInfoInFirestore(url, image.path, _output![0]['label']);
+  //   });
+  // }
 
-  loadModel() async {
-    await Tflite.loadModel(
-        model: "assets/model_unquant.tflite", labels: "assets/Labels.txt");
-  }
+  // loadModel() async {
+  //   await Tflite.loadModel(
+  //       model: "assets/resnet50v2.tflite", labels: "assets/labels2.txt");
+  // }
 
   pickImageFromGallery() async {
     var image = await picker.getImage(source: ImageSource.gallery);
@@ -62,8 +65,28 @@ class _DetectionScreenState extends State<DetectionScreen> {
     setState(() {
       _image = File(image.path);
     });
+
     await uploadImageToFirebase(_image!);
-    await classifyImage(_image!);
+    //await classifyImage(_image!);
+    await sendImage(_image!);
+  }
+
+  Future<List<String>> sendImage(File image) async {
+    final url = Uri.parse('http://192.168.1.3:8080/predict');
+    final request = http.MultipartRequest('POST', url);
+    request.files.add(await http.MultipartFile.fromPath('image', image.path));
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode == 200) {
+      final result = jsonDecode(response.body);
+      setState(() {
+        prediction = result[0].trim() + " with confidence rate " + result[1];
+        storeImageInfoInFirestore(imgUrl, image.path, result[0].trim());
+      });
+      return [result[0].trim(), result[1]];
+    } else {
+      throw Exception('Failed to connect to API');
+    }
   }
 
   Future<String> uploadImageToFirebase(File image) async {
@@ -74,9 +97,9 @@ class _DetectionScreenState extends State<DetectionScreen> {
         .child('uploads/ $filename')
         .putFile(image)
         .then((value) => (value.ref.getDownloadURL()).then((value) {
-              url = value;
+              imgUrl = value;
             }));
-    return url;
+    return imgUrl;
   }
 
   Future storeImageInfoInFirestore(
@@ -94,8 +117,6 @@ class _DetectionScreenState extends State<DetectionScreen> {
       'predictionLabel': predictionLabel,
     });
   }
-
-  bool isBottomFormshown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -177,11 +198,13 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: 5),
                                                   child: Text(
-                                                    'The object is: ${_output![0]['label']}!',
+                                                    prediction,
+                                                    //'The object is: ${_output![0]['label']}!',
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         color: Theme.of(context)
                                                             .hintColor,
-                                                        fontSize: 22,
+                                                        fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
