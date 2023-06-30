@@ -25,13 +25,6 @@ final picker = ImagePicker();
 class _DetectionScreenState extends State<DetectionScreen> {
   String imgUrl = "";
   String prediction = "";
-  @override
-  void initState() {
-    super.initState();
-    // loadModel().then((value) {
-    //   setState(() {});
-    // });
-  }
 
   // @override
   // void dispose() {
@@ -81,7 +74,9 @@ class _DetectionScreenState extends State<DetectionScreen> {
       final result = jsonDecode(response.body);
       setState(() {
         prediction = result[0].trim() + " with confidence rate " + result[1];
+        print(prediction);
         storeImageInfoInFirestore(imgUrl, image.path, result[0].trim());
+        _loading = false;
       });
       return [result[0].trim(), result[1]];
     } else {
@@ -115,6 +110,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
       'imageUrl': imageUrl,
       'imagePath': imagePath,
       'predictionLabel': predictionLabel,
+      'status': 'pending'
     });
   }
 
@@ -173,14 +169,11 @@ class _DetectionScreenState extends State<DetectionScreen> {
                             child: Container(
                               child: Center(
                                 child: _loading == true
-                                    ? Container(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            "lib/images/1_right.png",
-                                            fit: BoxFit.cover,
-                                          ),
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset(
+                                          "lib/images/1_right.png",
+                                          fit: BoxFit.cover,
                                         ),
                                       ) //show nothing if no picture selected
                                     : Column(
@@ -193,23 +186,20 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          _output != null
-                                              ? Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 5),
-                                                  child: Text(
-                                                    prediction,
-                                                    //'The object is: ${_output![0]['label']}!',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .hintColor,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                )
-                                              : Container(),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Text(
+                                              prediction,
+                                              //'The object is: ${_output![0]['label']}!',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
                                         ],
                                       ),
                               ),

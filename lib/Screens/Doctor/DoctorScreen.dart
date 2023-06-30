@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
+
+import '../State Management/selected_page_provider.dart';
 
 class doctor extends StatefulWidget {
   const doctor({super.key});
@@ -60,7 +63,10 @@ class _doctorState extends State<doctor> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedPageProvider = Provider.of<SelectedPageProvider>(context);
+
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, bottom: 30, right: 30),
@@ -178,8 +184,11 @@ class _doctorState extends State<doctor> {
                 height: 20,
               ),
               Center(
-                  child:
-                      CustomButton(label: "View Predictions", onPressed: () {}))
+                  child: CustomButton(
+                      label: "View Predictions",
+                      onPressed: () {
+                        selectedPageProvider.selectedIndex = 1;
+                      }))
 //bos keda
               //View Predictions function helps Us keep track of the Detection results and the Accuracy of the model Predictions which helps us to modify the application to reach higher accuracy.
               //

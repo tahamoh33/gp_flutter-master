@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trial1/Screens/NavigationScreens/DetectionScreen.dart';
 
 import '../../CustomWidgets/CustomCard.dart';
-import '../../CustomWidgets/customFile.dart';
 
 class History extends StatefulWidget {
   const History({Key? key}) : super(key: key);
@@ -71,20 +69,17 @@ class _HistoryState extends State<History> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        // leading:IconButton(
-        //   onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>DetectionScreen()));},
-        //   icon: Icon(Icons.arrow_back_sharp),
-        // ),
-        title: Text("History",
-          style: TextStyle(
-              fontSize: 25,
-              color: Colors.blue
-          ), )
-
-      ),
+          centerTitle: true,
+          // leading:IconButton(
+          //   onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>DetectionScreen()));},
+          //   icon: Icon(Icons.arrow_back_sharp),
+          // ),
+          title: Text(
+            "History",
+            style: TextStyle(fontSize: 25, color: Colors.blue),
+          )),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: buildPredictionList(FirebaseAuth.instance.currentUser!.uid),
       ),
     );

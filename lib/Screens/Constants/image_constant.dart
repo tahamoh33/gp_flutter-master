@@ -109,4 +109,12 @@ class ImageConstant {
   static String imageNotFound = 'lib/images/image_not_found.png';
 
   static String eyeOpened = 'lib/images/icon_eye_opened.svg';
+
+  static String checkmarkBlue = 'lib/images/img_checkmark_blue_700.svg';
+
+  static String checkmarkGray = 'lib/images/img_checkmark_gray_500.svg';
+
+  static String crossIconRed = 'lib/images/img_crossicon_red_a100.svg';
+
+  static String crossIconGray = 'lib/images/img_crossicon.svg';
 }
