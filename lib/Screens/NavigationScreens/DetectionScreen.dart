@@ -65,7 +65,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
   }
 
   Future<List<String>> sendImage(File image) async {
-    final url = Uri.parse('http://192.168.1.3:8080/predict');
+    final url = Uri.parse('https://bfe4-196-221-140-21.ngrok-free.app/predict');
     final request = http.MultipartRequest('POST', url);
     request.files.add(await http.MultipartFile.fromPath('image', image.path));
     final streamedResponse = await request.send();
