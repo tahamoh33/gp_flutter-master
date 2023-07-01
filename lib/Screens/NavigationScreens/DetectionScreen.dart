@@ -74,7 +74,6 @@ class _DetectionScreenState extends State<DetectionScreen> {
       final result = jsonDecode(response.body);
       setState(() {
         prediction = result[0].trim() + " with confidence rate " + result[1];
-        print(prediction);
         storeImageInfoInFirestore(imgUrl, image.path, result[0].trim());
         _loading = false;
       });
