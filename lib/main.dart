@@ -1,4 +1,6 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -6,6 +8,7 @@ import 'package:trial1/Screens/cache_manager.dart';
 import 'package:trial1/api/firebase_api.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
+
 //import 'package:trial1/Screens/Doctor/Notification.dart';
 import 'Screens/SplashScreen.dart';
 import 'Screens/State Management/selected_page_provider.dart';
@@ -15,7 +18,7 @@ Future main() async {
   await Firebase.initializeApp();
   await firebaseApi().initNotification();
   await CacheManager.init();
- // await Notification().initNotification();
+  // await Notification().initNotification();
   String? email, password, role;
 
   if (CacheManager.getData('email') != null) {
@@ -23,23 +26,23 @@ Future main() async {
     password = await CacheManager.getData('password');
     role = await CacheManager.getData('role');
   }
-  // runApp(
-  //   DevicePreview(
-  //       enabled: !kReleaseMode,
-  //       builder: (context) => ChangeNotifierProvider<SelectedPageProvider>(
-  //             create: (context) => SelectedPageProvider(),
-  //             child: myApp(
-  //                 email: email,
-  //                 password: password,
-  //                 role: role), // Wrap your app
-  //           )),
-  //);
   runApp(
-    ChangeNotifierProvider<SelectedPageProvider>(
-      create: (_) => SelectedPageProvider(),
-      child: myApp(email: email, password: password, role: role),
-    ),
+    DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => ChangeNotifierProvider<SelectedPageProvider>(
+              create: (context) => SelectedPageProvider(),
+              child: myApp(
+                  email: email,
+                  password: password,
+                  role: role), // Wrap your app
+            )),
   );
+  // runApp(
+  //   ChangeNotifierProvider<SelectedPageProvider>(
+  //     create: (_) => SelectedPageProvider(),
+  //     child: myApp(email: email, password: password, role: role),
+  //   ),
+  // );
 }
 
 class myApp extends StatelessWidget {

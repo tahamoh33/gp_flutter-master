@@ -49,7 +49,7 @@ Widget buildText(BuildContext context, String title, String description,
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
           ),
           //const SizedBox(height: 8),
           // Text(
@@ -74,6 +74,11 @@ Widget buildText(BuildContext context, String title, String description,
                     context,
                     MaterialPageRoute(
                         builder: (context) => Results(cataractResult)));
+              } else if (title == "Normal") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Results(normalResult)));
               }
             },
             child: const Text('See more',
@@ -108,7 +113,7 @@ Widget buildText(BuildContext context, String title, String description,
                 ),
               ),
               SizedBox(
-                width: width * 0.1,
+                width: width * 0.08,
               ),
               Text(
                 date,
