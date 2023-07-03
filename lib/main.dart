@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/cache_manager.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
-
+//import 'package:trial1/Screens/Doctor/Notification.dart';
 import 'Screens/SplashScreen.dart';
 import 'Screens/State Management/selected_page_provider.dart';
 
@@ -13,6 +13,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await CacheManager.init();
+ // await Notification().initNotification();
   String? email, password, role;
 
   if (CacheManager.getData('email') != null) {
