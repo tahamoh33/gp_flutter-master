@@ -30,7 +30,7 @@ class ImageConstant {
   static String imgIconcheck = 'lib/images/img_iconcheck.svg';
 
   static String imgRectangle1 = 'lib/images/img_rectangle_1.png';
-
+  static String EditDate = 'lib/images/R.png';
   static String imgClock = 'lib/images/img_clock.svg';
 
   static String imgMaskgroup80x77 = 'lib/images/img_maskgroup_80x77.png';

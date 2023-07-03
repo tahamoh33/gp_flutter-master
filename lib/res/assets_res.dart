@@ -5,4 +5,7 @@
 class AssetsRes {
   static const String PLUGIN_NAME = 'trial1';
   static const String PLUGIN_VERSION = '1.0.0+1';
+  static const String GLAUCOMADESCRIPTION = 'assets/GlaucomaDescription.txt';
+  static const String GLAUCOMASYMPTOMPS = 'assets/GlaucomaSymptomps.txt';
+  static const String GLAUCOMAWHENTOVISIT = 'assets/GlaucomaWhenToVisit.txt';
 }

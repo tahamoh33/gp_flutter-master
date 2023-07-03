@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../CustomWidgets/custom_image_view.dart';
 import '../../CustomWidgets/custom_text_form_field.dart';
@@ -29,8 +30,10 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
   File? _image;
   final picker = ImagePicker();
   final _email = TextEditingController();
-  final _password = TextEditingController();
+  final _Gender= TextEditingController();
   final _username = TextEditingController();
+  final _birth = TextEditingController();
+  DateTime selectedDate = DateTime(2000,5,21);
   FirebaseAuth instance = FirebaseAuth.instance;
 
   Future<XFile?> resizeImage(File imageFile, int width, int height) async {
@@ -80,6 +83,20 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
     await uploadImageToFirebase(compressedImage!);
     Navigator.pop(context);
   }
+  Future<Null> _selectDate(BuildContext context) async {
+    DateFormat formatter = DateFormat('dd/MM/yyyy');//specifies day/month/year format
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1901, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        _birth.value = TextEditingValue(text: formatter.format(picked));//Use formatter to format selected date and assign to text field
+      });
+  }
 
   Future getUserData() async {
     try {
@@ -93,15 +110,20 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
         setState(() {
           _email.text = userData['email'];
           try {
-            _password.text = userData['password'];
+            _Gender.text = userData['Gender'];
           } catch (e) {
-            _password.text = "";
+            _Gender.text = "";
           }
           _username.text = userData['username'];
           try {
             url = userData['profilePic'];
           } catch (e) {
             url = "";
+          }
+          try {
+            _birth.text= userData['Date of Birth'];
+          } catch (e) {
+            _birth.text = "" ;
           }
         });
       }
@@ -116,8 +138,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
     }
   }
 
-  Future updateUser(String uid, String email, String password, String username,
-      String url) async {
+  Future updateUser(String uid, String email, String gender, String username,
+      String Birth, String url) async {
     try {
       final userRef = FirebaseFirestore.instance.collection('doctors').doc(uid);
       User? user = FirebaseAuth.instance.currentUser;
@@ -125,9 +147,10 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
       //print('url2: $url ');
       final updatedUserData = {
         'email': email,
-        'password': password,
+        'Gender': gender,
         'username': username,
         'profilePic': url,
+        'Date of Birth':Birth,
       };
 
       if (user != null) {
@@ -163,7 +186,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
   void dispose() {
     _username.dispose();
     _email.dispose();
-    _password.dispose();
+    _birth.dispose();
+    _Gender.dispose();
     url = "";
     // _dateController.dispose();
     super.dispose();
@@ -204,10 +228,12 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
             child: TextButton(
               onPressed: () async {
                 final String email = _email.text.trim();
-                final String password = _password.text.trim();
+                final String gender = _Gender.text.trim();
                 final String username = _username.text.trim();
-                await updateUser(instance.currentUser!.uid, email, password,
-                        username, url)
+                final String birth = _birth.text.trim();
+                await updateUser(instance.currentUser!.uid, email, gender,
+                         username,
+                    birth,url)
                     .then((value) => setState(() {}));
 
                 //Navigator.pop(context, true);
@@ -327,7 +353,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: 2, top: 23),
-                                            child: Text("Password",
+                                            child: Text("Gender",
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
@@ -340,27 +366,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 ))),
                                         CustomTextFormField(
                                             autofocus: false,
-                                            controller: _password,
+                                            controller: _Gender,
                                             width: width * 0.8,
-                                            hintText: "************",
-                                            suffix: Container(
-                                              child: CustomImageView(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isObscureText =
-                                                          !isObscureText;
-                                                    });
-                                                  },
-                                                  svgPath: isObscureText
-                                                      ? ImageConstant.eyeOpened
-                                                      : ImageConstant
-                                                          .imgCheckmark,
-                                                  height: 20,
-                                                  width: 20),
-                                            ),
-                                            suffixConstraints: BoxConstraints(
-                                                maxHeight: 20, maxWidth: 20),
-                                            isObscureText: isObscureText,
+                                            hintText: "Male",
                                             margin: EdgeInsets.only(
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
@@ -369,6 +377,51 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 .MontserratRomanRegular14,
                                             textInputAction:
                                                 TextInputAction.done),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 2, top: 23),
+                                            child: Text("Date of Birth",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                )
+                                            )
+                                        ),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller:_birth ,
+                                            width: width * 0.8,
+                                            hintText: "21/5/2000",
+                                            suffix:  Container(
+                                              child: CustomImageView(
+                                                  imagePath:  ImageConstant.EditDate,
+                                                  onTap: (){
+                                                    setState(() {
+                                                      _selectDate(context);
+                                                    });
+
+                                                  }
+                                                  ,
+
+                                                  height: 20,
+                                                  width: 20),
+                                            ),
+                                            suffixConstraints: BoxConstraints(
+                                                maxHeight: 20, maxWidth: 20),
+                                            margin: EdgeInsets.only(
+                                                left: 1, top: 9),
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14,
+                                            textInputAction:
+                                            TextInputAction.done),
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: 2, top: 28, bottom: 86),
