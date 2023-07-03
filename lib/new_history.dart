@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
 
 import 'Screens/Constants/image_constant.dart';
@@ -15,6 +19,37 @@ class Doctorhistory extends StatefulWidget {
 class DoctorhistoryState extends State<Doctorhistory> {
   bool isCorrect = false;
   bool isWrong = false;
+  void sendPushMessage(String token) async {
+    try {
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization':
+                'key=AAAAEtdM2Ws:APA91bGRO8c43La2FYbhk4cjjColIFw5y8WE3lK7YRJBCf-pBOHqbzWfBqYXu0EzcG5VG2cj0rZpyIzpMNeoI9D4npp_gO9TgtrmlfKQOqmrZX64xiJlv1DGJ6wmpS7ZDRl32SkZA86c',
+          },
+          body: jsonEncode(
+            <String, dynamic>{
+              'notification': <String, dynamic>{
+                'body': 'Your prediction is ready',
+                'title': 'A doctor has reviewed your prediction',
+                'sound': 'default',
+                'android_channel_id': 'high_importance_channel',
+              },
+              'priority': 'high',
+              'data': <String, dynamic>{
+                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                'title': 'A doctor has reviewed your prediction',
+                'status': 'done',
+                'body': 'Your prediction is ready',
+              },
+              'to': token,
+            },
+          ));
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void confirm(String docId) {
     FirebaseFirestore.instance.collection('predictions').doc(docId).update({
       'status': "true",
@@ -34,9 +69,6 @@ class DoctorhistoryState extends State<Doctorhistory> {
           .where('status', isEqualTo: "pending")
           .orderBy('timestamp', descending: true)
           .get(),
-
-      // .where('uid', isEqualTo: userId)
-      // .orderBy('timestamp', descending: true)
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.hasError) {
@@ -65,12 +97,13 @@ class DoctorhistoryState extends State<Doctorhistory> {
               buildCard(
                 urlImage: data['imageUrl'],
                 title: data['predictionLabel'],
-                date:
-                    formattedDate, // '${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}
+                date: formattedDate,
+                // '${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}
                 description: '...',
                 text: 'See more',
                 docId: document.id,
                 Status: data['status'],
+                userId: data['uid'],
                 context: context,
               ),
               SizedBox(
@@ -83,25 +116,30 @@ class DoctorhistoryState extends State<Doctorhistory> {
     );
   }
 
-  Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color(0xf5ffcfd),
-        leading: IconButton(
-          onPressed: () {
-            // Navigator.push(context, MaterialPageRoute(builder: ((context) => HeyUser())));
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 25,
-            color: Colors.black,
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "Prediction History",
+            style: TextStyle(fontSize: 22, color: Theme.of(context).hintColor),
           ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     // Navigator.push(context, MaterialPageRoute(builder: ((context) => HeyUser())));
+          //   },
+          //   icon: Icon(
+          //     Icons.arrow_back_ios,
+          //     size: 25,
+          //     color: Colors.black,
+          //   ),
+          // ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: buildPredictionList(),
-      ));
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: buildPredictionList(),
+        ));
+  }
 
   Widget buildCard(
       {required String title,
@@ -111,9 +149,11 @@ class DoctorhistoryState extends State<Doctorhistory> {
       required String urlImage,
       required BuildContext context,
       required String docId,
+      required String userId,
       String? Status}) {
     final double radius = 22;
-
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -128,15 +168,17 @@ class DoctorhistoryState extends State<Doctorhistory> {
             height: 130,
           ),
           Expanded(
-              child:
-                  buildText(context, title, description, date, Status, docId)),
+              child: buildText(
+                  context, title, description, date, Status, docId, userId)),
         ],
       ),
     );
   }
 
   Widget buildText(BuildContext context, String title, String description,
-      String date, String? status, String docId) {
+      String date, String? status, String docId, String userId) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     if (status == "pending") {
       isCorrect = false;
       isWrong = false;
@@ -147,97 +189,98 @@ class DoctorhistoryState extends State<Doctorhistory> {
       isCorrect = false;
       isWrong = true;
     }
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          TextButton(
-            onPressed: () {
-              if (title == "Glaucoma") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Results(glaucomaResult)));
-              } else if (title == "Diabetic") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Results(diabeticResult)));
-              } else if (title == "Cataract") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Results(cataractResult)));
-              }
-            },
-            child: const Text('See more',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blueAccent,
-                  decoration: TextDecoration.underline,
-                )),
-          ),
-          Row(
-            children: [
-              CustomImageView(
-                svgPath: isCorrect
-                    ? ImageConstant.checkmarkBlue
-                    : ImageConstant.checkmarkGray,
-                onTap: () {
-                  setState(() {
-                    confirm(docId);
-                  });
-                },
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              CustomImageView(
-                svgPath: isWrong
-                    ? ImageConstant.crossIconRed
-                    : ImageConstant.crossIconGray,
-                onTap: () {
-                  setState(() {
-                    deny(docId);
-                  });
-                },
-              ),
-              // Text(
-              //   "Status: ",
-              //   style: TextStyle(
-              //     fontSize: 10,
-              //     fontWeight: FontWeight.w400,
-              //     color: Colors.grey,
-              //   ),
-              // ),
-              // Text(
-              //   "Completed",
-              //   style: TextStyle(
-              //     fontSize: 10,
-              //     fontWeight: FontWeight.w400,
-              //     color: Colors.green,
-              //   ),
-              // ),
-              SizedBox(
-                width: 40,
-              ),
-              Text(
-                date,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
+    return Padding(
+      padding: EdgeInsets.only(left: width * 0.02),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            TextButton(
+              onPressed: () {
+                if (title == "Glaucoma") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Results(glaucomaResult)));
+                } else if (title == "Diabetic") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Results(diabeticResult)));
+                } else if (title == "Cataract") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Results(cataractResult)));
+                }
+              },
+              child: const Text('See more',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blueAccent,
+                    decoration: TextDecoration.underline,
+                  )),
+            ),
+            Row(
+              children: [
+                CustomImageView(
+                  svgPath: //isCorrect
+                      ImageConstant.checkmarkBlue,
+                  // : ImageConstant.checkmarkGray,
+                  onTap: () async {
+                    DocumentSnapshot snap = await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(userId)
+                        .get();
+                    String token = snap['token'];
+                    print(token);
+                    sendPushMessage(token);
+                    setState(() {
+                      confirm(docId);
+                    });
+                  },
                 ),
-              ),
-            ],
-          ),
-        ],
+                SizedBox(
+                  width: 10,
+                ),
+                CustomImageView(
+                  svgPath: //isWrong
+                      ImageConstant.crossIconRed,
+                  //: ImageConstant.crossIconGray,
+                  onTap: () async {
+                    DocumentSnapshot snap = await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(userId)
+                        .get();
+                    String token = snap['token'];
+                    print(token);
+                    sendPushMessage(token);
+                    setState(() {
+                      deny(docId);
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: width * 0.12,
+                ),
+                Text(
+                  date,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 8.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

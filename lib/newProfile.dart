@@ -252,7 +252,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: 1, top: 78),
-                                            child: Text("Email",
+                                            child: Text("UserName",
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
@@ -265,7 +265,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                                 ))),
                                         CustomTextFormField(
                                             autofocus: false,
-                                            controller: _email,
+                                            controller: _username,
                                             hintText: "...",
                                             margin: EdgeInsets.only(
                                                 left: 1, top: 11),
@@ -277,7 +277,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: 1, top: 23),
-                                            child: Text("UserName",
+                                            child: Text("Gender",
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(

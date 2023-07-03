@@ -45,14 +45,16 @@ class _HistoryState extends State<History> {
             Map<String, dynamic> data = document.data()!;
             DateTime myDate =
                 data['timestamp'].toDate().add(Duration(hours: 1));
+            String formattedDate = DateFormat('MMMM d, yyyy').format(myDate);
             return Column(children: [
               buildCard(
                 urlImage: data['imageUrl'],
                 title: data['predictionLabel'],
-                date:
-                    '${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}',
+                date: formattedDate,
+                //'${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}',
                 description: '...',
                 text: 'See more',
+                Status: data['status'],
                 context: context,
               ),
               SizedBox(
@@ -68,6 +70,7 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
           centerTitle: true,
           // leading:IconButton(
@@ -76,7 +79,7 @@ class _HistoryState extends State<History> {
           // ),
           title: Text(
             "History",
-            style: TextStyle(fontSize: 25, color: Colors.blue),
+            style: TextStyle(fontSize: 22, color: Theme.of(context).hintColor),
           )),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),

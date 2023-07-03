@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: height * 0.03,
               ),
               Container(
                 width: 188,
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(
-                height: 22,
+                height: height * 0.05,
               ),
               Container(
                 child: Row(

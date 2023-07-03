@@ -64,9 +64,9 @@ class AppLayoutState extends State<AppLayout> {
             backgroundColor: dark ? const Color(0xff2f2b34) : Colors.white,
             color: Theme.of(context).primaryColorDark,
             activeColor: const Color(0xff1a74d7),
-            tabBackgroundColor: dark
-                ? Colors.grey.shade900
-                : Theme.of(context).primaryColorLight,
+            // tabBackgroundColor: dark
+            //     ? Colors.grey.shade900
+            //     : Theme.of(context).primaryColorLight,
             padding: const EdgeInsets.all(15),
             gap: 8,
             tabs: const <GButton>[

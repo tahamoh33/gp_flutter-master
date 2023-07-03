@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -18,41 +17,17 @@ class DetectionScreen extends StatefulWidget {
 
 bool _loading = true;
 File? _image;
-List? _output;
-
 final picker = ImagePicker();
 
 class _DetectionScreenState extends State<DetectionScreen> {
+  bool _waiting = true;
   String imgUrl = "";
   String prediction = "";
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   Tflite.close();
-  // }
-
-  // classifyImage(File image) async {
-  //   // show loading indicator while waiting for image classification
-  //   var output = await Tflite.runModelOnImage(
-  //     path: image.path,
-  //     numResults: 4,
-  //     imageMean: 127.5,
-  //     imageStd: 127.5,
-  //   );
-  //   setState(() {
-  //     _output = output;
-  //     _loading = false;
-  //     //storeImageInfoInFirestore(url, image.path, _output![0]['label']);
-  //   });
-  // }
-
-  // loadModel() async {
-  //   await Tflite.loadModel(
-  //       model: "assets/resnet50v2.tflite", labels: "assets/labels2.txt");
-  // }
-
   pickImageFromGallery() async {
+    _loading = true;
+    _waiting = true;
+    prediction = "";
     var image = await picker.getImage(source: ImageSource.gallery);
     if (image == null) return null;
     setState(() {
@@ -65,9 +40,10 @@ class _DetectionScreenState extends State<DetectionScreen> {
   }
 
   Future<List<String>> sendImage(File image) async {
-    final url = Uri.parse('https://bfe4-196-221-140-21.ngrok-free.app/predict');
+    final url = Uri.parse('https://08cf-196-221-140-21.ngrok-free.app/predict');
     final request = http.MultipartRequest('POST', url);
     request.files.add(await http.MultipartFile.fromPath('image', image.path));
+    _waiting = true;
     final streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
     if (response.statusCode == 200) {
@@ -75,7 +51,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
       setState(() {
         prediction = result[0].trim() + " with confidence rate " + result[1];
         storeImageInfoInFirestore(imgUrl, image.path, result[0].trim());
-        _loading = false;
+        _waiting = false;
       });
       return [result[0].trim(), result[1]];
     } else {
@@ -84,6 +60,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
   }
 
   Future<String> uploadImageToFirebase(File image) async {
+    _loading = false;
     //Upload image to firebase
     String filename = basename(image.path);
     await FirebaseStorage.instance
@@ -115,6 +92,8 @@ class _DetectionScreenState extends State<DetectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: false,
@@ -127,7 +106,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
           centerTitle: true,
           title: Text(
             "Check your eyes",
-            style: TextStyle(fontSize: 25, color: Colors.blue),
+            style: TextStyle(fontSize: 25, color: Theme.of(context).hintColor),
           )),
 
       body: SingleChildScrollView(
@@ -137,13 +116,13 @@ class _DetectionScreenState extends State<DetectionScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Upload Image",
+                const Text("Upload Image",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 SizedBox(
                   height: 30,
                 ),
-                Text(
+                const Text(
                   "Upload Your Traditional Funds Photography to check your eye disease \n \n Image Example :",
                   style: TextStyle(
                     fontSize: 16,
@@ -164,15 +143,18 @@ class _DetectionScreenState extends State<DetectionScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4),
-                            child: Container(
-                              child: Center(
+                            padding:
+                                EdgeInsets.symmetric(vertical: height * 0.02),
+                            child: Center(
+                              child: Container(
                                 child: _loading == true
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.asset(
                                           "lib/images/1_right.png",
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
+                                          width: width * 0.6,
+                                          height: height * 0.3,
                                         ),
                                       ) //show nothing if no picture selected
                                     : Column(
@@ -180,10 +162,15 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                           ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                            child: Image.file(
-                                              _image!,
-                                              fit: BoxFit.cover,
-                                            ),
+                                            child: _waiting == true
+                                                ? Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : Image.file(
+                                                    _image!,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
@@ -204,35 +191,54 @@ class _DetectionScreenState extends State<DetectionScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.2,
+                                vertical: height * 0.01),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  primary: Theme.of(context).hintColor,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.1,
+                                      vertical: height * 0.017),
+                                ),
+                                onPressed: pickImageFromGallery,
+                                child: const Text("Upload")),
+                          ),
                         ])),
               ]),
         ),
       ),
-      floatingActionButton: SpeedDial(
-        icon: Icons.add,
-        activeIcon: Icons.close,
-        backgroundColor: Theme.of(context).hintColor,
-        activeBackgroundColor: Colors.deepPurpleAccent,
-        //background color when menu is expanded
-        visible: true,
-        closeManually: false,
-        curve: Curves.bounceIn,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-
-        elevation: 8.0,
-        //shadow elevation of button
-
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.image, color: Colors.white),
-            backgroundColor: Colors.lightBlue,
-            label: 'Add from gallery',
-            labelStyle: TextStyle(fontSize: 18.0),
-            onTap: pickImageFromGallery,
-          ),
-        ],
-      ),
+      // floatingActionButton: SpeedDial(
+      //   icon: Icons.add,
+      //   activeIcon: Icons.close,
+      //   backgroundColor: Theme.of(context).hintColor,
+      //   activeBackgroundColor: Colors.deepPurpleAccent,
+      //   //background color when menu is expanded
+      //   visible: true,
+      //   closeManually: false,
+      //   curve: Curves.bounceIn,
+      //   overlayColor: Colors.black,
+      //   overlayOpacity: 0.5,
+      //
+      //   elevation: 8.0,
+      //   //shadow elevation of button
+      //
+      //   children: [
+      //     SpeedDialChild(
+      //       child: Icon(Icons.image, color: Colors.white),
+      //       backgroundColor: Colors.lightBlue,
+      //       label: 'Add from gallery',
+      //       labelStyle: TextStyle(fontSize: 18.0),
+      //       onTap: pickImageFromGallery,
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

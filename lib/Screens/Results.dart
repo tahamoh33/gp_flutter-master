@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trial1/Screens/NavigationScreens/History.dart';
-import 'package:trial1/Screens/NavigationScreens/Home.dart';
 
 import 'Models/ResultModel.dart';
 import 'State Management/selected_page_provider.dart';
@@ -14,35 +12,28 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> {
- // bool _isShow = false;
+  // bool _isShow = false;
   @override
   Widget build(BuildContext context) {
     final selectedPageProvider = Provider.of<SelectedPageProvider>(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        centerTitle: true,
-        // leading:IconButton(
-        //   onPressed:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>History()));},
-        //   icon: Icon(Icons.arrow_back_sharp),
-        // ),
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        elevation: 0.0,
-        title: Text("Results",
-          style: TextStyle(
+          centerTitle: true,
+          title: Text(
+            "Results",
+            style: TextStyle(
               fontSize: 25,
-              color: Colors.blue,
+              color: Theme.of(context).hintColor,
               fontFamily: "Montserrat",
-          ), )
-
-      ),
+            ),
+          )),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             //SizedBox(height: 72.0,),
             Container(
               width: 97,
@@ -54,7 +45,7 @@ class _ResultsState extends State<Results> {
                     fontFamily: 'Montserrat',
                     fontSize: 18.0,
                     fontWeight: FontWeight.w800,
-                    color: Colors.black),
+                    color: Theme.of(context).primaryColorDark),
               ),
             ),
             SizedBox(
@@ -71,9 +62,9 @@ class _ResultsState extends State<Results> {
               childrenPadding: EdgeInsets.fromLTRB(40, 0, 0, 0),
               expandedAlignment: Alignment.topLeft,
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
-              title: const Text('Description',
+              title: Text('Description',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColorDark,
                     fontFamily: 'Montserrat',
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
@@ -86,7 +77,7 @@ class _ResultsState extends State<Results> {
                     title: Text(
                       widget.resultModel.description,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).primaryColorDark,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
@@ -108,7 +99,7 @@ class _ResultsState extends State<Results> {
               iconColor: Colors.black38,
               title: Text('Symptoms of ${widget.resultModel.disease}',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColorDark,
                     fontFamily: 'Montserrat',
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
@@ -121,7 +112,7 @@ class _ResultsState extends State<Results> {
                     title: Text(
                       widget.resultModel.symptom,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).primaryColorDark,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
@@ -141,9 +132,9 @@ class _ResultsState extends State<Results> {
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
               //controlAffinity: ListTileControlAffinity.leading,
               iconColor: Colors.black38,
-              title: const Text('When to get medical advice',
+              title: Text('When to get medical advice',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColorDark,
                     fontFamily: 'Montserrat',
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
@@ -156,7 +147,7 @@ class _ResultsState extends State<Results> {
                     title: Text(
                       widget.resultModel.medicalAdvice,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).primaryColorDark,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
@@ -170,14 +161,21 @@ class _ResultsState extends State<Results> {
               height: 20,
             ),
             Center(
-              child: TextButton(onPressed:(){
-                Navigator.pop(context);},
-                  child: Text("Return to history",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline
-                  ),)),
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Return to history",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Theme.of(context).hintColor,
+                      fontFamily: 'Montserrat',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )),
             )
-
           ],
         ),
       ),

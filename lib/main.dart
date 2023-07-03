@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/cache_manager.dart';
+import 'package:trial1/api/firebase_api.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
 
@@ -12,6 +13,7 @@ import 'Screens/State Management/selected_page_provider.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await firebaseApi().initNotification();
   await CacheManager.init();
   String? email, password, role;
 
@@ -30,7 +32,7 @@ Future main() async {
   //                 password: password,
   //                 role: role), // Wrap your app
   //           )),
-  // );
+  //);
   runApp(
     ChangeNotifierProvider<SelectedPageProvider>(
       create: (_) => SelectedPageProvider(),

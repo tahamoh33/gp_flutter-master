@@ -7,7 +7,7 @@ class ImageConstant {
 
   static String imgUserGray90002 = 'lib/images/img_user_gray_900_02.svg';
 
-  static String imgArrowleft = 'lib/images/img_arrowleft.svg';
+  static String imgArrowleft = 'lib/images/icon_two_tone_arrowleft.svg';
 
   static String imgImage6 = 'lib/images/img_image6.png';
 

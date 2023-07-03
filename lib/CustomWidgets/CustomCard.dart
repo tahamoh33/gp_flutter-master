@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/Models/ResultModel.dart';
 import 'package:trial1/Screens/Results.dart';
+
+import 'custom_image_view.dart';
 
 Widget buildCard({
   required String title,
@@ -8,10 +11,12 @@ Widget buildCard({
   required String text,
   required String date,
   required String urlImage,
+  String? Status,
   required BuildContext context,
 }) {
   final double radius = 22;
-
+  final width = MediaQuery.of(context).size.width;
+  final height = MediaQuery.of(context).size.height;
   return Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(radius),
@@ -19,25 +24,25 @@ Widget buildCard({
     elevation: 4,
     child: Row(
       children: [
-        buildImage(radius, urlImage),
-        Expanded(child: buildText(context, title, description, date)),
+        CustomImageView(
+          radius: BorderRadius.circular(radius),
+          url: urlImage,
+          width: 130,
+          height: 130,
+        ),
+        Expanded(child: buildText(context, title, description, date, Status)),
       ],
     ),
   );
 }
 
-Widget buildImage(double radius, String urlImage) => ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: Image.network(
-        urlImage,
-        fit: BoxFit.cover,
-        width: 130,
-        height: 130,
-      ),
-    );
-Widget buildText(
-        BuildContext context, String title, String description, String date) =>
-    Container(
+Widget buildText(BuildContext context, String title, String description,
+    String date, String? Status) {
+  final width = MediaQuery.of(context).size.width;
+  final height = MediaQuery.of(context).size.height;
+  return Padding(
+    padding: EdgeInsets.only(left: width * 0.02),
+    child: Container(
       padding: EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,15 +83,46 @@ Widget buildText(
                   decoration: TextDecoration.underline,
                 )),
           ),
-          Text(
-            date,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey,
-            ),
-          ),
+          Row(
+            children: [
+              const Text(
+                "Status: ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                Status ?? "Pending",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 8.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Status == "true"
+                      ? Colors.green
+                      : Status == "false"
+                          ? Colors.red
+                          : Colors.grey,
+                ),
+              ),
+              SizedBox(
+                width: width * 0.1,
+              ),
+              Text(
+                date,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontSize: 8.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          )
         ],
       ),
-    );
+    ),
+  );
+}
