@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/State%20Management/selected_page_provider.dart';
 
 import '../../CustomWidgets/custom_image_view.dart';
@@ -93,13 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
               Container(
-                height: 24,
-                width: 306,
                 child: Text(
                   "Hello, $username",
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w800,
                     fontFamily: 'Montserrat',
                   ),
                 ),
@@ -108,8 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               Container(
-                height: 80,
-                width: 306,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Welcome Back !",
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -127,10 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       "Take A Deep Breath And Let's Discover Your Eye Disease",
-                      maxLines: 2,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -141,8 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: height * 0.03,
               ),
               Container(
-                width: 188,
-                height: 22,
                 child: Text(
                   "What Do You Need?",
                   style: TextStyle(
@@ -153,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(
-                height: height * 0.05,
+                height: height * 0.03,
               ),
               Container(
                 child: Row(
@@ -178,8 +172,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 20,
-                          width: 95,
+                          // height: 20,
+                          // width: 95,
                           child: Text(
                             "Check Eyes",
                             style: TextStyle(
@@ -194,9 +188,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Container(
                           width: 186,
-                          height: 45,
-                          child: Text(
-                            "Upload your eye picture and Remember! the better picture the better diagnosis.",
+                          // height: 45,
+                          child: const Text(
+                            """Upload your eye picture and Remember!
+The better picture the better diagnosis.""",
                             style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 12,
@@ -231,8 +226,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
               Container(
-                height: 130,
-                width: 360,
+                // height: 130,
+                // width: 360,
                 child: Container(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -286,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Container(
                             width: 186,
-                            height: 45,
+                            // height: 45,
                             child: Text(
                               "History function helps keep track of the image’s results and the diseases you may have.",
                               style: TextStyle(

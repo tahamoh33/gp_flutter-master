@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -36,20 +35,20 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
   DateTime selectedDate = DateTime(2000, 5, 21);
   FirebaseAuth instance = FirebaseAuth.instance;
 
-  Future<XFile?> resizeImage(File imageFile, int width, int height) async {
-    // Generate a unique file path for the compressed image
-    String newPath =
-        '${imageFile.path}_compressed.${imageFile.path.split('.').last.toLowerCase()}';
-    var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
-      imageFile.path,
-      newPath,
-      quality: 80, // Set the desired image quality (0 - 100)
-      minWidth: width,
-      minHeight: height,
-    );
-
-    return compressedImageFile;
-  }
+  // Future<XFile?> resizeImage(File imageFile, int width, int height) async {
+  //   // Generate a unique file path for the compressed image
+  //   String newPath =
+  //       '${imageFile.path}_compressed.${imageFile.path.split('.').last.toLowerCase()}';
+  //   var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
+  //     imageFile.path,
+  //     newPath,
+  //     quality: 80, // Set the desired image quality (0 - 100)
+  //     minWidth: width,
+  //     minHeight: height,
+  //   );
+  //
+  //   return compressedImageFile;
+  // }
 
   Future<String> uploadImageToFirebase(File image) async {
     //Upload image to firebase
@@ -59,7 +58,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
         .child('profiles/ $filename')
         .putFile(image)
         .then((value) => (value.ref.getDownloadURL()).then((value) {
-              url = value;
+              setState(() {
+                url = value;
+              });
             }));
     return url;
   }
@@ -79,8 +80,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
           );
         });
     // compress image
-    File? compressedImage = (await resizeImage(_image!, 500, 500)) as File?;
-    await uploadImageToFirebase(compressedImage!);
+    //XFile? compressedImage = (await resizeImage(_image!, 500, 500));
+    url = await uploadImageToFirebase(_image!);
     Navigator.pop(context);
   }
 
@@ -202,30 +203,6 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      // SizedBox(height: 20),
-      // ElevatedButton(
-      //   onPressed: () async {
-      //     final String email = _email.text.trim();
-      //     final String password = _password.text.trim();
-      //     final String username = _username.text.trim();
-      //     await updateUser(instance.currentUser!.uid, email,
-      //         password, username, url);
-      //     Navigator.pop(context, true);
-      //   },
-      //
-      //   child: Text(
-      //     'SAVE',
-      //     style: TextStyle(
-      //       fontSize: 15,
-      //       letterSpacing: 2,
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      //   style: ElevatedButton.styleFrom(
-      //       padding: EdgeInsets.symmetric(horizontal: 50),
-      //       shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(10))),
-      // ),
       appBar: AppBar(
           actions: [
             Padding(
@@ -275,9 +252,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                   horizontal: 52, vertical: 77),
                               decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
-                                        color: const Color(0x1f939393),
+                                        color: Color(0x1f939393),
                                         blurRadius: 0,
                                         offset: Offset(0, 0),
                                         spreadRadius: 4)
@@ -496,8 +473,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         alignment: Alignment.bottomRight,
                                         children: [
                                           CustomImageView(
-                                              onTap: () {
-                                                print("onTap called.");
+                                              onTap: () async {
+                                                await pickImageFromGallery();
                                               },
                                               url: url,
                                               height: 80,

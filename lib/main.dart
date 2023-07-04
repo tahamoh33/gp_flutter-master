@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/cache_manager.dart';
-import 'package:trial1/api/firebase_api.dart';
+import 'package:trial1/helpers/firebase_api.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
 

@@ -79,10 +79,10 @@ class _HistoryState extends State<History> {
           // ),
           title: Text(
             "History",
-            style: TextStyle(fontSize: 22, color: Theme.of(context).hintColor),
+            style: TextStyle(fontSize: 25, color: Theme.of(context).hintColor),
           )),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: buildPredictionList(FirebaseAuth.instance.currentUser!.uid),
       ),
     );

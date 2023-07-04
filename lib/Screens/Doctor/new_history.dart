@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
+import 'package:trial1/helpers/BiggerImage.dart';
 
 import '../Constants/image_constant.dart';
 import '../Models/ResultModel.dart';
@@ -136,7 +137,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
           // ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: buildPredictionList(),
         ));
   }
@@ -162,6 +163,12 @@ class DoctorhistoryState extends State<Doctorhistory> {
       child: Row(
         children: [
           CustomImageView(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => ImagePage(image: urlImage))));
+            },
             radius: BorderRadius.circular(radius),
             url: urlImage,
             width: 130,

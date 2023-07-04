@@ -11,7 +11,7 @@ import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Authentication/forgot_pw.dart';
 import 'package:trial1/Screens/NavigationScreens/welcome.dart';
 import 'package:trial1/Screens/cache_manager.dart';
-import 'package:trial1/api/firebase_api.dart';
+import 'package:trial1/helpers/firebase_api.dart';
 
 import '../Constants/image_constant.dart';
 import '../Constants/string_manager.dart';

@@ -113,7 +113,7 @@ Widget buildText(BuildContext context, String title, String description,
                 ),
               ),
               SizedBox(
-                width: width * 0.08,
+                width: width * 0.07,
               ),
               Text(
                 date,
