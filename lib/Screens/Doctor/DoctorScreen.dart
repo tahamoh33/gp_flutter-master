@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trial1/CustomWidgets/custom_button.dart';
+import 'package:sizer/sizer.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
 
 import '../State Management/selected_page_provider.dart';
@@ -90,15 +90,15 @@ class _doctorState extends State<doctor> {
                 "Hello, $username",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
               Container(
-                height: 80,
-                width: 306,
+                // height: 80,
+                // width: 306,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,20 +107,22 @@ class _doctorState extends State<doctor> {
                       "Welcome Back !",
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
+                        color: Color(0xff000000),
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      "Take A Deep Breath And Let's Discover Your Eye Disease",
-                      maxLines: 2,
+                      "We are glad to have you back, we hope you are doing well and we wish you a great day !",
+                      maxLines: 4,
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
+                        color: Color(0xff000000),
                       ),
                     ),
                   ],
@@ -130,8 +132,8 @@ class _doctorState extends State<doctor> {
                 height: 20,
               ),
               Container(
-                width: 188,
-                height: 22,
+                // width: 188,
+                // height: 22,
                 child: Text(
                   "What Do You Need?",
                   style: TextStyle(
@@ -151,32 +153,34 @@ class _doctorState extends State<doctor> {
                 ),
               ),
               Container(
-                height: 125,
-                width: 306,
+                // height: 125,
+                // width: 306,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "View Predictions function helps Us keep track of the Detection results and the Accuracy of the model Predictions which helps us to modify the application to reach higher accuracy.",
+                      """View Predictions function helps Us keep track of the Detection results and the Accuracy of the model Predictions which helps us to modify the application to reach higher accuracy.
+                      
+Thank you for helping us !""",
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "thank you for helping us !",
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Text(
+                    //   "thank you for helping us !",
+                    //   maxLines: 2,
+                    //   style: TextStyle(
+                    //     fontFamily: 'Montserrat',
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.w400,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -184,11 +188,35 @@ class _doctorState extends State<doctor> {
                 height: 20,
               ),
               Center(
-                  child: CustomButton(
-                      label: "View Predictions",
-                      onPressed: () {
-                        selectedPageProvider.selectedIndex = 1;
-                      }))
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).hintColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    shadowColor: Theme.of(context).shadowColor,
+                    minimumSize: const Size(200, 50),
+                  ),
+                  onPressed: () {
+                    selectedPageProvider.selectedIndex = 1;
+                  },
+                  child: Text(
+                    "View Predictions",
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              // child: CustomButton(
+              //     height: 50,
+              //     width: 200,
+              //     label: "View Predictions",
+              //     onPressed: () {
+              //       selectedPageProvider.selectedIndex = 1;
+              //     }))
 //bos keda
               //View Predictions function helps Us keep track of the Detection results and the Accuracy of the model Predictions which helps us to modify the application to reach higher accuracy.
               //

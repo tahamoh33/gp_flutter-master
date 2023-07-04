@@ -3,9 +3,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:trial1/Screens/Doctor/DoctorShowProfile.dart';
 
-import '../../new_history.dart';
 import '../State Management/selected_page_provider.dart';
 import 'DoctorScreen.dart';
+import 'new_history.dart';
 
 class DoctorLayout extends StatefulWidget {
   const DoctorLayout({super.key});

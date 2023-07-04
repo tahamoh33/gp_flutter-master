@@ -30,10 +30,10 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
   File? _image;
   final picker = ImagePicker();
   final _email = TextEditingController();
-  final _Gender= TextEditingController();
+  final _Gender = TextEditingController();
   final _username = TextEditingController();
   final _birth = TextEditingController();
-  DateTime selectedDate = DateTime(2000,5,21);
+  DateTime selectedDate = DateTime(2000, 5, 21);
   FirebaseAuth instance = FirebaseAuth.instance;
 
   Future<XFile?> resizeImage(File imageFile, int width, int height) async {
@@ -83,8 +83,10 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
     await uploadImageToFirebase(compressedImage!);
     Navigator.pop(context);
   }
+
   Future<Null> _selectDate(BuildContext context) async {
-    DateFormat formatter = DateFormat('dd/MM/yyyy');//specifies day/month/year format
+    DateFormat formatter =
+        DateFormat('dd/MM/yyyy'); //specifies day/month/year format
 
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -94,7 +96,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        _birth.value = TextEditingValue(text: formatter.format(picked));//Use formatter to format selected date and assign to text field
+        _birth.value = TextEditingValue(
+            text: formatter.format(
+                picked)); //Use formatter to format selected date and assign to text field
       });
   }
 
@@ -121,9 +125,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
             url = "";
           }
           try {
-            _birth.text= userData['Date of Birth'];
+            _birth.text = userData['Date of Birth'];
           } catch (e) {
-            _birth.text = "" ;
+            _birth.text = "";
           }
         });
       }
@@ -150,7 +154,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
         'Gender': gender,
         'username': username,
         'profilePic': url,
-        'Date of Birth':Birth,
+        'Date of Birth': Birth,
       };
 
       if (user != null) {
@@ -223,30 +227,29 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
       //           borderRadius: BorderRadius.circular(10))),
       // ),
       appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: TextButton(
-              onPressed: () async {
-                final String email = _email.text.trim();
-                final String gender = _Gender.text.trim();
-                final String username = _username.text.trim();
-                final String birth = _birth.text.trim();
-                await updateUser(instance.currentUser!.uid, email, gender,
-                         username,
-                    birth,url)
-                    .then((value) => setState(() {}));
-
-                //Navigator.pop(context, true);
-              },
-              child: Text(
-                "SAVE",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () async {
+                  final String email = _email.text.trim();
+                  final String gender = _Gender.text.trim();
+                  final String username = _username.text.trim();
+                  final String birth = _birth.text.trim();
+                  await updateUser(instance.currentUser!.uid, email, gender,
+                          username, birth, url)
+                      .then((value) => setState(() {}));
+                },
+                child: const Text(
+                  "SAVE",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
           centerTitle: true,
           title: Text(
             "Profile",
@@ -390,25 +393,21 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
-                                                )
-                                            )
-                                        ),
+                                                ))),
                                         CustomTextFormField(
                                             autofocus: false,
-                                            controller:_birth ,
+                                            controller: _birth,
                                             width: width * 0.8,
                                             hintText: "21/5/2000",
-                                            suffix:  Container(
+                                            suffix: Container(
                                               child: CustomImageView(
-                                                  imagePath:  ImageConstant.EditDate,
-                                                  onTap: (){
+                                                  imagePath:
+                                                      ImageConstant.EditDate,
+                                                  onTap: () {
                                                     setState(() {
                                                       _selectDate(context);
                                                     });
-
-                                                  }
-                                                  ,
-
+                                                  },
                                                   height: 20,
                                                   width: 20),
                                             ),
@@ -421,7 +420,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             fontStyle: TextFormFieldFontStyle
                                                 .MontserratRomanRegular14,
                                             textInputAction:
-                                            TextInputAction.done),
+                                                TextInputAction.done),
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: 2, top: 28, bottom: 86),

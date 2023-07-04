@@ -7,9 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
 
-import 'Screens/Constants/image_constant.dart';
-import 'Screens/Models/ResultModel.dart';
-import 'Screens/Results.dart';
+import '../Constants/image_constant.dart';
+import '../Models/ResultModel.dart';
+import '../Results.dart';
 
 class Doctorhistory extends StatefulWidget {
   @override

@@ -1,6 +1,4 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -26,23 +24,23 @@ Future main() async {
     password = await CacheManager.getData('password');
     role = await CacheManager.getData('role');
   }
-  runApp(
-    DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => ChangeNotifierProvider<SelectedPageProvider>(
-              create: (context) => SelectedPageProvider(),
-              child: myApp(
-                  email: email,
-                  password: password,
-                  role: role), // Wrap your app
-            )),
-  );
   // runApp(
-  //   ChangeNotifierProvider<SelectedPageProvider>(
-  //     create: (_) => SelectedPageProvider(),
-  //     child: myApp(email: email, password: password, role: role),
-  //   ),
+  //   DevicePreview(
+  //       enabled: !kReleaseMode,
+  //       builder: (context) => ChangeNotifierProvider<SelectedPageProvider>(
+  //             create: (context) => SelectedPageProvider(),
+  //             child: myApp(
+  //                 email: email,
+  //                 password: password,
+  //                 role: role), // Wrap your app
+  //           )),
   // );
+  runApp(
+    ChangeNotifierProvider<SelectedPageProvider>(
+      create: (_) => SelectedPageProvider(),
+      child: myApp(email: email, password: password, role: role),
+    ),
+  );
 }
 
 class myApp extends StatelessWidget {
