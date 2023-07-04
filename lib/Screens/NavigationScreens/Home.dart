@@ -265,8 +265,8 @@ The better picture the better diagnosis.""",
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 20,
-                            width: 95,
+                            // height: 20,
+                            // width: 95,
                             child: Text(
                               "View History",
                               style: TextStyle(
@@ -283,7 +283,7 @@ The better picture the better diagnosis.""",
                             width: 186,
                             // height: 45,
                             child: Text(
-                              "History function helps keep track of the image’s results and the diseases you may have.",
+                              """History function helps keep track of the Detection results and the diseases you have.""",
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 12,

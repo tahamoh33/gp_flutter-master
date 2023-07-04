@@ -206,29 +206,31 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: TextButton(
-              onPressed: () async {
-                final String email = _email.text.trim();
-                final String gender = _Gender.text.trim();
-                final String username = _username.text.trim();
-                final String birth = _birth.text.trim();
-                await updateUser(instance.currentUser!.uid, email, gender,
-                        username, birth, url)
-                    .then((value) => setState(() {}));
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: TextButton(
+                onPressed: () async {
+                  final String email = _email.text.trim();
+                  final String gender = _Gender.text.trim();
+                  final String username = _username.text.trim();
+                  final String birth = _birth.text.trim();
+                  await updateUser(instance.currentUser!.uid, email, gender,
+                          username, birth, url)
+                      .then((value) => setState(() {}));
 
-                //Navigator.pop(context, true);
-              },
-              child: Text(
-                "SAVE",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue,
+                  //Navigator.pop(context, true);
+                },
+                child: Text(
+                  "SAVE",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
           centerTitle: true,
           title: Text(
             "Profile",

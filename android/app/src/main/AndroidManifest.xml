@@ -3,7 +3,7 @@
    <application
         android:label="Eye Checker"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
