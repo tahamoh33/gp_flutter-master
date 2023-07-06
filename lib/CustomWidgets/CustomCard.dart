@@ -15,8 +15,7 @@ Widget buildCard({
   required BuildContext context,
 }) {
   final double radius = 22;
-  final width = MediaQuery.of(context).size.width;
-  final height = MediaQuery.of(context).size.height;
+
   return Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(radius),
@@ -39,11 +38,10 @@ Widget buildCard({
 Widget buildText(BuildContext context, String title, String description,
     String date, String? Status) {
   final width = MediaQuery.of(context).size.width;
-  final height = MediaQuery.of(context).size.height;
   return Padding(
     padding: EdgeInsets.only(left: width * 0.02),
     child: Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

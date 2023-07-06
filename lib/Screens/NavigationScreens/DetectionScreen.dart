@@ -8,27 +8,39 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+
+import '../Models/eye_condition.dart';
 //import 'package:sizer/sizer.dart';
 
 class DetectionScreen extends StatefulWidget {
+  const DetectionScreen({super.key});
+
   @override
   State<DetectionScreen> createState() => _DetectionScreenState();
 }
 
-bool _loading = true;
 File? _image;
 final picker = ImagePicker();
 
 class _DetectionScreenState extends State<DetectionScreen> {
+  bool _loading = true;
+  List<EyeCondition> eyeConditions = [];
   bool _waiting = true;
   String imgUrl = "";
   String prediction = "";
 
-  pickImageFromGallery() async {
+  @override
+  initState() {
+    super.initState();
+    _loading = true;
+    _waiting = true;
+  }
+
+  Future<void> pickImageFromGallery() async {
     _loading = true;
     _waiting = true;
     prediction = "";
-    var image = await picker.getImage(source: ImageSource.gallery);
+    var image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) return null;
     setState(() {
       _image = File(image.path);
@@ -39,21 +51,36 @@ class _DetectionScreenState extends State<DetectionScreen> {
     await sendImage(_image!);
   }
 
-  Future<List<String>> sendImage(File image) async {
-    final url = Uri.parse('https://08cf-196-221-140-21.ngrok-free.app/predict');
+  List<EyeCondition> parseEyeConditions(String responseBody) {
+    final parsed = jsonDecode(responseBody);
+    List<EyeCondition> eyeConditions = [];
+    parsed.forEach((key, value) {
+      eyeConditions
+          .add(EyeCondition(name: key, confidence: value['confidence']));
+    });
+    return eyeConditions;
+  }
+
+  Future<void> sendImage(File image) async {
+    final url = Uri.parse('http://192.168.1.3:8080/predict');
     final request = http.MultipartRequest('POST', url);
     request.files.add(await http.MultipartFile.fromPath('image', image.path));
     _waiting = true;
     final streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
     if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
       setState(() {
-        prediction = result[0].trim() + " with confidence rate " + result[1];
-        storeImageInfoInFirestore(imgUrl, image.path, result[0].trim());
+        eyeConditions = parseEyeConditions(response.body);
+        // take the highest confidence from the list
+        final result = eyeConditions
+            .reduce(
+                (curr, next) => curr.confidence > next.confidence ? curr : next)
+            .name
+            .split('_');
+        prediction = result[0];
+        storeImageInfoInFirestore(imgUrl, image.path, result[0]);
         _waiting = false;
       });
-      return [result[0].trim(), result[1]];
     } else {
       throw Exception('Failed to connect to API');
     }
@@ -119,7 +146,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
                 const Text("Upload Image",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 const Text(
@@ -129,7 +156,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Container(
@@ -163,7 +190,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             child: _waiting == true
-                                                ? Center(
+                                                ? const Center(
                                                     child:
                                                         CircularProgressIndicator(),
                                                   )
@@ -173,7 +200,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                                   ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 vertical: 5),
                                             child: Text(
                                               prediction,
@@ -207,7 +234,26 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                       horizontal: width * 0.1,
                                       vertical: height * 0.017),
                                 ),
-                                onPressed: pickImageFromGallery,
+                                onPressed: () async {
+                                  await pickImageFromGallery();
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ListView.builder(
+                                        itemCount: eyeConditions.length,
+                                        itemBuilder: (context, index) {
+                                          final eyeCondition =
+                                              eyeConditions[index];
+                                          return ListTile(
+                                            title: Text(eyeCondition.name),
+                                            subtitle: Text(
+                                                'Confidence: ${eyeCondition.confidence}'),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
                                 child: const Text("Upload")),
                           ),
                         ])),

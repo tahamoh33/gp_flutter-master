@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:trial1/Screens/NavigationScreens/DetectionScreen.dart';
 import 'package:trial1/Screens/NavigationScreens/History.dart';
 import 'package:trial1/Screens/NavigationScreens/Home.dart';
-import 'package:trial1/newProfile.dart';
+import 'package:trial1/Screens/NavigationScreens/Profile.dart';
 
 import '../State Management/selected_page_provider.dart';
 
@@ -16,12 +16,17 @@ class AppLayout extends StatefulWidget {
 }
 
 class AppLayoutState extends State<AppLayout> {
-  List Screens = [HomeScreen(), History(), DetectionScreen(), ProfileScreen2()];
+  List Screens = [
+    const HomeScreen(),
+    const History(),
+    DetectionScreen(),
+    const ProfileScreen()
+  ];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final selectedPageProvider =
           Provider.of<SelectedPageProvider>(context, listen: false);
       selectedPageProvider.selectedIndex = 0;

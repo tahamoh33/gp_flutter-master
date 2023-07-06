@@ -25,9 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Widget secondScreen = WelcomeScreen();
     if (widget.email != null && widget.password != null) {
-      if (widget.role == 'Patient')
-        secondScreen = AppLayout();
-      else if (widget.role == 'Doctor') secondScreen = DoctorLayout();
+      if (widget.role == 'Patient') {
+        secondScreen = const AppLayout();
+      } else if (widget.role == 'Doctor') {
+        secondScreen = const DoctorLayout();
+      }
     }
     Timer(
         const Duration(seconds: 2),

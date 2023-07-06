@@ -63,7 +63,8 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
   }
 
   pickImageFromGallery() async {
-    image = await picker.getImage(source: ImageSource.gallery);
+    image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (image == null) return null;
     setState(() {
       _image = File(image.path);
@@ -72,7 +73,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         });
@@ -107,7 +108,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
         });
       }
     } catch (e) {
-      print(e);
+      //print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error Getting User Data due to ${e}!'),
@@ -146,7 +147,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error Updating due to ${e}!'),
+          content: Text('Error Updating due to $e!'),
           backgroundColor: Colors.red,
         ),
       );
@@ -170,13 +171,14 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       //resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(
+        title: const Center(
             child: Text(
           "Edit profile",
           style: TextStyle(fontSize: 25, color: Colors.blue),
@@ -229,10 +231,10 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(width: 0, color: Colors.white),
-                          color: Color(0xff1a74d7),
+                          color: const Color(0xff1a74d7),
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: pickImageFromGallery,
                           color: Colors.white,
                         ),
@@ -241,7 +243,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               TextField(
@@ -257,7 +259,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                   //prefixIcon: Icon(Icons.email_rounded),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextField(
@@ -273,7 +275,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                   //prefixIcon: Icon(Icons.email_rounded),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextField(
@@ -288,7 +290,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                               isObsecurepass = !isObsecurepass;
                             });
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.remove_red_eye,
                             color: Colors.grey,
                           ))
@@ -322,7 +324,7 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
               //     //prefixIcon: Icon(Icons.email_rounded),
               //   ),
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Row(
@@ -332,6 +334,10 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                    style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
                     child: Text(
                       "CANCEL",
                       style: TextStyle(
@@ -340,12 +346,8 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                         color: Theme.of(context).primaryColorDark,
                       ),
                     ),
-                    style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   ElevatedButton(
@@ -357,6 +359,10 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                           password, username, url);
                       Navigator.pop(context, true);
                     },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
                     child: Text(
                       'SAVE',
                       style: TextStyle(
@@ -365,10 +371,6 @@ class _editDoctorProfileState extends State<editDoctorProfile> {
                         color: Theme.of(context).primaryColorDark,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
                   )
                 ],
               )

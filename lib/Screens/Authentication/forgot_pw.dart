@@ -27,13 +27,13 @@ class _Forgotpw extends State<Forgotpw> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text("Password Reset link is sent ! , check your email "),
           );
         },
       );
     } on FirebaseAuthException catch (e) {
-      print(e);
+      //print(e);
       showDialog(
         context: context,
         builder: (context) {
@@ -53,10 +53,10 @@ class _Forgotpw extends State<Forgotpw> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: ((context) => Login())));
+            Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => const Login())));
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             size: 20,
             color: Colors.black,
@@ -65,16 +65,16 @@ class _Forgotpw extends State<Forgotpw> {
       ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.all(18),
+          padding: const EdgeInsets.all(18),
           children: [
-            Text("Please enter your email to reset password",
+            const Text("Please enter your email to reset password",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: "monterrsant",
                   fontWeight: FontWeight.w600,
                 )),
-            SizedBox(
+            const SizedBox(
               height: 53.0,
             ),
             TextFormField(
@@ -88,10 +88,10 @@ class _Forgotpw extends State<Forgotpw> {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.person_outline_sharp),
+                prefixIcon: const Icon(Icons.person_outline_sharp),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
             Center(

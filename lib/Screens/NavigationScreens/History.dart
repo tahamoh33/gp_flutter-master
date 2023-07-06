@@ -28,11 +28,11 @@ class _HistoryState extends State<History> {
           return Text('Error: ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return Center(
+          return const Center(
               child: Text(
             'No predictions found for this user.',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
@@ -44,7 +44,7 @@ class _HistoryState extends State<History> {
               .map((DocumentSnapshot<Map<String, dynamic>> document) {
             Map<String, dynamic> data = document.data()!;
             DateTime myDate =
-                data['timestamp'].toDate().add(Duration(hours: 1));
+                data['timestamp'].toDate().add(const Duration(hours: 1));
             String formattedDate = DateFormat('MMMM d, yyyy').format(myDate);
             return Column(children: [
               buildCard(
@@ -57,7 +57,7 @@ class _HistoryState extends State<History> {
                 Status: data['status'],
                 context: context,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ]);

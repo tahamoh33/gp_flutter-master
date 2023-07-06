@@ -42,7 +42,7 @@ class _ResultsState extends State<Results> {
             Container(
               width: width * 0.9,
               height: height * 0.07,
-              margin: EdgeInsets.fromLTRB(25, 0, 15, 0),
+              margin: const EdgeInsets.fromLTRB(25, 0, 15, 0),
               child: Text(
                 widget.resultModel.disease,
                 style: TextStyle(
@@ -61,8 +61,8 @@ class _ResultsState extends State<Results> {
               iconColor: Colors.black,
               //backgroundColor: Colors.blue,
               //controlAffinity: ListTileControlAffinity.leading,
-              tilePadding: EdgeInsets.fromLTRB(25, 0, 200, 0),
-              childrenPadding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+              tilePadding: const EdgeInsets.fromLTRB(25, 0, 200, 0),
+              childrenPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
               //expandedAlignment: Alignment.topLeft,
               //expandedCrossAxisAlignment: CrossAxisAlignment.start,
               title: Text('Description',
@@ -73,18 +73,14 @@ class _ResultsState extends State<Results> {
                     fontWeight: FontWeight.w600,
                   )),
               children: [
-                Container(
-                  // width: width * 0.9,
-                  // height: height * 0.3,
-                  child: ListTile(
-                    title: Text(
-                      widget.resultModel.description,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorDark,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
+                ListTile(
+                  title: Text(
+                    widget.resultModel.description,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
@@ -94,8 +90,8 @@ class _ResultsState extends State<Results> {
               height: height * 0.01,
             ),
             ExpansionTile(
-              tilePadding: EdgeInsets.fromLTRB(25, 0, 100, 0),
-              childrenPadding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+              tilePadding: const EdgeInsets.fromLTRB(25, 0, 100, 0),
+              childrenPadding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
               collapsedIconColor: Colors.black,
               iconColor: Colors.black,
               expandedAlignment: Alignment.topLeft,
@@ -109,16 +105,14 @@ class _ResultsState extends State<Results> {
                     fontWeight: FontWeight.w600,
                   )),
               children: [
-                Container(
-                  child: ListTile(
-                    title: Text(
-                      widget.resultModel.symptom,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorDark,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14.sp,
-                      ),
+                ListTile(
+                  title: Text(
+                    widget.resultModel.symptom,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
@@ -128,8 +122,8 @@ class _ResultsState extends State<Results> {
               height: height * 0.01,
             ),
             ExpansionTile(
-              tilePadding: EdgeInsets.fromLTRB(25, 0, 50, 0),
-              childrenPadding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+              tilePadding: const EdgeInsets.fromLTRB(25, 0, 50, 0),
+              childrenPadding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
               expandedAlignment: Alignment.topLeft,
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
               //controlAffinity: ListTileControlAffinity.leading,
@@ -143,22 +137,20 @@ class _ResultsState extends State<Results> {
                     fontWeight: FontWeight.w600,
                   )),
               children: [
-                Container(
-                  child: ListTile(
-                    title: Text(
-                      widget.resultModel.medicalAdvice,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorDark,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14.sp,
-                      ),
+                ListTile(
+                  title: Text(
+                    widget.resultModel.medicalAdvice,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Center(

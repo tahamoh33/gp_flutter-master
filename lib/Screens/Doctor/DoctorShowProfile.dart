@@ -9,9 +9,9 @@ import 'package:intl/intl.dart';
 
 import '../../CustomWidgets/custom_image_view.dart';
 import '../../CustomWidgets/custom_text_form_field.dart';
+import '../../helpers/cache_manager.dart';
 import '../Authentication/Login.dart';
 import '../Constants/image_constant.dart';
-import '../cache_manager.dart';
 
 // ignore_for_file: must_be_immutable
 class DoctorshowProfile extends StatefulWidget {
@@ -94,13 +94,14 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
         initialDate: selectedDate,
         firstDate: DateTime(1901, 1),
         lastDate: DateTime(2100));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
         _birth.value = TextEditingValue(
             text: formatter.format(
                 picked)); //Use formatter to format selected date and assign to text field
       });
+    }
   }
 
   Future getUserData() async {
@@ -248,7 +249,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                       Positioned(
                           top: height * 0.1,
                           child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 52, vertical: 77),
                               decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
@@ -259,8 +260,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         offset: Offset(0, 0),
                                         spreadRadius: 4)
                                   ],
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(73))),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(73))),
                               child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -269,7 +270,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                     Text(_username.text,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -281,7 +282,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 1, top: 78),
                                             child: Text("Email",
                                                 overflow: TextOverflow.ellipsis,
@@ -297,8 +298,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         CustomTextFormField(
                                             autofocus: false,
                                             controller: _email,
-                                            hintText: "Taha Mohamed",
-                                            margin: EdgeInsets.only(
+                                            //hintText: "Taha Mohamed",
+                                            margin: const EdgeInsets.only(
                                                 left: 1, top: 11),
                                             width: width * 0.8,
                                             variant: TextFormFieldVariant
@@ -306,7 +307,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             fontStyle: TextFormFieldFontStyle
                                                 .MontserratRomanRegular14),
                                         Padding(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 1, top: 23),
                                             child: Text("UserName",
                                                 overflow: TextOverflow.ellipsis,
@@ -324,14 +325,14 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             controller: _username,
                                             hintText: "Taha Mohamed",
                                             width: width * 0.8,
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 left: 1, top: 11),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
                                             fontStyle: TextFormFieldFontStyle
                                                 .MontserratRomanRegular14),
                                         Padding(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 2, top: 23),
                                             child: Text("Gender",
                                                 overflow: TextOverflow.ellipsis,
@@ -349,7 +350,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             controller: _Gender,
                                             width: width * 0.8,
                                             hintText: "Male",
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
@@ -358,7 +359,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             textInputAction:
                                                 TextInputAction.done),
                                         Padding(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 2, top: 23),
                                             child: Text("Date of Birth",
                                                 overflow: TextOverflow.ellipsis,
@@ -388,9 +389,11 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                   height: 20,
                                                   width: 20),
                                             ),
-                                            suffixConstraints: BoxConstraints(
-                                                maxHeight: 20, maxWidth: 20),
-                                            margin: EdgeInsets.only(
+                                            suffixConstraints:
+                                                const BoxConstraints(
+                                                    maxHeight: 20,
+                                                    maxWidth: 20),
+                                            margin: const EdgeInsets.only(
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
@@ -399,12 +402,13 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             textInputAction:
                                                 TextInputAction.done),
                                         Padding(
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 2, top: 28, bottom: 86),
                                             child: Row(children: [
                                               Padding(
                                                   padding:
-                                                      EdgeInsets.only(top: 2),
+                                                      const EdgeInsets.only(
+                                                          top: 2),
                                                   child: Text("Logout",
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -421,7 +425,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                       ))),
                                               CustomImageView(
                                                   onTap: () async {
-                                                    print("Log out");
+                                                    //print("Log out");
                                                     await CacheManager
                                                         .removeData('email');
                                                     await CacheManager
@@ -431,16 +435,15 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                     Navigator.pushReplacement(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder:
-                                                                ((context) =>
-                                                                    Login())));
+                                                            builder: ((context) =>
+                                                                const Login())));
                                                     await instance.signOut();
                                                   },
                                                   svgPath: ImageConstant.imgCut,
                                                   height: (22),
                                                   width: (17),
-                                                  margin:
-                                                      EdgeInsets.only(left: 10))
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10))
                                             ]))
                                       ],
                                     ),
@@ -464,7 +467,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                   .withOpacity(0.25),
                                               spreadRadius: 2,
                                               blurRadius: 2,
-                                              offset: Offset(0, 4))
+                                              offset: const Offset(0, 4))
                                         ])),
                                 SizedBox(
                                     height: 80,
@@ -483,7 +486,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                           Container(
                                               height: 17,
                                               width: 17,
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   right: 2, bottom: 3),
                                               child: Stack(
                                                   alignment:
@@ -503,8 +506,8 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                         width: 8,
                                                         alignment:
                                                             Alignment.topCenter,
-                                                        margin: EdgeInsets.only(
-                                                            top: 4))
+                                                        margin: const EdgeInsets
+                                                            .only(top: 4))
                                                   ]))
                                         ]))
                               ]))),

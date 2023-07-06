@@ -10,8 +10,8 @@ import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 
 import '../../CustomWidgets/custom_image_view.dart';
 import '../../CustomWidgets/custom_text_form_field.dart';
+import '../../helpers/cache_manager.dart';
 import '../Constants/image_constant.dart';
-import '../cache_manager.dart';
 
 class SignupPage extends StatefulWidget {
   final bool isUSer;
@@ -105,7 +105,7 @@ class _SignupPageState extends State<SignupPage> {
         Navigator.pop(context);
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => AppLayout()),
+            MaterialPageRoute(builder: (context) => const AppLayout()),
             (route) => false);
       });
     } on FirebaseAuthException catch (e) {
@@ -122,7 +122,7 @@ class _SignupPageState extends State<SignupPage> {
   Future createUser(
       String email, String password, String username, bool isUser) async {
     try {
-      if (!isUser)
+      if (!isUser) {
         await FirebaseFirestore.instance
             .collection("doctors")
             .doc(StringManager.uId)
@@ -137,7 +137,7 @@ class _SignupPageState extends State<SignupPage> {
             'DateOfBirth': '',
           },
         );
-      else {
+      } else {
         await FirebaseFirestore.instance
             .collection("users")
             .doc(StringManager.uId)
@@ -154,7 +154,7 @@ class _SignupPageState extends State<SignupPage> {
         );
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
@@ -225,15 +225,15 @@ class _SignupPageState extends State<SignupPage> {
                         hintText: 'Email Address',
                         alignment: Alignment.center,
                         prefix: Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
                           child: CustomImageView(
                             svgPath: ImageConstant.imgClock,
                             width: 20,
                             height: 20,
                           ),
                         ),
-                        prefixConstraints: BoxConstraints(maxHeight: 20),
+                        prefixConstraints: const BoxConstraints(maxHeight: 20),
                         fontStyle:
                             TextFormFieldFontStyle.MontserratRomanRegular16Dark,
                       ),
@@ -252,7 +252,7 @@ class _SignupPageState extends State<SignupPage> {
                             height: 20,
                           ),
                         ),
-                        prefixConstraints: BoxConstraints(maxHeight: 20),
+                        prefixConstraints: const BoxConstraints(maxHeight: 20),
                         fontStyle:
                             TextFormFieldFontStyle.MontserratRomanRegular16Dark,
                       ),
@@ -264,17 +264,17 @@ class _SignupPageState extends State<SignupPage> {
                         textInputType: TextInputType.visiblePassword,
                         alignment: Alignment.center,
                         prefix: Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
                           child: CustomImageView(
                             svgPath: ImageConstant.imgIconTwotoneLock,
                             width: 20,
                             height: 20,
                           ),
                         ),
-                        prefixConstraints: BoxConstraints(maxHeight: 20),
+                        prefixConstraints: const BoxConstraints(maxHeight: 20),
                         suffix: Container(
-                          margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
+                          margin: const EdgeInsets.fromLTRB(30, 6, 7, 6),
                           child: CustomImageView(
                               onTap: () {
                                 setState(() {
@@ -287,7 +287,7 @@ class _SignupPageState extends State<SignupPage> {
                               height: 20,
                               width: 20),
                         ),
-                        suffixConstraints: BoxConstraints(maxHeight: 44),
+                        suffixConstraints: const BoxConstraints(maxHeight: 44),
                         isObscureText: isPasswordVisible,
                         fontStyle:
                             TextFormFieldFontStyle.MontserratRomanRegular16Dark,
@@ -302,17 +302,17 @@ class _SignupPageState extends State<SignupPage> {
                         textInputType: TextInputType.visiblePassword,
                         alignment: Alignment.center,
                         prefix: Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
                           child: CustomImageView(
                             svgPath: ImageConstant.imgLock,
                             width: 20,
                             height: 20,
                           ),
                         ),
-                        prefixConstraints: BoxConstraints(maxHeight: 20),
+                        prefixConstraints: const BoxConstraints(maxHeight: 20),
                         suffix: Container(
-                          margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
+                          margin: const EdgeInsets.fromLTRB(30, 6, 7, 6),
                           child: CustomImageView(
                               onTap: () {
                                 setState(() {
@@ -326,7 +326,7 @@ class _SignupPageState extends State<SignupPage> {
                               height: 20,
                               width: 20),
                         ),
-                        suffixConstraints: BoxConstraints(maxHeight: 44),
+                        suffixConstraints: const BoxConstraints(maxHeight: 44),
                         isObscureText: isConfirmPasswordVisible,
                         fontStyle:
                             TextFormFieldFontStyle.MontserratRomanRegular16Dark,
@@ -370,7 +370,7 @@ class _SignupPageState extends State<SignupPage> {
                                     maxHeight: height * 0.9,
                                     minHeight: height * 0.2,
                                   ),
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(43),
                                       topRight: Radius.circular(43),
@@ -399,13 +399,13 @@ class _SignupPageState extends State<SignupPage> {
                                                       width: 176,
                                                       child: Image.asset(
                                                           "lib/images/Frame 2.png")),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                   ),
                                                   Padding(
                                                     padding: EdgeInsets.only(
                                                         left: width * 0.03),
-                                                    child: Text(
+                                                    child: const Text(
                                                       "Terms & Conditions",
                                                       style: TextStyle(
                                                           fontSize: 24,
@@ -413,7 +413,7 @@ class _SignupPageState extends State<SignupPage> {
                                                               FontWeight.bold),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 15,
                                                   ),
                                                   SingleChildScrollView(
@@ -425,14 +425,14 @@ class _SignupPageState extends State<SignupPage> {
                                                               18.0),
                                                       child: Text(
                                                         data,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 15,
                                                           // overflow: TextOverflow.clip,
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 15,
                                                   ),
                                                   Center(
@@ -456,7 +456,7 @@ class _SignupPageState extends State<SignupPage> {
                                   },
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 "Agree to the terms and conditions",
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
@@ -480,7 +480,7 @@ class _SignupPageState extends State<SignupPage> {
                             _confirmPassword.text.trim();
                         if (password != confirmPassword) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Passwords do not match'),
                               backgroundColor: Colors.red,
                             ),
@@ -489,7 +489,7 @@ class _SignupPageState extends State<SignupPage> {
                           return;
                         } else if (isChecked == false) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text(
                                   'Please accept the terms and conditions'),
                               backgroundColor: Colors.red,
@@ -547,7 +547,7 @@ class _SignupPageState extends State<SignupPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // google button
-                      Container(
+                      SizedBox(
                           width: width * 0.4,
                           height: height * 0.1,
                           child: InkWell(
@@ -565,10 +565,11 @@ class _SignupPageState extends State<SignupPage> {
                                   Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AppLayout()),
+                                          builder: (context) =>
+                                              const AppLayout()),
                                       (route) => false);
                                 }).catchError((e) {
-                                  print(e);
+                                  //print(e);
                                   // Handle sign-in error
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -578,7 +579,7 @@ class _SignupPageState extends State<SignupPage> {
                                   );
                                 });
                               },
-                              child: SquareTile(
+                              child: const SquareTile(
                                   imagePath:
                                       'lib/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png'))),
                     ],

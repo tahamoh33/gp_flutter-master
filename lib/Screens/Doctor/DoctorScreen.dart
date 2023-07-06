@@ -83,7 +83,7 @@ class _doctorState extends State<doctor> {
                 width: 82,
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -93,48 +93,44 @@ class _doctorState extends State<doctor> {
                   fontSize: 20.sp,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Container(
-                // height: 80,
-                // width: 306,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Welcome Back !",
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff000000),
-                      ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Welcome Back !",
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff000000),
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "We are glad to have you back, we hope you are doing well and we wish you a great day !",
+                    maxLines: 4,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff000000),
                     ),
-                    Text(
-                      "We are glad to have you back, we hope you are doing well and we wish you a great day !",
-                      maxLines: 4,
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff000000),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
                 // width: 188,
                 // height: 22,
-                child: Text(
+                child: const Text(
                   "What Do You Need?",
                   style: TextStyle(
                     fontSize: 18,
@@ -144,7 +140,7 @@ class _doctorState extends State<doctor> {
                 ),
               ),
               Center(
-                child: Container(
+                child: SizedBox(
                   width: 195,
                   height: 228.378,
                   child: InkWell(
@@ -184,7 +180,7 @@ Thank you for helping us !""",
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Center(

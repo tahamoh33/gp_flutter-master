@@ -140,7 +140,7 @@ class CustomTextFormField extends StatelessWidget {
   _setFontStyle() {
     switch (fontStyle) {
       case TextFormFieldFontStyle.MontserratRomanRegular14:
-        return TextStyle(
+        return const TextStyle(
           color: Colors.black,
           fontSize: 14,
           fontFamily: 'Montserrat',
@@ -175,7 +175,7 @@ class CustomTextFormField extends StatelessWidget {
   _setBorderStyle() {
     switch (variant) {
       case TextFormFieldVariant.UnderLineGray40001:
-        return UnderlineInputBorder(
+        return const UnderlineInputBorder(
           borderSide: BorderSide(
             color: Colors.grey,
           ),
@@ -185,7 +185,7 @@ class CustomTextFormField extends StatelessWidget {
       default:
         return OutlineInputBorder(
           borderRadius: _setOutlineBorderRadius(),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.grey,
           ),
         );
@@ -213,13 +213,13 @@ class CustomTextFormField extends StatelessWidget {
   _setPadding() {
     switch (padding) {
       case TextFormFieldPadding.PaddingT12:
-        return EdgeInsets.only(
+        return const EdgeInsets.only(
           top: 12,
           right: 12,
           bottom: 12,
         );
       default:
-        return EdgeInsets.only(
+        return const EdgeInsets.only(
           top: 12,
           bottom: 12,
         );

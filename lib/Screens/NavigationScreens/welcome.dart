@@ -64,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => SignupPage(
+                              builder: ((context) => const SignupPage(
                                     isUSer: true,
                                   ))));
                     },
@@ -80,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => SignupPage(
+                              builder: ((context) => const SignupPage(
                                     isUSer: false,
                                   ))));
                     },
@@ -102,8 +102,10 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => Login())));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => const Login())));
                   },
                   child: Text(
                     'Login',

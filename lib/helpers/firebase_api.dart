@@ -9,9 +9,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // }
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  print('Title' + message.notification!.title!);
-  print('Body' + message.notification!.body!);
-  print('Payload' + message.data.toString());
+  //print('Title' + message.notification!.title!);
+  //print('Body' + message.notification!.body!);
+  //print('Payload' + message.data.toString());
 } // This is the function that will be called when a notification is received whilst the app is in the background
 
 void saveToken(String token, String uid) async {

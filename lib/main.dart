@@ -2,12 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:trial1/Screens/cache_manager.dart';
+import 'package:trial1/helpers/cache_manager.dart';
 import 'package:trial1/helpers/firebase_api.dart';
 import 'package:trial1/theme/dark_theme.dart';
 import 'package:trial1/theme/light_theme.dart';
 
-//import 'package:trial1/Screens/Doctor/Notification.dart';
 import 'Screens/SplashScreen.dart';
 import 'Screens/State Management/selected_page_provider.dart';
 

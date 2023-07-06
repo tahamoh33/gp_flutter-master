@@ -4,46 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
-class profilescreen extends StatefulWidget {
-  const profilescreen({super.key});
+import '../../CustomWidgets/custom_image_view.dart';
+import '../../CustomWidgets/custom_text_form_field.dart';
+import '../../helpers/cache_manager.dart';
+import '../Authentication/Login.dart';
+import '../Constants/image_constant.dart';
+
+// ignore_for_file: must_be_immutable
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<profilescreen> createState() => _profilescreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _profilescreenState extends State<profilescreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   String url = "";
   var image;
-
+  bool isObscureText = true;
   String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
   File? _image;
   final picker = ImagePicker();
   final _email = TextEditingController();
-  final _password = TextEditingController();
+  final _Gender = TextEditingController();
   final _username = TextEditingController();
-
-  var formkey = GlobalKey<FormState>();
+  final _birth = TextEditingController();
+  DateTime selectedDate = DateTime(2000, 5, 21);
   FirebaseAuth instance = FirebaseAuth.instance;
-  bool isObsecurepass = true;
-  bool ispasswordField = true;
-
-  Future<XFile?> resizeImage(File imageFile, int width, int height) async {
-    // Generate a unique file path for the compressed image
-    String newPath = '${imageFile.path}_compressed.' +
-        imageFile.path.split('.').last.toLowerCase();
-    var compressedImageFile = await FlutterImageCompress.compressAndGetFile(
-      imageFile.path,
-      newPath,
-      quality: 80, // Set the desired image quality (0 - 100)
-      minWidth: width,
-      minHeight: height,
-    );
-
-    return compressedImageFile;
-  }
 
   Future<String> uploadImageToFirebase(File image) async {
     //Upload image to firebase
@@ -58,8 +48,32 @@ class _profilescreenState extends State<profilescreen> {
     return url;
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    DateFormat formatter =
+        DateFormat('dd/MM/yyyy'); //specifies day/month/year format
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1901, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        _birth.value = TextEditingValue(
+            text: formatter.format(
+                picked)); //Use formatter to format selected date and assign to text field
+      });
+    }
+  }
+
   pickImageFromGallery() async {
-    image = await picker.getImage(source: ImageSource.gallery);
+    image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxHeight: 2048,
+      maxWidth: 2048,
+    );
     if (image == null) return null;
     setState(() {
       _image = File(image.path);
@@ -68,13 +82,16 @@ class _profilescreenState extends State<profilescreen> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         });
     // compress image
-    XFile? compressedImage = (await resizeImage(_image!, 500, 500)) as XFile?;
-    await uploadImageToFirebase(compressedImage! as File);
+    await uploadImageToFirebase(_image!).then((value) {
+      setState(() {
+        url = value;
+      });
+    });
     Navigator.pop(context);
   }
 
@@ -90,9 +107,9 @@ class _profilescreenState extends State<profilescreen> {
         setState(() {
           _email.text = userData['email'];
           try {
-            _password.text = userData['password'];
+            _Gender.text = userData['Gender'];
           } catch (e) {
-            _password.text = "";
+            _Gender.text = "";
           }
           _username.text = userData['username'];
           try {
@@ -100,21 +117,26 @@ class _profilescreenState extends State<profilescreen> {
           } catch (e) {
             url = "";
           }
+          try {
+            _birth.text = userData['Date of Birth'];
+          } catch (e) {
+            _birth.text = "";
+          }
         });
       }
     } catch (e) {
-      print(e);
+      //print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error Getting User Data due to ${e}!'),
+          content: Text('Error Getting User Data due to $e!'),
           backgroundColor: Colors.red,
         ),
       );
     }
   }
 
-  Future updateUser(String uid, String email, String password, String username,
-      String url) async {
+  Future updateUser(String uid, String email, String gender, String username,
+      String Birth, String url) async {
     try {
       final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
       User? user = FirebaseAuth.instance.currentUser;
@@ -122,9 +144,10 @@ class _profilescreenState extends State<profilescreen> {
       //print('url2: $url ');
       final updatedUserData = {
         'email': email,
-        'password': password,
+        'Gender': gender,
         'username': username,
         'profilePic': url,
+        'Date of Birth': Birth,
       };
 
       if (user != null) {
@@ -142,7 +165,7 @@ class _profilescreenState extends State<profilescreen> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error Updating due to ${e}!'),
+          content: Text('Error Updating due to $e!'),
           backgroundColor: Colors.red,
         ),
       );
@@ -151,7 +174,6 @@ class _profilescreenState extends State<profilescreen> {
 
   @override
   void initState() {
-    url = "";
     super.initState();
     getUserData();
   }
@@ -160,7 +182,8 @@ class _profilescreenState extends State<profilescreen> {
   void dispose() {
     _username.dispose();
     _email.dispose();
-    _password.dispose();
+    _birth.dispose();
+    _Gender.dispose();
     url = "";
     // _dateController.dispose();
     super.dispose();
@@ -168,211 +191,320 @@ class _profilescreenState extends State<profilescreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      //resizeToAvoidBottomPadding: false,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Center(
-            child: Text(
-          "Edit profile",
-          style: TextStyle(fontSize: 25, color: Colors.blue),
-        )),
-        automaticallyImplyLeading: false,
-      ),
-      body: Form(
-        key: formkey,
-        child: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(18),
-            children: [
-              Center(
-                child: Stack(
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _image != null
-                        ? Image.file(
-                            _image!,
-                            height: 130,
-                            width: 130,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 4, color: Colors.white),
-                                boxShadow: [
-                                  BoxShadow(
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    color: Theme.of(context).shadowColor,
-                                  ),
-                                ],
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage((url != "")
-                                        ? url
-                                        : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"))),
-                          ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(width: 0, color: Colors.white),
-                          color: Color(0xff1a74d7),
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: pickImageFromGallery,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextField(
-                controller: _username,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Theme.of(context).dialogBackgroundColor,
-                  hintText: 'Name',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  //prefixIcon: Icon(Icons.email_rounded),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Theme.of(context).dialogBackgroundColor,
-                  hintText: 'Email Address',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  //prefixIcon: Icon(Icons.email_rounded),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                obscureText: ispasswordField ? isObsecurepass : false,
-                controller: _password,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  suffixIcon: ispasswordField
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isObsecurepass = !isObsecurepass;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.grey,
-                          ))
-                      : null,
-                  filled: true,
-                  fillColor: Theme.of(context).dialogBackgroundColor,
-                  hintText: 'password',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                ),
-              ),
-              // SizedBox(
-              //   height: 20,
-              // ),
-              // TextFormField(
-              //   controller: _dateController,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       this.Age = value;
-              //     });
-              //   },
-              //   keyboardType: TextInputType.datetime,
-              //   decoration: InputDecoration(
-              //     filled: true,
-              //     fillColor: Colors.grey.shade300,
-              //     labelText: 'Date of birth',
-              //     border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(10),
-              //         borderSide: BorderSide.none),
-              //     //prefixIcon: Icon(Icons.email_rounded),
-              //   ),
-              // ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "CANCEL",
-                      style: TextStyle(
-                        fontSize: 15,
-                        letterSpacing: 2,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: TextButton(
+                onPressed: () async {
+                  final String email = _email.text.trim();
+                  final String gender = _Gender.text.trim();
+                  final String username = _username.text.trim();
+                  final String birth = _birth.text.trim();
+                  await updateUser(instance.currentUser!.uid, email, gender,
+                          username, birth, url)
+                      .then((value) => setState(() {}));
+
+                  //Navigator.pop(context, true);
+                },
+                child: const Text(
+                  "SAVE",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue,
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final String email = _email.text.trim();
-                      final String password = _password.text.trim();
-                      final String username = _username.text.trim();
-                      await updateUser(instance.currentUser!.uid, email,
-                          password, username, url);
-                      Navigator.pop(context, true);
-                    },
-                    child: Text(
-                      'SAVE',
-                      style: TextStyle(
-                        fontSize: 15,
-                        letterSpacing: 2,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+                ),
+              ),
+            ),
+          ],
+          centerTitle: true,
+          title: Text(
+            "Profile",
+            style: TextStyle(
+                fontSize: 25, color: Theme.of(context).colorScheme.secondary),
+          )),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+          padding: EdgeInsets.only(top: height * 0.05),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                    height: height,
+                    //margin: EdgeInsets.only(top: 41),
+                    child: Stack(alignment: Alignment.topCenter, children: [
+                      Positioned(
+                          top: height * 0.1,
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 52, vertical: 77),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Color(0x1f939393),
+                                        blurRadius: 0,
+                                        offset: Offset(0, 0),
+                                        spreadRadius: 4)
+                                  ],
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(73))),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(_username.text,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 1, top: 78),
+                                            child: Text("Email",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _email,
+                                            //hintText: "Taha Mohamed",
+                                            margin: const EdgeInsets.only(
+                                                left: 1, top: 11),
+                                            width: width * 0.8,
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 1, top: 23),
+                                            child: Text("UserName",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _username,
+                                            hintText: "...",
+                                            margin: const EdgeInsets.only(
+                                                left: 1, top: 11),
+                                            width: width * 0.8,
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 2, top: 23),
+                                            child: Text("Gender",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _Gender,
+                                            width: width * 0.8,
+                                            hintText: "Male",
+                                            margin: const EdgeInsets.only(
+                                                left: 1, top: 9),
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14,
+                                            textInputAction:
+                                                TextInputAction.done),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 2, top: 23),
+                                            child: Text("Date of Birth",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ))),
+                                        CustomTextFormField(
+                                            autofocus: false,
+                                            controller: _birth,
+                                            width: width * 0.8,
+                                            hintText: "21/5/2000",
+                                            suffix: CustomImageView(
+                                                imagePath:
+                                                    ImageConstant.EditDate,
+                                                onTap: () {
+                                                  setState(() {
+                                                    _selectDate(context);
+                                                  });
+                                                },
+                                                height: 20,
+                                                width: 20),
+                                            suffixConstraints:
+                                                const BoxConstraints(
+                                                    maxHeight: 20,
+                                                    maxWidth: 20),
+                                            margin: const EdgeInsets.only(
+                                                left: 1, top: 9),
+                                            variant: TextFormFieldVariant
+                                                .UnderLineGray40001,
+                                            fontStyle: TextFormFieldFontStyle
+                                                .MontserratRomanRegular14,
+                                            textInputAction:
+                                                TextInputAction.done),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 2, top: 28, bottom: 86),
+                                            child: Row(children: [
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 2),
+                                                  child: Text("Logout",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ))),
+                                              CustomImageView(
+                                                  onTap: () async {
+                                                    //print("Log out");
+                                                    await CacheManager
+                                                        .removeData('email');
+                                                    await CacheManager
+                                                        .removeData('password');
+                                                    await CacheManager
+                                                        .removeData('role');
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: ((context) =>
+                                                                const Login())));
+                                                    await instance.signOut();
+                                                  },
+                                                  svgPath: ImageConstant.imgCut,
+                                                  height: (22),
+                                                  width: (17),
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10)),
+                                            ]))
+                                      ],
+                                    ),
+                                  ]))),
+                      Positioned(
+                          top: 40,
+                          child: SizedBox(
+                              height: 87,
+                              width: 83,
+                              child:
+                                  Stack(alignment: Alignment.center, children: [
+                                Container(
+                                    height: 87,
+                                    width: 83,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(43),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.25),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: const Offset(0, 4))
+                                        ])),
+                                SizedBox(
+                                    height: 80,
+                                    width: 77,
+                                    child: Stack(
+                                        alignment: Alignment.bottomRight,
+                                        children: [
+                                          CustomImageView(
+                                              onTap: () {
+                                                pickImageFromGallery();
+                                              },
+                                              url: (url != "")
+                                                  ? url
+                                                  : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
+                                              height: 80,
+                                              width: 77,
+                                              alignment: Alignment.center),
+                                          Container(
+                                              height: 17,
+                                              width: 17,
+                                              margin: const EdgeInsets.only(
+                                                  right: 2, bottom: 3),
+                                              child: Stack(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  children: [
+                                                    CustomImageView(
+                                                        svgPath: ImageConstant
+                                                            .imgIconcheckcircled,
+                                                        height: 17,
+                                                        width: 17,
+                                                        alignment:
+                                                            Alignment.center),
+                                                    CustomImageView(
+                                                        svgPath: ImageConstant
+                                                            .imgPen,
+                                                        height: 8,
+                                                        width: 8,
+                                                        alignment:
+                                                            Alignment.topCenter,
+                                                        margin: const EdgeInsets
+                                                            .only(top: 4))
+                                                  ]))
+                                        ]))
+                              ]))),
+                    ]))
+              ])),
     );
   }
 }

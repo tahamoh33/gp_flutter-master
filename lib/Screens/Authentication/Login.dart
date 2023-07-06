@@ -10,7 +10,7 @@ import 'package:trial1/CustomWidgets/custom_text_form_field.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Authentication/forgot_pw.dart';
 import 'package:trial1/Screens/NavigationScreens/welcome.dart';
-import 'package:trial1/Screens/cache_manager.dart';
+import 'package:trial1/helpers/cache_manager.dart';
 import 'package:trial1/helpers/firebase_api.dart';
 
 import '../Constants/image_constant.dart';
@@ -19,12 +19,14 @@ import '../Doctor/doctor_app_layout.dart';
 import '../NavigationScreens/AppLayout.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   State<Login> createState() => LoginState();
 }
 
 class LoginState extends State<Login> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final _firebasemessaging = FirebaseMessaging.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool isPasswordVisible = true;
@@ -55,7 +57,7 @@ class LoginState extends State<Login> {
         },
       );
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
@@ -107,16 +109,16 @@ class LoginState extends State<Login> {
         saveToken(token!, _auth.currentUser!.uid);
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => AppLayout()),
+            MaterialPageRoute(builder: (context) => const AppLayout()),
             (route) => false);
       } else if (role == 'Doctor') {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => DoctorLayout()),
+            MaterialPageRoute(builder: (context) => const DoctorLayout()),
             (route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Unknown User'),
             backgroundColor: Colors.red,
           ),
@@ -174,9 +176,9 @@ class LoginState extends State<Login> {
       appBar: AppBar(),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: ListView(
-            padding: EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
             children: [
               SizedBox(height: height * 0.03),
               SizedBox(
@@ -194,7 +196,7 @@ class LoginState extends State<Login> {
                       Shadow(
                         blurRadius: 10.0,
                         color: Theme.of(context).shadowColor,
-                        offset: Offset(5.0, 5.0),
+                        offset: const Offset(5.0, 5.0),
                       ),
                     ],
                   ),
@@ -227,14 +229,15 @@ class LoginState extends State<Login> {
                 hintText: 'Email Address',
                 alignment: Alignment.center,
                 prefix: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   child: CustomImageView(
                     svgPath: ImageConstant.imgClock,
                     width: 20,
                     height: 20,
                   ),
                 ),
-                prefixConstraints: BoxConstraints(maxHeight: 20),
+                prefixConstraints: const BoxConstraints(maxHeight: 20),
                 fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16Dark,
               ),
 
@@ -248,16 +251,17 @@ class LoginState extends State<Login> {
                 textInputType: TextInputType.visiblePassword,
                 alignment: Alignment.center,
                 prefix: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   child: CustomImageView(
                     svgPath: ImageConstant.imgIconTwotoneLock,
                     width: 20,
                     height: 20,
                   ),
                 ),
-                prefixConstraints: BoxConstraints(maxHeight: 20),
+                prefixConstraints: const BoxConstraints(maxHeight: 20),
                 suffix: Container(
-                  margin: EdgeInsets.fromLTRB(30, 6, 7, 6),
+                  margin: const EdgeInsets.fromLTRB(30, 6, 7, 6),
                   child: CustomImageView(
                       onTap: () {
                         setState(() {
@@ -270,7 +274,7 @@ class LoginState extends State<Login> {
                       height: 20,
                       width: 20),
                 ),
-                suffixConstraints: BoxConstraints(maxHeight: 44),
+                suffixConstraints: const BoxConstraints(maxHeight: 44),
                 isObscureText: isPasswordVisible,
                 fontStyle: TextFormFieldFontStyle.MontserratRomanRegular16Dark,
               ),
@@ -286,7 +290,7 @@ class LoginState extends State<Login> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => Forgotpw())));
+                              builder: ((context) => const Forgotpw())));
                     },
                     child: Text(
                       "Forgot password ?",
@@ -322,7 +326,7 @@ class LoginState extends State<Login> {
                 height: height * 0.03,
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                 width: width * 0.5,
                 height: height * 0.05,
                 child: Row(
@@ -366,53 +370,49 @@ class LoginState extends State<Login> {
                 height: height * 0.03,
               ),
 
-              Container(
-                //margin: EdgeInsets.fromLTRB(38, 0,0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                        width: width * 0.4,
-                        height: height * 0.1,
-                        child: InkWell(
-                            splashColor: Colors.black26,
-                            onTap: () {
-                              _signInWithGoogle()
-                                  .then((UserCredential? userCredential) {
-                                if (userCredential
-                                        ?.additionalUserInfo?.isNewUser ==
-                                    true) {
-                                  SendDetailsToFirestore();
-                                }
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: width * 0.4,
+                      height: height * 0.1,
+                      child: InkWell(
+                          splashColor: Colors.black26,
+                          onTap: () {
+                            _signInWithGoogle()
+                                .then((UserCredential? userCredential) {
+                              if (userCredential
+                                      ?.additionalUserInfo?.isNewUser ==
+                                  true) {
+                                SendDetailsToFirestore();
+                              }
 
-                                // Handle successful sign-in
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AppLayout()),
-                                    (route) => false);
-                              }).catchError((e) {
-                                // Handle sign-in error
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(e.message.toString()),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              });
-                            },
-                            child: const SquareTile(
-                                imagePath:
-                                    'lib/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png'))),
-                  ],
-                ),
+                              // Handle successful sign-in
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AppLayout()),
+                                  (route) => false);
+                            }).catchError((e) {
+                              // Handle sign-in error
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.message.toString()),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            });
+                          },
+                          child: const SquareTile(
+                              imagePath:
+                                  'lib/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png'))),
+                ],
               ),
               SizedBox(
                 height: height * 0.03,
               ),
-              Container(
+              SizedBox(
                 // margin: EdgeInsets.only(right: width * 0.1, left: width * 0.1),
                 width: width * 0.1,
                 height: height * 0.15,

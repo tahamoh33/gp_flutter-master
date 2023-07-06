@@ -20,7 +20,7 @@ class DoctorLayoutState extends State<DoctorLayout> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final selectedPageProvider =
           Provider.of<SelectedPageProvider>(context, listen: false);
       selectedPageProvider.selectedIndex = 0;
@@ -60,14 +60,15 @@ class DoctorLayoutState extends State<DoctorLayout> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
           child: GNav(
-            backgroundColor: dark ? Color(0xff2f2b34) : Colors.white,
+            backgroundColor: dark ? const Color(0xff2f2b34) : Colors.white,
             color: Theme.of(context).primaryColorDark,
+            duration: const Duration(milliseconds: 400),
             activeColor: const Color(0xff1a74d7),
             // tabBackgroundColor: dark
             //     ? Colors.grey.shade900
             //     : Theme.of(context).primaryColorLight,
 
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             gap: 8,
             tabs: const <GButton>[
               GButton(
@@ -85,7 +86,6 @@ class DoctorLayoutState extends State<DoctorLayout> {
             ],
             selectedIndex: selectedPageProvider.selectedIndex,
             //selectedItemColor: const Color(0xff1a74d7),
-
             //unselectedItemColor: Colors.grey,
             onTabChange: (index) {
               selectedPageProvider.selectedIndex = index;

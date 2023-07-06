@@ -5,13 +5,13 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.black,
   primaryColorDark: Colors.white,
-  hoverColor: Color(0xff1876d0),
-  hintColor: Color(0xff1876d0),
+  hoverColor: const Color(0xff1876d0),
+  hintColor: const Color(0xff1876d0),
   scaffoldBackgroundColor: Colors.black,
   secondaryHeaderColor: Colors.white70,
   shadowColor: Colors.white.withOpacity(0.7),
   dialogBackgroundColor: Colors.grey[900],
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
       statusBarColor: Colors.black,
@@ -25,9 +25,9 @@ ThemeData darkTheme = ThemeData(
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.black,
-    selectedItemColor: Color(0xff1876d0),
+    selectedItemColor: const Color(0xff1876d0),
     unselectedItemColor: Colors.white.withOpacity(0.5),
-    selectedIconTheme: IconThemeData(
+    selectedIconTheme: const IconThemeData(
       size: 30,
     ),
     showSelectedLabels: false,

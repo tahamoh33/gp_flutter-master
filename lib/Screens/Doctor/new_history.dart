@@ -47,7 +47,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
             },
           ));
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
@@ -76,7 +76,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
           return Text('Error: ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.data!.docs.isEmpty) {
@@ -92,7 +92,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
               .map((DocumentSnapshot<Map<String, dynamic>> document) {
             Map<String, dynamic> data = document.data()!;
             DateTime myDate =
-                data['timestamp'].toDate().add(Duration(hours: 1));
+                data['timestamp'].toDate().add(const Duration(hours: 1));
             String formattedDate = DateFormat('MMMM d, yyyy').format(myDate);
             return Column(children: [
               buildCard(
@@ -107,7 +107,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
                 userId: data['uid'],
                 context: context,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ]);
@@ -152,9 +152,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
       required String docId,
       required String userId,
       String? Status}) {
-    final double radius = 22;
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    const double radius = 22;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -185,7 +183,6 @@ class DoctorhistoryState extends State<Doctorhistory> {
   Widget buildText(BuildContext context, String title, String description,
       String date, String? status, String docId, String userId) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     if (status == "pending") {
       isCorrect = false;
       isWrong = false;
@@ -205,7 +202,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             TextButton(
               onPressed: () {
@@ -245,14 +242,14 @@ class DoctorhistoryState extends State<Doctorhistory> {
                         .doc(userId)
                         .get();
                     String token = snap['token'];
-                    print(token);
+                    //print(token);
                     sendPushMessage(token);
                     setState(() {
                       confirm(docId);
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 CustomImageView(
@@ -265,7 +262,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
                         .doc(userId)
                         .get();
                     String token = snap['token'];
-                    print(token);
+                    //print(token);
                     sendPushMessage(token);
                     setState(() {
                       deny(docId);

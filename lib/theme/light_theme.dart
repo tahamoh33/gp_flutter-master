@@ -11,7 +11,7 @@ ThemeData lightTheme = ThemeData(
   secondaryHeaderColor: Colors.black54,
   dialogBackgroundColor: Colors.grey[300],
   shadowColor: Colors.black.withOpacity(0.2),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     color: Colors.transparent,
     systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,
@@ -24,9 +24,9 @@ ThemeData lightTheme = ThemeData(
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
-    selectedItemColor: Color(0xff1876d0),
+    selectedItemColor: const Color(0xff1876d0),
     unselectedItemColor: Colors.black.withOpacity(0.5),
-    selectedIconTheme: IconThemeData(
+    selectedIconTheme: const IconThemeData(
       size: 30,
     ),
     showSelectedLabels: false,
