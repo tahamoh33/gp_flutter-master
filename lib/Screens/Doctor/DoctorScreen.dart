@@ -87,7 +87,7 @@ class _doctorState extends State<doctor> {
                 height: 5,
               ),
               Text(
-                "Hello, $username",
+                username == "" ? "Hello, User" : "Hello, $username",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.sp,

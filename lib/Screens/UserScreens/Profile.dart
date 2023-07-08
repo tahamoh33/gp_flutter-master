@@ -415,16 +415,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             controller: _birth,
                                             width: width * 0.8,
                                             hintText: "21/5/2000",
-                                            suffix: CustomImageView(
-                                                imagePath:
-                                                    ImageConstant.EditDate,
-                                                onTap: () {
-                                                  setState(() {
-                                                    _selectDate(context);
-                                                  });
-                                                },
-                                                height: 20,
-                                                width: 20),
+                                            onTap: () {
+                                              setState(() {
+                                                _selectDate(context);
+                                              });
+                                            },
+                                            // suffix: CustomImageView(
+                                            //     imagePath:
+                                            //         ImageConstant.EditDate,
+                                            //     onTap: () {
+                                            //       setState(() {
+                                            //         _selectDate(context);
+                                            //       });
+                                            //     },
+                                            //     height: 20,
+                                            //     width: 20),
                                             suffixConstraints:
                                                 const BoxConstraints(
                                                     maxHeight: 20,
