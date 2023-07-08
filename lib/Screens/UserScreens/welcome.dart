@@ -5,8 +5,13 @@ import 'package:trial1/Screens/Authentication/signup.dart';
 import '../../CustomWidgets/custom_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  isDarkMode(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = this.isDarkMode(context);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -18,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/images/logo.png',
+              isDarkMode ? 'lib/images/logo_dark.png' : 'lib/images/logo.png',
               width: width * 0.5,
             ),
             SizedBox(
