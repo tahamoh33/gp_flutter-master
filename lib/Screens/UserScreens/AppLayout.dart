@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:trial1/Screens/NavigationScreens/DetectionScreen.dart';
-import 'package:trial1/Screens/NavigationScreens/History.dart';
-import 'package:trial1/Screens/NavigationScreens/Home.dart';
-import 'package:trial1/Screens/NavigationScreens/Profile.dart';
 
 import '../State Management/selected_page_provider.dart';
+import 'DetectionScreen.dart';
+import 'History.dart';
+import 'Home.dart';
+import 'Profile.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -19,8 +19,8 @@ class AppLayoutState extends State<AppLayout> {
   List Screens = [
     const HomeScreen(),
     const History(),
-    DetectionScreen(),
-    const ProfileScreen()
+    const DetectionScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -36,7 +36,7 @@ class AppLayoutState extends State<AppLayout> {
   @override
   Widget build(BuildContext context) {
     final selectedPageProvider = Provider.of<SelectedPageProvider>(context);
-    final dark;
+    final bool dark;
     if (Brightness.dark == MediaQuery.of(context).platformBrightness) {
       dark = true;
     } else {

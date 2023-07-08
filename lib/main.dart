@@ -60,7 +60,6 @@ class myApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           home: SplashScreen(email: email, password: password, role: role),
-          //home: ProfileScreen2(),
         );
       }, //SplashScreen(email: email, password: password)
     );

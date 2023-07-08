@@ -323,7 +323,42 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                         CustomTextFormField(
                                             autofocus: false,
                                             controller: _username,
-                                            hintText: "Taha Mohamed",
+                                            hintText: "Username",
+                                            // onChanged: (value) {
+                                            //   setState(() {
+                                            //     showDialog(
+                                            //         context: context,
+                                            //         builder: (BuildContext
+                                            //                 context) =>
+                                            //             AlertDialog(
+                                            //               title: Text(
+                                            //                   "Change Username"),
+                                            //               content: Text(
+                                            //                   "Are you sure you want to change your username?"),
+                                            //               actions: [
+                                            //                 TextButton(
+                                            //                     onPressed: () {
+                                            //                       Navigator.pop(
+                                            //                           context);
+                                            //                     },
+                                            //                     child:
+                                            //                         Text("No")),
+                                            //                 TextButton(
+                                            //                     onPressed:
+                                            //                         () async {
+                                            //                       await instance
+                                            //                           .currentUser!
+                                            //                           .updateDisplayName(
+                                            //                               value);
+                                            //                       Navigator.pop(
+                                            //                           context);
+                                            //                     },
+                                            //                     child: Text(
+                                            //                         "Yes")),
+                                            //               ],
+                                            //             ));
+                                            //   });
+                                            // },
                                             width: width * 0.8,
                                             margin: const EdgeInsets.only(
                                                 left: 1, top: 11),
@@ -373,22 +408,27 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                   fontWeight: FontWeight.w400,
                                                 ))),
                                         CustomTextFormField(
-                                            autofocus: false,
+                                            //autofocus: false,
                                             controller: _birth,
                                             width: width * 0.8,
                                             hintText: "21/5/2000",
-                                            suffix: Container(
-                                              child: CustomImageView(
-                                                  imagePath:
-                                                      ImageConstant.EditDate,
-                                                  onTap: () {
-                                                    setState(() {
-                                                      _selectDate(context);
-                                                    });
-                                                  },
-                                                  height: 20,
-                                                  width: 20),
-                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                _selectDate(context);
+                                              });
+                                            },
+                                            // suffix: Container(
+                                            //   child: CustomImageView(
+                                            //       imagePath:
+                                            //           ImageConstant.EditDate,
+                                            //       onTap: () {
+                                            //         setState(() {
+                                            //           _selectDate(context);
+                                            //         });
+                                            //       },
+                                            //       height: 20,
+                                            //       width: 20),
+                                            // ),
                                             suffixConstraints:
                                                 const BoxConstraints(
                                                     maxHeight: 20,

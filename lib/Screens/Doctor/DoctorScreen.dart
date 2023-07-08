@@ -69,7 +69,7 @@ class _doctorState extends State<doctor> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.only(left: 30.0, bottom: 30, right: 30),
+        padding: const EdgeInsets.only(left: 40.0, bottom: 30, right: 40),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -84,17 +84,17 @@ class _doctorState extends State<doctor> {
               ),
 
               const SizedBox(
-                height: 20,
+                height: 5,
               ),
               Text(
                 "Hello, $username",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.sp,
+                  fontSize: 18.sp,
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -104,7 +104,7 @@ class _doctorState extends State<doctor> {
                     "Welcome Back !",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xff000000),
                     ),
@@ -117,7 +117,7 @@ class _doctorState extends State<doctor> {
                     maxLines: 4,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 16.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xff000000),
                     ),
@@ -131,7 +131,7 @@ class _doctorState extends State<doctor> {
                 // width: 188,
                 // height: 22,
                 child: const Text(
-                  "What Do You Need?",
+                  "Are You Ready To Help Us?",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -161,7 +161,7 @@ class _doctorState extends State<doctor> {
 Thank you for helping us !""",
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 14.sp,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -181,7 +181,7 @@ Thank you for helping us !""",
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 30,
               ),
               Center(
                 child: ElevatedButton(
@@ -191,7 +191,7 @@ Thank you for helping us !""",
                       borderRadius: BorderRadius.circular(5),
                     ),
                     shadowColor: Theme.of(context).shadowColor,
-                    minimumSize: const Size(200, 50),
+                    minimumSize: const Size(125, 50),
                   ),
                   onPressed: () {
                     selectedPageProvider.selectedIndex = 1;
@@ -200,7 +200,7 @@ Thank you for helping us !""",
                     "View Predictions",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),

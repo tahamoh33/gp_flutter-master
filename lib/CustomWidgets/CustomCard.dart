@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/Models/ResultModel.dart';
-import 'package:trial1/Screens/Results.dart';
 
+import '../Screens/UserScreens/Results.dart';
 import 'custom_image_view.dart';
 
 Widget buildCard({
@@ -11,6 +11,7 @@ Widget buildCard({
   required String text,
   required String date,
   required String urlImage,
+  required String docID,
   String? Status,
   required BuildContext context,
 }) {
@@ -29,59 +30,65 @@ Widget buildCard({
           width: 130,
           height: 130,
         ),
-        Expanded(child: buildText(context, title, description, date, Status)),
+        Expanded(
+            child: buildText(context, title, description, date, docID, Status)),
       ],
     ),
   );
 }
 
 Widget buildText(BuildContext context, String title, String description,
-    String date, String? Status) {
+    String date, String docID, String? Status) {
   final width = MediaQuery.of(context).size.width;
   return Padding(
-    padding: EdgeInsets.only(left: width * 0.02),
+    padding: EdgeInsets.only(left: width * 0.02, right: width * 0.02),
     child: Container(
       padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Text(
             title,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w800),
           ),
-          //const SizedBox(height: 8),
-          // Text(
-          //   description,
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // const SizedBox(height: 8),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            """a common eye condition
+that is a cause of blindness worldwide, which...""",
+            style: TextStyle(fontSize: 12.sp),
+          ),
           TextButton(
             onPressed: () {
               if (title == "Glaucoma") {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Results(glaucomaResult)));
+                        builder: (context) => Results(glaucomaResult, docID)));
               } else if (title == "Diabetic") {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Results(diabeticResult)));
+                        builder: (context) => Results(diabeticResult, docID)));
               } else if (title == "Cataract") {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Results(cataractResult)));
+                        builder: (context) => Results(cataractResult, docID)));
               } else if (title == "Normal") {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Results(normalResult)));
+                        builder: (context) => Results(normalResult, docID)));
               }
             },
             child: const Text('See more',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Colors.blueAccent,
                   decoration: TextDecoration.underline,
                 )),

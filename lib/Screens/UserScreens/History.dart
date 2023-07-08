@@ -53,6 +53,7 @@ class _HistoryState extends State<History> {
                 date: formattedDate,
                 //'${myDate.toString().substring(0, 10)} ${DateFormat.jm().format(myDate)}',
                 description: '...',
+                docID: document.id,
                 text: 'See more',
                 Status: data['status'],
                 context: context,

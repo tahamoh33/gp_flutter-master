@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
+import 'package:trial1/Screens/Doctor/DoctorResults.dart';
 import 'package:trial1/helpers/BiggerImage.dart';
 
 import '../Constants/image_constant.dart';
 import '../Models/ResultModel.dart';
-import '../Results.dart';
 
 class Doctorhistory extends StatefulWidget {
   @override
@@ -202,7 +202,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
             ),
             TextButton(
               onPressed: () {
@@ -210,17 +210,26 @@ class DoctorhistoryState extends State<Doctorhistory> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Results(glaucomaResult)));
+                          builder: (context) =>
+                              DoctorResults(glaucomaResult, docId)));
                 } else if (title == "Diabetic") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Results(diabeticResult)));
+                          builder: (context) =>
+                              DoctorResults(diabeticResult, docId)));
                 } else if (title == "Cataract") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Results(cataractResult)));
+                          builder: (context) =>
+                              DoctorResults(cataractResult, docId)));
+                } else if (title == "Normal") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DoctorResults(normalResult, docId)));
                 }
               },
               child: const Text('See more',

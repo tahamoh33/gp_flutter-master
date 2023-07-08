@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:sizer/sizer.dart';
 
 import '../Models/eye_condition.dart';
 //import 'package:sizer/sizer.dart';
@@ -229,7 +230,7 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)),
-                                  primary: Theme.of(context).hintColor,
+                                  backgroundColor: Theme.of(context).hintColor,
                                   padding: EdgeInsets.symmetric(
                                       horizontal: width * 0.1,
                                       vertical: height * 0.017),
@@ -237,19 +238,50 @@ class _DetectionScreenState extends State<DetectionScreen> {
                                 onPressed: () async {
                                   await pickImageFromGallery();
                                   showModalBottomSheet(
+                                    isDismissible: true,
+                                    constraints: BoxConstraints(
+                                      maxHeight: height * 0.7,
+                                    ),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return ListView.builder(
-                                        itemCount: eyeConditions.length,
-                                        itemBuilder: (context, index) {
-                                          final eyeCondition =
-                                              eyeConditions[index];
-                                          return ListTile(
-                                            title: Text(eyeCondition.name),
-                                            subtitle: Text(
-                                                'Confidence: ${eyeCondition.confidence}'),
-                                          );
-                                        },
+                                      return Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(30),
+                                              child: Text(
+                                                prediction,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount: eyeConditions.length,
+                                                itemBuilder: (context, index) {
+                                                  final eyeCondition =
+                                                      eyeConditions[index];
+                                                  return ListTile(
+                                                    title:
+                                                        Text(eyeCondition.name),
+                                                    subtitle: Text(
+                                                        'Confidence: ${eyeCondition.confidence}'),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     },
                                   );

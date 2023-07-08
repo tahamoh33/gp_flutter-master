@@ -172,6 +172,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  bool isDarkMode(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    return brightness == Brightness.dark;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -191,6 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = isDarkMode(context);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -223,8 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           centerTitle: true,
           title: Text(
             "Profile",
-            style: TextStyle(
-                fontSize: 25, color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(fontSize: 25, color: Theme.of(context).hintColor),
           )),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
@@ -244,16 +249,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 52, vertical: 77),
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  boxShadow: const [
+                                  color:
+                                      isDark ? Color(0xff3a3a3a) : Colors.white,
+                                  boxShadow: [
                                     BoxShadow(
                                         color: Color(0x1f939393),
                                         blurRadius: 0,
                                         offset: Offset(0, 0),
                                         spreadRadius: 4)
                                   ],
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(73))),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(73))),
                               child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -281,8 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -296,8 +301,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             width: width * 0.8,
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14),
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White),
                                         Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 1, top: 23),
@@ -306,8 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -315,14 +322,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         CustomTextFormField(
                                             autofocus: false,
                                             controller: _username,
-                                            hintText: "...",
+                                            hintText: "Username",
+                                            // onChanged: (value) {
+                                            //   setState(() {
+                                            //     showDialog(
+                                            //         context: context,
+                                            //         builder: (BuildContext
+                                            //                 context) =>
+                                            //             AlertDialog(
+                                            //               title: Text(
+                                            //                   "Change Username"),
+                                            //               content: Text(
+                                            //                   "Are you sure you want to change your username?"),
+                                            //               actions: [
+                                            //                 TextButton(
+                                            //                     onPressed: () {
+                                            //                       Navigator.pop(
+                                            //                           context);
+                                            //                     },
+                                            //                     child:
+                                            //                         Text("No")),
+                                            //                 TextButton(
+                                            //                     onPressed:
+                                            //                         () async {
+                                            //                       await instance
+                                            //                           .currentUser!
+                                            //                           .updateDisplayName(
+                                            //                               value);
+                                            //                       Navigator.pop(
+                                            //                           context);
+                                            //                     },
+                                            //                     child: Text(
+                                            //                         "Yes")),
+                                            //               ],
+                                            //             ));
+                                            //   });
+                                            // },
                                             margin: const EdgeInsets.only(
                                                 left: 1, top: 11),
                                             width: width * 0.8,
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14),
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White),
                                         Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 2, top: 23),
@@ -331,8 +376,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -346,8 +390,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14,
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White,
                                             textInputAction:
                                                 TextInputAction.done),
                                         Padding(
@@ -358,8 +405,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -387,8 +433,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14,
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White,
                                             textInputAction:
                                                 TextInputAction.done),
                                         Padding(
@@ -405,8 +454,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                         color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
+                                                            .hintColor,
                                                         fontFamily:
                                                             'Montserrat',
                                                         fontSize: 16,
@@ -434,6 +482,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   width: (17),
                                                   margin: const EdgeInsets.only(
                                                       left: 10)),
+                                              // ElevatedButton(
+                                              //   onPressed: () {
+                                              //     print("save");
+                                              //   },
+                                              //   child: Text(
+                                              //     "Save Changes",
+                                              //     style: TextStyle(
+                                              //         color: Colors.white),
+                                              //   ),
+                                              //   style: ElevatedButton.styleFrom(
+                                              //     primary: Theme.of(context)
+                                              //         .hintColor,
+                                              //     shape: RoundedRectangleBorder(
+                                              //       borderRadius:
+                                              //           BorderRadius.circular(
+                                              //               10),
+                                              //     ),
+                                              //   ),
+                                              // )
                                             ]))
                                       ],
                                     ),

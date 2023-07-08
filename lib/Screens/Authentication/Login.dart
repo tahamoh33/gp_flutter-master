@@ -9,14 +9,14 @@ import 'package:trial1/CustomWidgets/custom_image_view.dart';
 import 'package:trial1/CustomWidgets/custom_text_form_field.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Authentication/forgot_pw.dart';
-import 'package:trial1/Screens/NavigationScreens/welcome.dart';
 import 'package:trial1/helpers/cache_manager.dart';
 import 'package:trial1/helpers/firebase_api.dart';
 
 import '../Constants/image_constant.dart';
 import '../Constants/string_manager.dart';
 import '../Doctor/doctor_app_layout.dart';
-import '../NavigationScreens/AppLayout.dart';
+import '../UserScreens/AppLayout.dart';
+import '../UserScreens/welcome.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

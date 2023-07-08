@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/Screens/Doctor/doctor_app_layout.dart';
-import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
-import 'package:trial1/Screens/NavigationScreens/welcome.dart';
+
+import 'UserScreens/AppLayout.dart';
+import 'UserScreens/welcome.dart';
 
 class SplashScreen extends StatefulWidget {
   String? email, password, role;
@@ -37,11 +38,19 @@ class _SplashScreenState extends State<SplashScreen> {
             context, MaterialPageRoute(builder: (context) => secondScreen)));
   }
 
+  bool isDarkMode(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    return brightness == Brightness.dark;
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isDark = isDarkMode(context);
     return Scaffold(
       body: Center(
-        child: Image.asset('lib/images/logo.png', width: 50.w),
+        child: isDark
+            ? Image.asset('lib/images/logo_dark.png', width: 50.w)
+            : Image.asset('lib/images/logo.png', width: 50.w),
       ),
     );
   }

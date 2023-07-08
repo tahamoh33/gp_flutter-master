@@ -6,12 +6,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Constants/string_manager.dart';
-import 'package:trial1/Screens/NavigationScreens/AppLayout.dart';
 
 import '../../CustomWidgets/custom_image_view.dart';
 import '../../CustomWidgets/custom_text_form_field.dart';
 import '../../helpers/cache_manager.dart';
 import '../Constants/image_constant.dart';
+import '../UserScreens/AppLayout.dart';
 
 class SignupPage extends StatefulWidget {
   final bool isUSer;

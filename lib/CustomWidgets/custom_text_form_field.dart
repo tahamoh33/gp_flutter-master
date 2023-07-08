@@ -21,6 +21,8 @@ class CustomTextFormField extends StatelessWidget {
       this.prefixConstraints,
       this.suffix,
       this.suffixConstraints,
+      this.onChanged,
+      this.onTap,
       this.validator});
 
   TextFormFieldShape? shape;
@@ -60,7 +62,8 @@ class CustomTextFormField extends StatelessWidget {
   Widget? suffix;
 
   BoxConstraints? suffixConstraints;
-
+  void Function(String)? onChanged;
+  void Function()? onTap;
   FormFieldValidator<String>? validator;
 
   @override
@@ -86,6 +89,8 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: textInputType,
         maxLines: maxLines ?? 1,
         decoration: _buildDecoration(),
+        onChanged: onChanged,
+        onTap: onTap,
         validator: validator,
       ),
     );
@@ -143,6 +148,13 @@ class CustomTextFormField extends StatelessWidget {
         return const TextStyle(
           color: Colors.black,
           fontSize: 14,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w400,
+        );
+      case TextFormFieldFontStyle.MontserratRomanRegular14White:
+        return const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w400,
         );
@@ -244,6 +256,7 @@ enum TextFormFieldVariant {
 
 enum TextFormFieldFontStyle {
   MontserratRomanRegular16Dark,
+  MontserratRomanRegular14White,
   MontserratRomanRegular16,
   MontserratRomanRegular14,
 }
