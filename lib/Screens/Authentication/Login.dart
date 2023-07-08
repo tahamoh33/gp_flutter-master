@@ -31,8 +31,8 @@ class LoginState extends State<Login> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool isPasswordVisible = true;
 
-  final _emailController = TextEditingController(text: 'doctortest2@gmail.com');
-  final _passwordController = TextEditingController(text: '123456');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {

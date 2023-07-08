@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:trial1/CustomWidgets/custom_button.dart';
 import 'package:trial1/CustomWidgets/square_tile.dart';
 import 'package:trial1/Screens/Constants/string_manager.dart';
+import 'package:trial1/Screens/Doctor/doctor_app_layout.dart';
 
 import '../../CustomWidgets/custom_image_view.dart';
 import '../../CustomWidgets/custom_text_form_field.dart';
@@ -103,10 +104,17 @@ class _SignupPageState extends State<SignupPage> {
         await CacheManager.saveData('email', email);
         await CacheManager.saveData('password', password);
         Navigator.pop(context);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const AppLayout()),
-            (route) => false);
+        if (isUser) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const AppLayout()),
+              (route) => false);
+        } else {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const DoctorLayout()),
+              (route) => false);
+        }
       });
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

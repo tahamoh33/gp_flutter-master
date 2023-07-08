@@ -188,6 +188,11 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
     getUserData();
   }
 
+  bool isDarkMode(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    return brightness == Brightness.dark;
+  }
+
   @override
   void dispose() {
     _username.dispose();
@@ -201,6 +206,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = isDarkMode(context);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -231,8 +237,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
           centerTitle: true,
           title: Text(
             "Profile",
-            style: TextStyle(
-                fontSize: 25, color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(fontSize: 25, color: Theme.of(context).hintColor),
           )),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: true,
@@ -252,7 +257,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 52, vertical: 77),
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
+                                  color: isDark
+                                      ? const Color(0xff3a3a3a)
+                                      : Colors.white,
                                   boxShadow: const [
                                     BoxShadow(
                                         color: Color(0x1f939393),
@@ -289,8 +296,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -304,8 +310,11 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             width: width * 0.8,
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14),
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White),
                                         Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 1, top: 23),
@@ -314,8 +323,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -364,8 +372,11 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 left: 1, top: 11),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14),
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White),
                                         Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 2, top: 23),
@@ -374,8 +385,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -389,8 +399,11 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14,
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White,
                                             textInputAction:
                                                 TextInputAction.done),
                                         Padding(
@@ -401,8 +414,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      .hintColor,
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -411,7 +423,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                             //autofocus: false,
                                             controller: _birth,
                                             width: width * 0.8,
-                                            hintText: "21/5/2000",
+                                            hintText: "DD/M/YYYY",
                                             onTap: () {
                                               setState(() {
                                                 _selectDate(context);
@@ -437,8 +449,11 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                 left: 1, top: 9),
                                             variant: TextFormFieldVariant
                                                 .UnderLineGray40001,
-                                            fontStyle: TextFormFieldFontStyle
-                                                .MontserratRomanRegular14,
+                                            fontStyle: !isDark
+                                                ? TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14
+                                                : TextFormFieldFontStyle
+                                                    .MontserratRomanRegular14White,
                                             textInputAction:
                                                 TextInputAction.done),
                                         Padding(
@@ -455,8 +470,7 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                         color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
+                                                            .hintColor,
                                                         fontFamily:
                                                             'Montserrat',
                                                         fontSize: 16,
@@ -519,7 +533,9 @@ class _DoctorshowProfileState extends State<DoctorshowProfile> {
                                               onTap: () async {
                                                 await pickImageFromGallery();
                                               },
-                                              url: url,
+                                              url: (url != "")
+                                                  ? url
+                                                  : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
                                               height: 80,
                                               width: 77,
                                               alignment: Alignment.center),

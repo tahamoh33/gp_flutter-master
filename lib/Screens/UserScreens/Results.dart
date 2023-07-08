@@ -94,8 +94,8 @@ class _ResultsState extends State<Results> {
               // ),
               ExpansionTile(
                 //collapsedBackgroundColor: Colors.white,
-                collapsedIconColor: Colors.black,
-                iconColor: Colors.black,
+                collapsedIconColor: Theme.of(context).primaryColorDark,
+                iconColor: Theme.of(context).primaryColorDark,
                 //backgroundColor: Colors.blue,
                 //controlAffinity: ListTileControlAffinity.leading,
                 tilePadding: const EdgeInsets.fromLTRB(25, 0, 190, 0),
@@ -126,8 +126,8 @@ class _ResultsState extends State<Results> {
               ExpansionTile(
                 tilePadding: const EdgeInsets.fromLTRB(25, 0, 190, 0),
                 childrenPadding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                collapsedIconColor: Colors.black,
-                iconColor: Colors.black,
+                collapsedIconColor: Theme.of(context).primaryColorDark,
+                iconColor: Theme.of(context).primaryColorDark,
                 expandedAlignment: Alignment.topLeft,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 //controlAffinity: ListTileControlAffinity.leading,
@@ -158,8 +158,8 @@ class _ResultsState extends State<Results> {
                 expandedAlignment: Alignment.topLeft,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 //controlAffinity: ListTileControlAffinity.leading,
-                collapsedIconColor: Colors.black,
-                iconColor: Colors.black,
+                collapsedIconColor: Theme.of(context).primaryColorDark,
+                iconColor: Theme.of(context).primaryColorDark,
                 title: Text('When to get medical advice',
                     style: TextStyle(
                       color: Theme.of(context).primaryColorDark,
@@ -186,8 +186,8 @@ class _ResultsState extends State<Results> {
                 childrenPadding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
                 expandedAlignment: Alignment.topLeft,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                collapsedIconColor: Colors.black,
-                iconColor: Colors.black,
+                collapsedIconColor: Theme.of(context).primaryColorDark,
+                iconColor: Theme.of(context).primaryColorDark,
                 title: Text('Doctor\'s comment',
                     style: TextStyle(
                       color: Theme.of(context).primaryColorDark,

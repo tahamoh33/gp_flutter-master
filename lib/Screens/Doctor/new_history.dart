@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:trial1/CustomWidgets/custom_image_view.dart';
+import 'package:trial1/Screens/Doctor/DoctorResults.dart';
 import 'package:trial1/helpers/BiggerImage.dart';
 
 import '../Constants/image_constant.dart';
 import '../Models/ResultModel.dart';
-import '../UserScreens/Results.dart';
 
 class Doctorhistory extends StatefulWidget {
   @override
@@ -208,7 +208,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: width*0.3,
+                  width: width * 0.3,
                   child: Text(
                     """a common eye condition that is a cause of blindness worldwide, which""",
                     style: TextStyle(fontSize: 12.sp),
@@ -222,27 +222,31 @@ class DoctorhistoryState extends State<Doctorhistory> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Results(glaucomaResult,docId)));
+                              builder: (context) =>
+                                  DoctorResults(glaucomaResult, docId)));
                     } else if (title == "Diabetic") {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Results(diabeticResult, docId)));
+                              builder: (context) =>
+                                  DoctorResults(diabeticResult, docId)));
                     } else if (title == "Cataract") {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Results(cataractResult, docId)));
+                              builder: (context) =>
+                                  DoctorResults(cataractResult, docId)));
                     } else if (title == "Normal") {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Results(normalResult, docId)));
+                              builder: (context) =>
+                                  DoctorResults(normalResult, docId)));
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top:20.0),
-                    child: const Text('See more',
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 20.0),
+                    child: Text('See more',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.blueAccent,
