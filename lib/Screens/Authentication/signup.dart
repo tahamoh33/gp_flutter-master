@@ -103,13 +103,18 @@ class _SignupPageState extends State<SignupPage> {
         await createUser(email, password, username, isUser);
         await CacheManager.saveData('email', email);
         await CacheManager.saveData('password', password);
+
         Navigator.pop(context);
         if (isUser) {
+          final String role = 'Patient';
+          await CacheManager.saveData('role', role);
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const AppLayout()),
               (route) => false);
         } else {
+          final String role = 'Doctor';
+          await CacheManager.saveData('role', role);
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const DoctorLayout()),
