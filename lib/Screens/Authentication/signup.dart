@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,6 +12,7 @@ import 'package:trial1/Screens/Doctor/doctor_app_layout.dart';
 import '../../CustomWidgets/custom_image_view.dart';
 import '../../CustomWidgets/custom_text_form_field.dart';
 import '../../helpers/cache_manager.dart';
+import '../../helpers/firebase_api.dart';
 import '../Constants/image_constant.dart';
 import '../UserScreens/AppLayout.dart';
 
@@ -31,6 +33,7 @@ class _SignupPageState extends State<SignupPage> {
   final _confirmPassword = TextEditingController();
   final _username = TextEditingController();
   String data = '';
+  final _firebasemessaging = FirebaseMessaging.instance;
   //FirebaseAuth instance = FirebaseAuth.instance;
   bool isPasswordVisible = true;
   bool isConfirmPasswordVisible = true;
@@ -107,6 +110,8 @@ class _SignupPageState extends State<SignupPage> {
         Navigator.pop(context);
         if (isUser) {
           final String role = 'Patient';
+          final token = await _firebasemessaging.getToken();
+          saveToken(token!, FirebaseAuth.instance.currentUser!.uid);
           await CacheManager.saveData('role', role);
           Navigator.pushAndRemoveUntil(
               context,

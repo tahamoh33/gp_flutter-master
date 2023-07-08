@@ -82,7 +82,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
         if (snapshot.data!.docs.isEmpty) {
           return const Center(
               child: Text(
-            'No predictions found for this user.',
+            'No predictions found.',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
           ));
         }
@@ -207,7 +207,7 @@ class DoctorhistoryState extends State<Doctorhistory> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: width * 0.3,
                   child: Text(
                     """a common eye condition that is a cause of blindness worldwide, which""",
@@ -267,8 +267,8 @@ class DoctorhistoryState extends State<Doctorhistory> {
                         .collection("users")
                         .doc(userId)
                         .get();
+
                     String token = snap['token'];
-                    //print(token);
                     sendPushMessage(token);
                     setState(() {
                       confirm(docId);
